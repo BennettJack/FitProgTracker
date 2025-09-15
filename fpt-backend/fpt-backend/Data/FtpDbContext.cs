@@ -1,0 +1,15 @@
+﻿using fpt_backend.Data.Models;
+using fpt_backend.Data.Models.Gym;
+using Microsoft.EntityFrameworkCore;
+
+namespace fpt_backend.Data;
+
+public class FtpDbContext : DbContext
+{
+    public FtpDbContext(DbContextOptions<FtpDbContext> options) : base(options)
+    {
+        
+    }
+    
+    public DbSet<Exercise> Exercises { get; set; }
+}
