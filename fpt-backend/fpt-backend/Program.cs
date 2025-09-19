@@ -1,14 +1,91 @@
+using System.Security.Claims;
 using fpt_backend.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddDbContext<FtpDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConString"))); //temp connection string
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/dataprotection"))
+    .SetApplicationName("bennettj.SSO");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+    options.Cookie.Name = ".bennettj.Sso";
+    options.Cookie.Domain = "bennettj.uk"; // if apps share parent domain
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+})
+.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+{
+    options.Authority = builder.Configuration["Authentication:OIDC:Authority"];
+    options.ClientId = builder.Configuration["Authentication:OIDC:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:OIDC:ClientSecret"];
+    options.ResponseType = "code";
+    options.UsePkce = true; // optional - safe to use
+    options.SaveTokens = true; // keep id/access/refresh tokens in auth properties
+    options.GetClaimsFromUserInfoEndpoint = true;
+
+    options.Scope.Clear();
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
+    options.Scope.Add("email");
+    options.Scope.Add("offline_access"); // if you want refresh tokens
+
+    // map role claim (adjust depending on what Authentik returns)
+    options.ClaimActions.MapJsonKey(ClaimTypes.Role, "roles");
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = "preferred_username",
+        RoleClaimType = ClaimTypes.Role,
+    };
+
+    options.Events = new OpenIdConnectEvents
+    {
+        OnTokenValidated = ctx =>
+        {
+            // Additional claims transforms or logging
+            return Task.CompletedTask;
+        },
+        OnRedirectToIdentityProviderForSignOut = ctx =>
+        {
+            // send id_token_hint if available
+            var idToken = ctx.HttpContext.User.FindFirst("id_token")?.Value;
+            if (!string.IsNullOrEmpty(idToken))
+            {
+                ctx.ProtocolMessage.IdTokenHint = idToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", p => p.RequireRole("admin"));
+});
 
 var app = builder.Build();
 
@@ -16,7 +93,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-
-
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

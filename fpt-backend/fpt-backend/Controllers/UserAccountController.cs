@@ -1,20 +1,20 @@
 ﻿using fpt_backend.Data.Models.UserModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace fpt_backend.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("[controller]")]
+[Route("[controller]")]
 public class UserAccountController : Controller
 {
-    [HttpPost("CreateUser")]
-    public async Task<IActionResult> CreateUser([FromBody] User user)
+    
+    [HttpGet("SignUp")]
+    public async Task<IActionResult> SignUp()
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        var enrollmentFlowUrl = "https://auth.bennettj.uk/if/flow/default-enrollment-flow/"
+                                + "?next=" + Uri.EscapeDataString("https://192.168.1.205/signin-oidc");
         
-        return CreatedAtAction("test", user);
+        return Redirect(enrollmentFlowUrl);
     }
 }
