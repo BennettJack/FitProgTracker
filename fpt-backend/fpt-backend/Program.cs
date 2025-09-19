@@ -17,6 +17,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:3000") // React dev server
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials(); // must allow credentials for cookies
+        });
+});
 
 builder.Services.AddDbContext<FtpDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConString"))); //temp connection string
@@ -33,15 +46,20 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
     options.Cookie.Name = ".bennettj.Sso";
-    options.Cookie.Domain = "bennettj.uk"; // if apps share parent domain
-    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.Domain = "localhost"; // if apps share parent domain
+    options.Cookie.SameSite = SameSiteMode.None;
+#if DEBUG
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+#else
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+#endif
 })
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
     options.Authority = builder.Configuration["Authentication:OIDC:Authority"];
     options.ClientId = builder.Configuration["Authentication:OIDC:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:OIDC:ClientSecret"];
+    options.CallbackPath = "/signin-oidc"; 
     options.ResponseType = "code";
     options.UsePkce = true; // optional - safe to use
     options.SaveTokens = true; // keep id/access/refresh tokens in auth properties
@@ -82,13 +100,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", p => p.RequireRole("admin"));
-});
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
+app.UseCors(MyAllowSpecificOrigins);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
