@@ -35,7 +35,7 @@ public class UserAccountController : Controller
     public IActionResult Logout()
     {
         return SignOut(
-            new AuthenticationProperties { RedirectUri = "/" },
+            new AuthenticationProperties { RedirectUri = "https://localhost:3000" },
             CookieAuthenticationDefaults.AuthenticationScheme,
             OpenIdConnectDefaults.AuthenticationScheme
         );
@@ -57,6 +57,31 @@ public class UserAccountController : Controller
     public IActionResult TestAuth()
     {
         Debug.WriteLine("TestAuth");
-        return Ok();
+        return Ok( new
+        {
+            Username = User.Identity?.Name
+        });
+    }
+    
+    [Authorize(Roles = "StandardUser")]
+    [HttpGet("testUserRole")]
+    public IActionResult TestUserRole()
+    {
+
+        return Ok( new
+        {
+            Username = User.Identity?.Name
+        });
+    }
+    
+    [Authorize(Roles = "SuperUser")]
+    [HttpGet("testSuperUserRole")]
+    public IActionResult TestSuperUserRole()
+    {
+
+        return Ok( new
+        {
+            Username = User.Identity?.Name
+        });
     }
 }

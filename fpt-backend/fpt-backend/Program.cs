@@ -96,7 +96,14 @@ builder.Services.AddAuthentication(options =>
                 ctx.ProtocolMessage.IdTokenHint = idToken;
             }
             return Task.CompletedTask;
-        }
+        },
+        OnTicketReceived = ctx =>
+        {
+        // After successful OIDC login, redirect to frontend
+        Console.WriteLine("test thing");
+        ctx.ReturnUri = "https://localhost:3000";
+        return Task.CompletedTask;
+    }
     };
 });
 

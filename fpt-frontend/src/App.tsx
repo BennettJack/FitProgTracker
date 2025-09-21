@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import axios from "axios";
 import { useEffect, useState } from "react";
+import LoginSignup from "./Pages/Account/LoginSignup";
 
 
 
@@ -35,13 +36,6 @@ function App() {
     }
   };
   
-  function handleClick() {
-    window.location.href = "https://localhost:7206/UserAccount/SignUp";
-  }
-  
-  function handleLogin() {
-    window.location.href = "https://localhost:7206/UserAccount/login";
-  }
   
   function handleTest(){
     
@@ -52,10 +46,9 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
-          <button onClick={handleClick}>This is a button</button>
-          <button onClick={handleLogin}>login</button>
           <button onClick={checkAuth}>test</button>
         </p>
+        <LoginSignup/>
         <p>{status}</p>
         <a
           className="App-link"
