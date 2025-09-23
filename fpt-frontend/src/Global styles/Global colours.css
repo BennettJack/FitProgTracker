@@ -1,0 +1,27 @@
+﻿:root {
+    /* Backgrounds */
+    --colour-primary-background: #18181B;
+    --colour-primary-foreground: #27272A;
+    --colour-elevated: #323234;
+    
+
+    
+    /* Text */
+    --colour-primary-text: #F5F5F5;
+    --colour-secondary-text: #A1A1AA;
+    --colour-dark-text: #52525B;
+    
+    /* Accents */
+    --colour-primary-accent: #7C3AED;
+    --colour-secondary-accent: #34D399;
+    --colour-highlight-info: #38BDF8;
+    --colour-success-result: #22C55E;
+    --colour-alert-warning: #FACC15;
+    --colour-alert-error: #EF4444;
+    
+    /* UI components */
+    --colour-default-border: #3F3F46;
+    --colour-input-background: #1F1F23;
+    --colour-primary-button: #7C3AED;
+    --colour-primary-button-hover: #6D28D9;
+}

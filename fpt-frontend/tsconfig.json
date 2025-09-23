@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "rootDirs": [".", "./.react-router/types"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,6 +22,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-  ]
+    "src",
+    ".react-router/types/**/*"
+  ],
 }
