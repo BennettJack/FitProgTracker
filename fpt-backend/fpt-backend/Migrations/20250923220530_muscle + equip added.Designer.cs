@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fpt_backend.Data;
 
@@ -10,9 +11,11 @@ using fpt_backend.Data;
 namespace fpt_backend.Migrations
 {
     [DbContext(typeof(FtpDbContext))]
-    partial class FtpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250923220530_muscle + equip added")]
+    partial class muscleequipadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

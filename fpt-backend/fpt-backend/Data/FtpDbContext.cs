@@ -12,4 +12,7 @@ public class FtpDbContext : DbContext
     }
     
     public DbSet<Exercise> Exercises { get; set; }
+    public DbSet<Equipment> Equipment { get; set; }
+    public DbSet<Muscle> Muscles { get; set; }
+    
 }
