@@ -1,5 +1,8 @@
 using System.Security.Claims;
+using fpt_backend.Controllers.GymControllers;
 using fpt_backend.Data;
+using fpt_backend.DbRepositories.GymRepositories;
+using fpt_backend.Services.GymServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -31,8 +34,11 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddDbContext<FtpDbContext>(options => 
+
+builder.Services.AddDbContext<FptDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConString"))); //temp connection string
+builder.Services.AddScoped<EquipmentService>();
+builder.Services.AddScoped<EquipmentRepository>();
 
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/dataprotection"))

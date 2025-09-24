@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.Data;
 
-public class FtpDbContext : DbContext
+public class FptDbContext : DbContext
 {
-    public FtpDbContext(DbContextOptions<FtpDbContext> options) : base(options)
+    public FptDbContext(DbContextOptions<FptDbContext> options) : base(options)
     {
         
     }

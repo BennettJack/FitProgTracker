@@ -16,7 +16,7 @@ public class ConnectionTests
                 .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
                 .Build();
 
-            var options = new DbContextOptionsBuilder<FtpDbContext>()
+            var options = new DbContextOptionsBuilder<FptDbContext>()
                 .UseSqlServer(config.GetConnectionString("DevConString"))
                 // Enable detailed EF logging
                 .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
@@ -24,7 +24,7 @@ public class ConnectionTests
                 .EnableDetailedErrors()
                 .Options;
 
-            using var context = new FtpDbContext(options);
+            using var context = new FptDbContext(options);
 
             try
             {

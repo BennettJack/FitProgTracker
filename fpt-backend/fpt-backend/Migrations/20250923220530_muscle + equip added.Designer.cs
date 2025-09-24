@@ -10,7 +10,7 @@ using fpt_backend.Data;
 
 namespace fpt_backend.Migrations
 {
-    [DbContext(typeof(FtpDbContext))]
+    [DbContext(typeof(FptDbContext))]
     [Migration("20250923220530_muscle + equip added")]
     partial class muscleequipadded
     {

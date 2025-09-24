@@ -10,7 +10,7 @@ using fpt_backend.Data;
 
 namespace fpt_backend.Migrations
 {
-    [DbContext(typeof(FtpDbContext))]
+    [DbContext(typeof(FptDbContext))]
     [Migration("20250914153446_Initial")]
     partial class Initial
     {

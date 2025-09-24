@@ -9,7 +9,7 @@ using fpt_backend.Data;
 
 namespace fpt_backend.Migrations
 {
-    [DbContext(typeof(FtpDbContext))]
+    [DbContext(typeof(FptDbContext))]
     partial class FtpDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
