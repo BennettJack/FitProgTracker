@@ -69,22 +69,36 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("openid");
     options.Scope.Add("profile");
     options.Scope.Add("email");
+    options.Scope.Add("groups");
     options.Scope.Add("offline_access"); // if you want refresh tokens
-
-    // map role claim (adjust depending on what Authentik returns)
-    options.ClaimActions.MapJsonKey(ClaimTypes.Role, "roles");
-
+    
     options.TokenValidationParameters = new TokenValidationParameters
     {
         NameClaimType = "preferred_username",
-        RoleClaimType = ClaimTypes.Role,
+        RoleClaimType = "groups"
     };
 
     options.Events = new OpenIdConnectEvents
     {
-        OnTokenValidated = ctx =>
+        OnTokenValidated = context =>
         {
-            // Additional claims transforms or logging
+            Console.WriteLine("OnTokenValidated");
+            var identity = context.Principal.Identity as ClaimsIdentity;
+
+            // Grab the groups claim
+            var groupsClaim = identity.FindAll("groups");
+
+            if (groupsClaim.Any())
+            {
+                // Assuming groupsClaim is a JSON array, parse it
+                var claims = groupsClaim.Select(x => new Claim(x.Type, x.Value)).ToList();
+
+                foreach (var group in claims)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, group.Value));
+                }
+            }
+
             return Task.CompletedTask;
         },
         OnRedirectToIdentityProviderForSignOut = ctx =>
@@ -107,9 +121,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();
 
 var app = builder.Build();
+app.UseRouting();
 app.UseCors(MyAllowSpecificOrigins);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

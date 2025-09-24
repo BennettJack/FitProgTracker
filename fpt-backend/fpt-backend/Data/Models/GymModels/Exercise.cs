@@ -1,4 +1,6 @@
-﻿namespace fpt_backend.Data.Models.Gym;
+﻿using fpt_backend.Data.Models.Gym;
+
+namespace fpt_backend.Data.Models.GymModels;
 
 public class Exercise
 {

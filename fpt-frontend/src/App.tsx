@@ -8,7 +8,6 @@ function App() {
   
   return (
     <div>
-      <p>hi!</p>
       <Outlet />
     </div>
   );

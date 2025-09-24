@@ -1,5 +1,5 @@
-﻿using fpt_backend.Data.Models;
-using fpt_backend.Data.Models.Gym;
+﻿using fpt_backend.Data.Models.Gym;
+using fpt_backend.Data.Models.GymModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.Data;

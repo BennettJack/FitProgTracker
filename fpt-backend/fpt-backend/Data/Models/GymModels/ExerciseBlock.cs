@@ -1,4 +1,4 @@
-﻿namespace fpt_backend.Data.Models.Gym;
+﻿namespace fpt_backend.Data.Models.GymModels;
 
 public class ExerciseBlock
 {

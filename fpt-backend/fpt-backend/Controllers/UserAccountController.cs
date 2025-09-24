@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 using fpt_backend.Data.Models.UserModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -45,10 +46,18 @@ public class UserAccountController : Controller
     public IActionResult CheckCookie()
     {
         var isAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
+        var username = User.Identity?.Name;
+        var roles = User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToList();
+
+
         return Ok(new
         {
             Authenticated = isAuthenticated,
-            Username = User.Identity?.Name
+            Username = username,
+            Roles = roles
         });
     }
 
@@ -63,7 +72,7 @@ public class UserAccountController : Controller
         });
     }
     
-    [Authorize(Roles = "StandardUser")]
+    [Authorize(Roles = "FptUsers")]
     [HttpGet("testUserRole")]
     public IActionResult TestUserRole()
     {
@@ -74,7 +83,7 @@ public class UserAccountController : Controller
         });
     }
     
-    [Authorize(Roles = "SuperUser")]
+    [Authorize(Roles = "FptSuperUser")]
     [HttpGet("testSuperUserRole")]
     public IActionResult TestSuperUserRole()
     {
