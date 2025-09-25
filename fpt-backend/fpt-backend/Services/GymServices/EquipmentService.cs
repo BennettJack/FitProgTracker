@@ -1,5 +1,5 @@
 ﻿using fpt_backend.Data;
-using fpt_backend.Data.Models.Gym;
+using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories.GymRepositories;
 
 namespace fpt_backend.Services.GymServices;

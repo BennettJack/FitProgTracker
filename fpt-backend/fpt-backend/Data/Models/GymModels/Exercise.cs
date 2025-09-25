@@ -1,12 +1,14 @@
-﻿using fpt_backend.Data.Models.Gym;
+﻿namespace fpt_backend.Data.Models.GymModels;
 
-namespace fpt_backend.Data.Models.GymModels;
-
-public class Exercise
+public class Exercise : BaseModel
 {
     public int ExerciseId { get; set; }
     public required string ExerciseName { get; set; }
-    public required Equipment Equipment { get; set; }
-    public required List<Muscle> Muscles { get; set; }
-    public string? ExerciseDescription { get; set; } 
+    public string? ExerciseDescription { get; set; }
+    public bool GloballyVisible { get; set; }
+    
+    public List<Equipment> Equipment { get; set; } = new();
+    public List<ExerciseSession> ExerciseSessions { get; set; } = new();
+    public List<Muscle> Muscles { get; set; } = new();
+    
 }

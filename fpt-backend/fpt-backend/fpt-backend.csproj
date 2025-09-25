@@ -30,6 +30,7 @@
       <Folder Include="Data\Models\ClimbingModels\" />
       <Folder Include="Data\Models\PersonalModels\" />
       <Folder Include="Data\Models\SharedModels\" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
     <ItemGroup>

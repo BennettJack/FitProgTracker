@@ -1,4 +1,4 @@
-﻿using fpt_backend.Data.Models.Gym;
+﻿using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Services.GymServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
