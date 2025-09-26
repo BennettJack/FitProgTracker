@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace fpt_backend.Controllers.GymControllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class EquipmentController : Controller
 {
     private readonly EquipmentService _equipmentService;
