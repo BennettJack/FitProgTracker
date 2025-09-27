@@ -23,7 +23,15 @@ public class ExerciseController : Controller
             return BadRequest(ModelState);
         }
         
-        await _exerciseService.AddExercise(exerciseDto);
-        return Ok();
+        var res = await _exerciseService.AddExercise(exerciseDto, User.Identity.Name);
+
+        return res.Status switch
+        {
+            ResultStatus.Success => CreatedAtAction(nameof(AddExercise), new { id = res.Data!.ExerciseId }, res.Data),
+            ResultStatus.BadRequest => BadRequest(new { error = res.Message }),
+            ResultStatus.NotFound => NotFound(new { error = res.Message }),
+            ResultStatus.Error => StatusCode(500, new { error = res.Message }),
+            _ => StatusCode(500, new { error = "Internal server error" })
+        };
     }
 }

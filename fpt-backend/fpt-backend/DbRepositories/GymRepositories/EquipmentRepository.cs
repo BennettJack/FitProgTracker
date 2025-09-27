@@ -22,4 +22,10 @@ public class EquipmentRepository
     {
         return await _context.Equipment.FindAsync(id);
     }
+    
+    public async Task<List<Equipment>> GetMultipleEquipmentById(List<int> equipmentIds)
+    {
+        return await _context.Equipment.Where(equip => equipmentIds.Contains
+            (equip.EquipmentId)).ToListAsync();
+    }
 }

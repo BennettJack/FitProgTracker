@@ -16,6 +16,7 @@ public class FptDbContext : DbContext
     public DbSet<Muscle> Muscles { get; set; }
     public DbSet<ExerciseSession> ExerciseSessions { get; set; }
     public DbSet<MuscleGroup> MuscleGroups { get; set; }
+    public DbSet<WorkoutProgram> WorkoutPrograms { get; set; }
     
     
 }

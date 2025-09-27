@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fpt_backend.Data;
 
@@ -11,9 +12,11 @@ using fpt_backend.Data;
 namespace fpt_backend.Migrations
 {
     [DbContext(typeof(FptDbContext))]
-    partial class FptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250927130117_Added Globally Visible to exercise")]
+    partial class AddedGloballyVisibletoexercise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,12 +149,7 @@ namespace fpt_backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WorkoutProgramId")
-                        .HasColumnType("int");
-
                     b.HasKey("ExerciseSessionId");
-
-                    b.HasIndex("WorkoutProgramId");
 
                     b.ToTable("ExerciseSessions");
                 });
@@ -213,40 +211,6 @@ namespace fpt_backend.Migrations
                     b.ToTable("MuscleGroups");
                 });
 
-            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.WorkoutProgram", b =>
-                {
-                    b.Property<int>("WorkoutProgramId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkoutProgramId"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("HasAccessToProgram")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("WorkoutProgramDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WorkoutProgramName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("WorkoutProgramId");
-
-                    b.ToTable("WorkoutPrograms");
-                });
-
             modelBuilder.Entity("EquipmentExercise", b =>
                 {
                     b.HasOne("fpt_backend.Data.Models.GymModels.Equipment", null)
@@ -292,13 +256,6 @@ namespace fpt_backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSession", b =>
-                {
-                    b.HasOne("fpt_backend.Data.Models.GymModels.WorkoutProgram", null)
-                        .WithMany("ExerciseSessions")
-                        .HasForeignKey("WorkoutProgramId");
-                });
-
             modelBuilder.Entity("fpt_backend.Data.Models.GymModels.Muscle", b =>
                 {
                     b.HasOne("fpt_backend.Data.Models.GymModels.MuscleGroup", "MuscleGroup")
@@ -313,11 +270,6 @@ namespace fpt_backend.Migrations
             modelBuilder.Entity("fpt_backend.Data.Models.GymModels.MuscleGroup", b =>
                 {
                     b.Navigation("Muscles");
-                });
-
-            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.WorkoutProgram", b =>
-                {
-                    b.Navigation("ExerciseSessions");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,4 +16,11 @@ public class ExerciseRepository
     {
         await _context.Exercises.AddAsync(exercise);
     }
+
+    public async Task<Exercise> AddExercise(Exercise exercise)
+    {
+        _context.Exercises.Add(exercise);
+        await _context.SaveChangesAsync();
+        return  exercise;
+    }
 }
