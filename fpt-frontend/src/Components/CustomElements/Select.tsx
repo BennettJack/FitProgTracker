@@ -25,6 +25,7 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
     const [optionsShown, setOptionsShown] = useState<boolean>(false);
     const [availableOptions, setAvailableOptions] = useState<SelectOption[]>(options);
     const [optionsToDisplay, setOptionsToDisplay] = useState<SelectOption[]>(options);
+    const [search, setSearch] = useState<string>('');
     
     useEffect(() => {
         if(optionsShown){
@@ -36,11 +37,15 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
         
         if (multiple) {
             setAvailableOptions(options.filter(o => !value.some(v => v.value === o.value)));
+            
         } else {
             setAvailableOptions(options);
         }
     }, [options, value, multiple]);
     
+    useEffect(() =>{
+        setOptionsToDisplay(availableOptions);
+    }, [availableOptions])
     function clearOptions() {
         multiple ? onChange([]) : onChange(undefined);
         setAvailableOptions(options);
@@ -73,6 +78,15 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
         
     }
     
+    function filterOptions(query: string) {
+        const filteredOptions = availableOptions.filter(option =>
+            option.label.toLowerCase().includes(query.toLowerCase()));
+        setOptionsToDisplay(filteredOptions);
+    }
+    
+    function handleSearch(e: Event){
+        
+    }
     
     return(
         <div className={styles.wrapper}
@@ -110,6 +124,11 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
                     type={"text"}
                     id={"searchBar"}
                     className={styles.search}
+                    value={search}
+                    onChange={(e) => {
+                        filterOptions(e.target.value);
+                        setSearch(e.target.value);
+                    }}
                 />
             </span>
             
@@ -128,7 +147,7 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
             <ul 
                 className={`${styles.options} ${optionsShown ? styles.show : ""}`}
             >
-                {availableOptions.map((option) => (
+                {optionsToDisplay.map((option) => (
                     <li 
                         key={option.value} 
                         onClick={() => selectOption(option)}
