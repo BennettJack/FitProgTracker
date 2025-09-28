@@ -1,6 +1,6 @@
 ﻿import axios from "axios";
 import React, {useState, useEffect} from "react";
-import {Select} from "../CustomElements/Select";
+import {Select, SelectOption} from "../CustomElements/Select";
 
 interface FormData{
     ExerciseName:string;
@@ -57,6 +57,9 @@ export function AddNewExercise(){
         {label: "Fifth", value: "5"},
     ]
     
+    const [value1, setValue1] = useState<SelectOption[]>([test[0]]);
+    const [value2, setValue2] = useState<SelectOption | undefined>(test[0]);
+    
     return(
         <>
             <form onSubmit={(e) => e.preventDefault()}>
@@ -72,7 +75,8 @@ export function AddNewExercise(){
             </form>
             
             
-            <Select options={test} />
+            <Select multiple options={test} value={value1} onChange={o => setValue1(o)} />
+            <Select options={test} value={value2} onChange={o => setValue2(o)}/>
         </>
     )    
 }

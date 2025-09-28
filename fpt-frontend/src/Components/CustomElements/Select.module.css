@@ -1,0 +1,50 @@
+﻿.wrapper {
+    color: var(--colour-primary-text);
+    border: 1px solid var(--colour-default-border);
+    border-radius: 4px;
+    width: 20em;
+    min-height: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    padding: .5em;
+    outline: none;
+}
+
+.wrapper:focus {
+    border: 1px solid var(--colour-primary-button);
+}
+
+.clearButton{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--colour-primary-text);
+}
+
+.value{
+    
+}
+
+.removeButton{
+    
+}
+
+.options{
+    display: none;
+}
+
+.show{
+    display: list-item;
+}
+
+.search {
+    border: none;
+    background: none;
+}
+
+.search:focus{
+    outline: none;
+    
+}
