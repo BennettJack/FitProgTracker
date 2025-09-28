@@ -1,4 +1,4 @@
-﻿import React, {useState} from "react";
+﻿import React, {useEffect, useState} from "react";
 import styles from "./Select.module.css"
 
 
@@ -23,32 +23,44 @@ type SelectProps = {
 
 export function Select({multiple, value, onChange, options}: SelectProps) : React.ReactElement {
     const [optionsShown, setOptionsShown] = useState<boolean>(false);
+    const [availableOptions, setAvailableOptions] = useState<SelectOption[]>(options);
+    const [optionsToDisplay, setOptionsToDisplay] = useState<SelectOption[]>(options);
     
+    useEffect(() => {
+        if(optionsShown){
+           document.getElementById("searchBar")?.focus()
+        }
+    }, [optionsShown])
+
+    useEffect(() => {
+        
+        if (multiple) {
+            setAvailableOptions(options.filter(o => !value.some(v => v.value === o.value)));
+        } else {
+            setAvailableOptions(options);
+        }
+    }, [options, value, multiple]);
     
     function clearOptions() {
         multiple ? onChange([]) : onChange(undefined);
+        setAvailableOptions(options);
     }
-    
+
     function selectOption(option: SelectOption) {
-        if(!multiple) {
-            if(option !== value){
+        if (!multiple) {
+            if (option !== value) {
                 onChange(option);
             }
-        }
-        else {
-            if(value.some(o => o.value === option.value)) {
-              
-                    console.log("Selected option included", option);
-                
-
+            setOptionsShown(false);
+        } else {
+            if (value.some(o => o.value === option.value)) {
+                // remove
                 onChange(value.filter(o => o.value !== option.value));
-            }
-            else{
+                setAvailableOptions(prev => [...prev, option]); // put it back
+            } else {
+                // add
                 onChange([...value, option]);
-          
-                    console.log("Selected option not included", option);
-                    console.log("options currently selected", value)
-                
+                setAvailableOptions(prev => prev.filter(o => o.value !== option.value));
             }
         }
     }
@@ -64,28 +76,68 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
     
     return(
         <div className={styles.wrapper}
-            onBlur={() => setOptionsShown(false)}
+            onBlur={(e) => {
+                if(!e.currentTarget.contains(e.relatedTarget)){
+                    setOptionsShown(false)}
+                }
+            }
             onClick={() => setOptionsShown(prevState => !prevState)} 
              tabIndex={0}
         >
-            <span className={styles.value}>{multiple ? (value.map(
+            <span 
+                className={styles.value}
+            >
+                {multiple ? (value.map(
                 val => (
-                    <button key={val.value} onClick={event =>{
-                        event.stopPropagation()
-                        selectOption(val)
-                    }}>
+                    <button 
+                        key={val.value} 
+                        onClick={event =>
+                        {
+                            event.stopPropagation()
+                            selectOption(val)
+                        }}
+                    >
                         {val.label}
-                        <span className={styles.removeButton}>&times;</span>
+                        <span 
+                            className={styles.removeButton}
+                        >
+                            &times;
+                        </span>
+                        
                     </button>
-                )
-            )) : value?.label}</span>
-            <input type={"text"} className={styles.search}/>
-            <button className={styles.clearButton} onClick={() => clearOptions()}>&times;</button>
-            <ul className={`${styles.options} ${optionsShown ? styles.show : ""}`}>
-                {options.map((option) => (
-                    <li key={option.value} onClick={() => selectOption(option)}>{option.label}</li>
+                ))) : value?.label}
+                <input
+                    type={"text"}
+                    id={"searchBar"}
+                    className={styles.search}
+                />
+            </span>
+            
+            
+            
+            <button 
+                className={styles.clearButton} 
+                onClick={() => clearOptions()}
+            >
+                &times;
+            </button>
+
+            <div className={styles.divider}></div>
+            <div className={styles.caret}></div>
+            
+            <ul 
+                className={`${styles.options} ${optionsShown ? styles.show : ""}`}
+            >
+                {availableOptions.map((option) => (
+                    <li 
+                        key={option.value} 
+                        onClick={() => selectOption(option)}
+                    >
+                        {option.label}
+                    </li>
                 ))} 
             </ul>
+            
         </div>
     )
 }

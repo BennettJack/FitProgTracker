@@ -1,4 +1,5 @@
 ﻿.wrapper {
+    position: relative;
     color: var(--colour-primary-text);
     border: 1px solid var(--colour-default-border);
     border-radius: 4px;
@@ -24,7 +25,7 @@
 }
 
 .value{
-    
+    flex-grow: 1;
 }
 
 .removeButton{
@@ -32,19 +33,46 @@
 }
 
 .options{
+    position: absolute;
     display: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-height: 15em;
+    overflow-y: auto;
+    background-color: var(--colour-primary-background);
+    border: 1px solid var(--colour-default-border);
+    border-radius: .25em;
+    width: 100%;
+    left:0;
+    top: calc(100% + .25em);
+    z-index: 100;
+    
 }
 
 .show{
-    display: list-item;
+    display: block;
 }
 
 .search {
     border: none;
     background: none;
+    color: var(--colour-primary-text);
 }
 
 .search:focus{
     outline: none;
     
+}
+
+.divider{
+    background-color: var(--colour-primary-text);
+    align-self: stretch;
+    width: .05em;
+}
+
+.caret{
+    translate: 0 25%;
+    border: .25em solid transparent;
+    border-top-color: var(--colour-primary-text);
 }
