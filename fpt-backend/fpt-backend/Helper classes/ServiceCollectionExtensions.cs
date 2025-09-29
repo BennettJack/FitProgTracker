@@ -1,5 +1,4 @@
-﻿using fpt_backend.Controllers;
-using fpt_backend.DbRepositories.GymRepositories;
+﻿using fpt_backend.DbRepositories.GymRepositories;
 using fpt_backend.Services.GymServices;
 
 namespace fpt_backend.Helper_classes;
@@ -11,6 +10,7 @@ public static class ServiceCollectionExtensions
         //Gym Services
         services.AddScoped<EquipmentService>();
         services.AddScoped<ExerciseService>();
+        services.AddScoped<MuscleService>();
         return services;
     }
 
@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         //Gym Repositories
         services.AddScoped<EquipmentRepository>();
         services.AddScoped<ExerciseRepository>();
+        services.AddScoped<MuscleRepository>();
         services.AddScoped<MuscleRepository>();
         return services;
     }

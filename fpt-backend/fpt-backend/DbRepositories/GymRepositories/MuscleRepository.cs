@@ -18,4 +18,9 @@ public class MuscleRepository
         return await _context.Muscles.Where(muscle => muscleIds.Contains
             (muscle.MuscleId)).ToListAsync();
     }
+
+    public async Task<List<Muscle>> GetAllMuscles()
+    {
+        return await _context.Muscles.ToListAsync();
+    }
 }

@@ -8,12 +8,13 @@ interface FormData{
     EquipmentIds:string[];
     MuscleIds:string[];
 }
-
-interface DropdownOption{
-    id: string;
-    name: string;
+//TODO -  Set this as a global variable so we can use it elsewhere
+type DropdownResponse = {
+    isSuccess: boolean,
+    status: number,
+    message: string,
+    data: {value: number, label: string}[];
 }
-
 
 export function AddNewExercise(){
     
@@ -24,41 +25,36 @@ export function AddNewExercise(){
         MuscleIds: [],
     });
     
-    const [equipment, setEquipment] = useState<DropdownOption[]>([]);
-    const [muscles, setMuscles] = useState<DropdownOption[]>([]);
+    const [equipment, setEquipment] = useState<SelectOption[]>([]);
+    const [muscles, setMuscles] = useState<SelectOption[]>([]);
     
     
     useEffect(()=>{
         const fetchData = async () => {
-            try {
-                const[equipmentData, muscleData] = await Promise.all([
-                    axios.get<DropdownOption[]>("/equipment/getOptionData"),
-                    axios.get<DropdownOption[]>("/muscle/getOptionData"),
-                ]);
-                
-                setEquipment(equipmentData.data);
-                setMuscles(muscleData.data);
-            }
-            catch (err){
-                console.error(err);
-            }
+            
+            await axios.get<DropdownResponse>(process.env.REACT_APP_DEV_API_HOST +"muscle/getOptionData")
+                .then((response) => {
+                    const options: SelectOption[] = response.data.data.map((item) => ({
+                        label: item.label,
+                        value: String(item.value)
+                    }));
+                    setMuscles(options);
+                }).catch((err) => console.log(err));
         }
         
         fetchData();
     }, []);
-    function handleFormSubmit(){
-        
-    }
-    const test = [
-        {label: "First", value: "1"},
-        {label: "Second", value: "2"},
-        {label: "Third", value: "3"},
-        {label: "Fourth", value: "4"},
-        {label: "Fifth", value: "5"},
-    ]
     
-    const [value1, setValue1] = useState<SelectOption[]>([test[0]]);
-    const [value2, setValue2] = useState<SelectOption | undefined>(test[0]);
+    
+    useEffect(() => {
+        console.log(value1)
+        console.log(muscles[1]);
+        if (muscles.length > 0) {
+            setValue1([muscles[0]]);
+        }
+    }, [muscles]);
+    
+    const [value1, setValue1] = useState<SelectOption[]>([]);
     
     return(
         <>
@@ -72,11 +68,8 @@ export function AddNewExercise(){
                     <label htmlFor="ExerciseDescription">ExerciseDescription:</label>
                     <input type={"textarea"} name={"ExerciseDescription"}></input>
                 </div>
+                <Select multiple options={muscles} value={value1} onChange={o => setValue1(o)} />
             </form>
-            
-            
-            <Select multiple options={test} value={value1} onChange={o => setValue1(o)} />
-            <Select options={test} value={value2} onChange={o => setValue2(o)}/>
         </>
     )    
 }

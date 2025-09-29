@@ -59,11 +59,11 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
             setOptionsShown(false);
         } else {
             if (value.some(o => o.value === option.value)) {
-                // remove
+                
                 onChange(value.filter(o => o.value !== option.value));
-                setAvailableOptions(prev => [...prev, option]); // put it back
+                setAvailableOptions(prev => [...prev, option]);
             } else {
-                // add
+                
                 onChange([...value, option]);
                 setAvailableOptions(prev => prev.filter(o => o.value !== option.value));
             }
@@ -74,18 +74,10 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
         return multiple ? value.includes(option) : option === value;
     }
     
-    function searchFilter(search: string){
-        
-    }
-    
     function filterOptions(query: string) {
         const filteredOptions = availableOptions.filter(option =>
             option.label.toLowerCase().includes(query.toLowerCase()));
         setOptionsToDisplay(filteredOptions);
-    }
-    
-    function handleSearch(e: Event){
-        
     }
     
     return(
