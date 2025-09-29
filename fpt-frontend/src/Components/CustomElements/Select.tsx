@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useState} from "react";
+﻿import React, {useEffect, useState, useRef} from "react";
 import styles from "./Select.module.css"
 
 
@@ -19,17 +19,21 @@ type MultiSelectProps = {
 }
 type SelectProps = {
     options: SelectOption[];
+    index: number;
 } & (MultiSelectProps | SingleSelectProps);
 
-export function Select({multiple, value, onChange, options}: SelectProps) : React.ReactElement {
+export function Select({multiple, value, onChange, options, index}: SelectProps) : React.ReactElement {
     const [optionsShown, setOptionsShown] = useState<boolean>(false);
     const [availableOptions, setAvailableOptions] = useState<SelectOption[]>(options);
     const [optionsToDisplay, setOptionsToDisplay] = useState<SelectOption[]>(options);
     const [search, setSearch] = useState<string>('');
+
+    const searchRef = useRef<HTMLInputElement>(null);
     
     useEffect(() => {
+        const emptyArray: SelectOption[] = [];
         if(optionsShown){
-           document.getElementById("searchBar")?.focus()
+            searchRef.current?.focus();
         }
     }, [optionsShown])
 
@@ -59,11 +63,11 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
             setOptionsShown(false);
         } else {
             if (value.some(o => o.value === option.value)) {
-                
+                console.log("add")
                 onChange(value.filter(o => o.value !== option.value));
                 setAvailableOptions(prev => [...prev, option]);
             } else {
-                
+                console.log("remove")
                 onChange([...value, option]);
                 setAvailableOptions(prev => prev.filter(o => o.value !== option.value));
             }
@@ -88,7 +92,7 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
                 }
             }
             onClick={() => setOptionsShown(prevState => !prevState)} 
-             tabIndex={0}
+             tabIndex={index}
         >
             <span 
                 className={styles.value}
@@ -114,7 +118,7 @@ export function Select({multiple, value, onChange, options}: SelectProps) : Reac
                 ))) : value?.label}
                 <input
                     type={"text"}
-                    id={"searchBar"}
+                    ref={searchRef}
                     className={styles.search}
                     value={search}
                     onChange={(e) => {

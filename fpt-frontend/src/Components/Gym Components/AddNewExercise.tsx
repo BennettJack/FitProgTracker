@@ -27,6 +27,9 @@ export function AddNewExercise(){
     
     const [equipment, setEquipment] = useState<SelectOption[]>([]);
     const [muscles, setMuscles] = useState<SelectOption[]>([]);
+
+    const [selectedEquipment, setSelectedEquipment] = useState<SelectOption[]>([]);
+    const [selectedMuscles, setSelectedMuscles] = useState<SelectOption[]>([]);
     
     
     useEffect(()=>{
@@ -40,21 +43,19 @@ export function AddNewExercise(){
                     }));
                     setMuscles(options);
                 }).catch((err) => console.log(err));
+
+            await axios.get<DropdownResponse>(process.env.REACT_APP_DEV_API_HOST +"equipment/getOptionData")
+                .then((response) => {
+                    const options: SelectOption[] = response.data.data.map((item) => ({
+                        label: item.label,
+                        value: String(item.value)
+                    }));
+                    setEquipment(options);
+                }).catch((err) => console.log(err));
         }
         
-        fetchData();
+        fetchData().then(r => console.log(r));
     }, []);
-    
-    
-    useEffect(() => {
-        console.log(value1)
-        console.log(muscles[1]);
-        if (muscles.length > 0) {
-            setValue1([muscles[0]]);
-        }
-    }, [muscles]);
-    
-    const [value1, setValue1] = useState<SelectOption[]>([]);
     
     return(
         <>
@@ -68,7 +69,8 @@ export function AddNewExercise(){
                     <label htmlFor="ExerciseDescription">ExerciseDescription:</label>
                     <input type={"textarea"} name={"ExerciseDescription"}></input>
                 </div>
-                <Select multiple options={muscles} value={value1} onChange={o => setValue1(o)} />
+                <Select multiple options={equipment} value={selectedEquipment} onChange={o => setSelectedEquipment(o)} index={0}/>
+                <Select multiple options={muscles} value={selectedMuscles} onChange={o => setSelectedMuscles(o)} index={1}/>
             </form>
         </>
     )    

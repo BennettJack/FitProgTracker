@@ -28,4 +28,20 @@ public class EquipmentController : Controller
             await _equipmentService.GetEquipment(id));
         
     }
+    
+    
+    [HttpGet("getOptionData")]
+    public async Task<IActionResult> GetOptionData()
+    {
+        var res = await _equipmentService.GetEquipmentListAsDropdown();
+
+        return res.Status switch
+        {
+            ResultStatus.Success => Ok(res),
+            ResultStatus.BadRequest => BadRequest(new { error = res.Message }),
+            ResultStatus.NotFound => NotFound(new { error = res.Message }),
+            ResultStatus.Error => StatusCode(500, new { error = res.Message }),
+            _ => StatusCode(500, new { error = "Internal server error" })
+        };
+    }
 }
