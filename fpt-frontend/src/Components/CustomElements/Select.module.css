@@ -13,7 +13,7 @@
 }
 
 .wrapper:focus {
-    border: 1px solid var(--colour-primary-button);
+    border: 1px solid var(--colour-primary-accent);
 }
 
 .clearButton{
@@ -50,6 +50,10 @@
     
 }
 
+.option:hover{
+    background-color: var(--colour-primary-accent);
+    cursor: pointer;
+}
 .show{
     display: block;
 }

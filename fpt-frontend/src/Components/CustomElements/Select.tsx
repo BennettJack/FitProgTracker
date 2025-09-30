@@ -31,7 +31,6 @@ export function Select({multiple, value, onChange, options, index}: SelectProps)
     const searchRef = useRef<HTMLInputElement>(null);
     
     useEffect(() => {
-        const emptyArray: SelectOption[] = [];
         if(optionsShown){
             searchRef.current?.focus();
         }
@@ -65,13 +64,12 @@ export function Select({multiple, value, onChange, options, index}: SelectProps)
             if (value.some(o => o.value === option.value)) {
                 console.log("add")
                 onChange(value.filter(o => o.value !== option.value));
-                setAvailableOptions(prev => [...prev, option]);
             } else {
                 console.log("remove")
                 onChange([...value, option]);
-                setAvailableOptions(prev => prev.filter(o => o.value !== option.value));
             }
         }
+        setSearch("");
     }
     
     function isOptionSelected(option: SelectOption) {
@@ -147,6 +145,7 @@ export function Select({multiple, value, onChange, options, index}: SelectProps)
                     <li 
                         key={option.value} 
                         onClick={() => selectOption(option)}
+                        className={styles.option}
                     >
                         {option.label}
                     </li>

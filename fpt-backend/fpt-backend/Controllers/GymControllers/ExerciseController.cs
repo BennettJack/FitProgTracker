@@ -16,7 +16,7 @@ public class ExerciseController : Controller
     }
 
     [HttpPost("AddExercise")]
-    public async Task<IActionResult> AddExercise(AddExerciseRequestDto exerciseDto)
+    public async Task<IActionResult> AddExercise([FromBody] AddExerciseRequestDto exerciseDto)
     {
         if(!ModelState.IsValid)
         {
@@ -27,7 +27,8 @@ public class ExerciseController : Controller
 
         return res.Status switch
         {
-            ResultStatus.Success => CreatedAtAction(nameof(AddExercise), new { id = res.Data!.ExerciseId }, res.Data),
+            //TODO - Make a good return DTO. This the created at action res.data will cause cycle errors
+            ResultStatus.Success => CreatedAtAction(nameof(AddExercise), new { id = res.Data!.ExerciseId }, "created"),
             ResultStatus.BadRequest => BadRequest(new { error = res.Message }),
             ResultStatus.NotFound => NotFound(new { error = res.Message }),
             ResultStatus.Error => StatusCode(500, new { error = res.Message }),
