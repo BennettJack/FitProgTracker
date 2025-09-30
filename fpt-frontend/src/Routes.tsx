@@ -3,6 +3,7 @@ import {createBrowserRouter} from "react-router-dom"
 import App from "./App";
 import AccessTests from "./Pages/Testing/AccessTests";
 import {AddNewExercise} from "./Components/Gym Components/AddNewExercise";
+import {WorkoutProgramPreviewContainer} from "./Components/Gym Components/WorkoutProgramPreviewContainer";
 
 
 
@@ -13,8 +14,8 @@ export const router = createBrowserRouter([
         children:[
             {path: "loginSignup", element: <LoginSignup/>},
             {path: "testAccess", element: <AccessTests/>},
-            {path: "addExercise", element: <AddNewExercise/>}
-            
+            {path: "addExercise", element: <AddNewExercise/>},
+            {path: "workoutPreview", element: <WorkoutProgramPreviewContainer />}
         ]
     },
 ]);

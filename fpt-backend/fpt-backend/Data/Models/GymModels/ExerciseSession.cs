@@ -5,5 +5,5 @@ public class ExerciseSession : BaseModel
     public int ExerciseSessionId { get; set; }
     public required string SessionName { get; set; }
     
-    public List<Exercise> Exercises { get; set; } = new();
+    public List<SessionExercise> SessionExercises { get; set; } = new();
 }

@@ -72,10 +72,6 @@ export function Select({multiple, value, onChange, options, index}: SelectProps)
         setSearch("");
     }
     
-    function isOptionSelected(option: SelectOption) {
-        return multiple ? value.includes(option) : option === value;
-    }
-    
     function filterOptions(query: string) {
         const filteredOptions = availableOptions.filter(option =>
             option.label.toLowerCase().includes(query.toLowerCase()));

@@ -69,6 +69,12 @@ export function AddNewExercise(){
         }));
     };
     
+    function clearFormData(){
+        formData.ExerciseName = "";
+        formData.ExerciseDescription = "";
+        setSelectedEquipment([]);
+        setSelectedMuscles([]);
+    }
     const handleFormSubmit = async (e: React.FormEvent) =>{
         e.preventDefault();
         const newExercise: AddNewExerciseDto = {
@@ -82,7 +88,11 @@ export function AddNewExercise(){
         console.log(newExercise)
         
         await axios.post(process.env.REACT_APP_DEV_API_HOST + "exercise/AddExercise", newExercise, {withCredentials: true})
-            .then((response) => { console.log(response); }).catch((error) => console.log(error));
+            .then((response) => { 
+                if(response.status === 201){
+                    clearFormData();
+                }
+            }).catch((error) => console.log(error));
         
         
     }
@@ -92,12 +102,12 @@ export function AddNewExercise(){
             <form onSubmit={(e) => handleFormSubmit(e)}>
                 <div>
                     <label htmlFor="ExerciseName">ExerciseName:</label>
-                    <input type={"text"} name={"ExerciseName"} onChange={handleChange}></input>
+                    <input type={"text"} name={"ExerciseName"} onChange={handleChange} value={formData.ExerciseName}/>
                 </div>
                 
                 <div>
                     <label htmlFor="ExerciseDescription">ExerciseDescription:</label>
-                    <input type={"textarea"} name={"ExerciseDescription"} onChange={handleChange}></input>
+                    <input type={"text"} name={"ExerciseDescription"} onChange={handleChange} value={formData.ExerciseDescription} />
                 </div>
                 <Select multiple options={equipment} value={selectedEquipment} onChange={o => setSelectedEquipment(o)} index={0}/>
                 <Select multiple options={muscles} value={selectedMuscles} onChange={o => setSelectedMuscles(o)} index={1}/>
