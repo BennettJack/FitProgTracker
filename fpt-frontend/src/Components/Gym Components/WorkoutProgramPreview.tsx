@@ -1,17 +1,33 @@
-﻿import {ReactElement} from "react";
+﻿import {ReactElement, useEffect} from "react";
+import styles from "./WorkoutProgramPreview.module.css"
 
-interface Props {
-    workoutName: string,
-    sessionsPerWeek: number,
-    authorName: string,
-    programUrl: string
-    
+type Props = {
+    programName?: string,
+    programId?: number,
+    edit?: false
 }
 
-export function WorkoutProgramPreview(props: Props): ReactElement {
+export function WorkoutProgramPreview({edit, programId, programName}: Props): ReactElement {
+
+    useEffect(() => {
+        
+        if(edit){
+            //get    
+        }
+        
+        
+    }, []);
     return(
-        <>
-            
-        </>
+        <div className={styles.wrapper}>
+            <div className={styles.valueBox}><p>test</p></div>
+            <div className={styles.divider}></div>
+            <div className={styles.valueBox}>
+                    <p>test</p>
+            </div>
+            <div className={styles.divider}></div>
+            <div className={styles.valueBox}><div ><p>test</p></div></div>
+            <div className={styles.divider}></div>
+            <div className={styles.valueBox}><div ><p>test</p></div></div>
+        </div>
     )
 }

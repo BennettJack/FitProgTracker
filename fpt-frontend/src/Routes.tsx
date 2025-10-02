@@ -4,6 +4,7 @@ import App from "./App";
 import AccessTests from "./Pages/Testing/AccessTests";
 import {AddNewExercise} from "./Components/Gym Components/AddNewExercise";
 import {WorkoutProgramPreviewContainer} from "./Components/Gym Components/WorkoutProgramPreviewContainer";
+import {AddNewWorkoutProgram} from "./Pages/Gym/AddNewWorkoutPlan/AddNewWorkoutProgram";
 
 
 
@@ -15,7 +16,8 @@ export const router = createBrowserRouter([
             {path: "loginSignup", element: <LoginSignup/>},
             {path: "testAccess", element: <AccessTests/>},
             {path: "addExercise", element: <AddNewExercise/>},
-            {path: "workoutPreview", element: <WorkoutProgramPreviewContainer />}
+            {path: "workoutPreview", element: <WorkoutProgramPreviewContainer />},
+            {path: "newWorkoutProgram", element: <AddNewWorkoutProgram />}
         ]
     },
 ]);

@@ -1,0 +1,24 @@
+﻿.divider{
+    background-color: var(--colour-primary-text);
+    align-self: stretch;
+    width: 1px;
+}
+
+.wrapper{
+    border: 1px solid var(--colour-default-border);
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+}
+
+
+.valueBox {
+    flex: 1;                 
+    min-height: 30px;       
+    display: flex;
+    justify-content: flex-start; 
+    align-items: flex-start;     
+    padding: 1rem;
+}

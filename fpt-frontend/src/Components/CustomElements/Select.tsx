@@ -100,6 +100,7 @@ export function Select({multiple, value, onChange, options, index}: SelectProps)
                             event.stopPropagation()
                             selectOption(val)
                         }}
+                        type="button"
                     >
                         {val.label}
                         <span 
@@ -127,6 +128,7 @@ export function Select({multiple, value, onChange, options, index}: SelectProps)
             <button 
                 className={styles.clearButton} 
                 onClick={() => clearOptions()}
+                type="button"
             >
                 &times;
             </button>

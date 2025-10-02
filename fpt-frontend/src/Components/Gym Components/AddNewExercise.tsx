@@ -11,7 +11,7 @@ interface FormData{
 }
 
 //TODO -  Set this as a global variable so we can use it elsewhere
-type DropdownResponse = {
+export type DropdownResponse = {
     isSuccess: boolean,
     status: number,
     message: string,
