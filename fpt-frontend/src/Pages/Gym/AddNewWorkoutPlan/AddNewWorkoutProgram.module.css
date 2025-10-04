@@ -32,6 +32,10 @@
     padding-bottom: 4px;
 }
 
+.sidebar > div:hover{
+    cursor: pointer;
+}
+
 .content{
     grid-area: content;
     background-color: var(--colour-primary-foreground);

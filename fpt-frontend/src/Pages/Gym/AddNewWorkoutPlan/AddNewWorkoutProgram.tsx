@@ -4,6 +4,7 @@ import {SelectOption} from "../../../Components/CustomElements/Select";
 import {DropdownResponse} from "../../../Components/Gym Components/AddNewExercise";
 import {NewWorkoutInitialSetup} from "../../../Components/Gym Components/NewProgram/NewWorkoutInitialSetup";
 import styles from './AddNewWorkoutProgram.module.css'
+import {ExerciseSession, ExerciseSessionProps} from "../../../Components/Gym Components/ExerciseSession";
 
 export type WorkoutProgramProps = {
     programName: string;
@@ -12,8 +13,8 @@ export type WorkoutProgramProps = {
     sessionProps?: SessionProps[]
 }
 
-type SessionProps = {
-    key: number;
+export type SessionProps = {
+    sessionKey: number;
     sessionName: string;
     exercises: ExerciseProps[]
 }
@@ -32,7 +33,8 @@ export function AddNewWorkoutProgram() :React.ReactElement {
     const [sessions, setSessions] = useState<SessionProps[]>([]);
     const [exercises, setExercises ] = useState<SelectOption[]>([]);
     const [stage, setStage] = useState<number>(1)
-    
+    const [currentSessionKey, setCurrentSessionKey] = useState<number | null>(null)
+    const currentSession = sessions.find(s => s.sessionKey === currentSessionKey);
     const fetchData = async () => {
 
         await axios.get<DropdownResponse>(process.env.REACT_APP_DEV_API_HOST +"exercise/getOptionData")
@@ -44,8 +46,7 @@ export function AddNewWorkoutProgram() :React.ReactElement {
                 setExercises(options);
             }).catch((err) => console.log(err));
     }
-
-    fetchData().then(r => console.log(r));
+    
     
     function handleSetupChange(change: Partial<WorkoutProgramProps>){
         setProgram((prev) => ({
@@ -53,23 +54,41 @@ export function AddNewWorkoutProgram() :React.ReactElement {
             ...change,
         }))
     }
+    
+    function handleAddNewExercise(key: number, change: Partial<ExerciseSessionProps>) {
+        setSessions((prev) =>
+            prev.map((item) =>
+                item.sessionKey === key ? { ...item, ...change } : item
+            )
+        );
+    }
+    
+    
+    useEffect(() => {
+        switch (stage) {
+            case 1:
+                break;
+            case 2:
+                const tempSessions: SessionProps[] = []
+                for(let i = 0; i < program.sessionCount; i++ ) {
+                   tempSessions.push({
+                       sessionKey: i,
+                        sessionName: "Session " + i,
+                        exercises: []
+                    })
+                }
+                console.log(tempSessions);
+                setSessions(tempSessions);
+                break;
+            default:
+                break;
+        }
+
+    }, [stage]);
 
     useEffect(() => {
-        console.log(stage)
-        for(let i = 0; i < program.sessionCount; i++ ){
-            const tempSession: SessionProps = {
-                key: i,
-                sessionName: "Session " + i,
-                exercises: []
-            }
-            
-            setSessions((prev) =>
-                [...prev, tempSession]
-            )
-        }
-        
-        console.log(sessions)
-    }, [stage]);
+
+    }, [sessions]);
     
     return (
         <div className={styles.wrapper}>
@@ -83,14 +102,25 @@ export function AddNewWorkoutProgram() :React.ReactElement {
             }
             {stage === 2 &&
                 <div className={styles.container}>
-                    <div className={styles.header}> <p> header</p></div>
+                    <div className={styles.header}> <p> {program.programName}</p></div>
                     <div className={styles.sidebar}>{
                         (sessions.map( session => (
-                            <div className={styles.sessionSidebar}><p>{session.sessionName}</p></div>
+                            <div key={session.sessionKey} className={styles.sessionSidebar} 
+                                 onClick={() => setCurrentSessionKey(session.sessionKey)}>
+                                <p>{session.sessionName}</p>
+                            </div>
                         )))}
                     </div>
                     <div className={styles.content}>
-                        <p>content</p>
+                        {currentSession &&
+                            <div>
+                                <p>hi</p>
+                                <ExerciseSession edit sessionKey={currentSession.sessionKey} 
+                                                 sessionName={currentSession.sessionName} 
+                                                 exercises={currentSession.exercises}
+                                                 onChange={handleAddNewExercise}/>
+                            </div>
+                        }
                     </div>
                     <div className={"footer"}><p>footer</p></div>
                 </div>
