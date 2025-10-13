@@ -19,9 +19,16 @@ export type SessionProps = {
     exercises: ExerciseProps[]
 }
 
-type ExerciseProps = {
+export type ExerciseProps = {
     exerciseId: string,
     order: number,
+    sets: SetProps[]
+}
+
+export type SetProps = {
+    setId: string | undefined,
+    setType: string,
+    targetReps: number
 }
 export function AddNewWorkoutProgram() :React.ReactElement {
     
@@ -55,7 +62,7 @@ export function AddNewWorkoutProgram() :React.ReactElement {
         }))
     }
     
-    function handleAddNewExercise(key: number, change: Partial<ExerciseSessionProps>) {
+    function handleUpdateExercise(key: number, change: SessionProps) {
         setSessions((prev) =>
             prev.map((item) =>
                 item.sessionKey === key ? { ...item, ...change } : item
@@ -77,7 +84,6 @@ export function AddNewWorkoutProgram() :React.ReactElement {
                         exercises: []
                     })
                 }
-                console.log(tempSessions);
                 setSessions(tempSessions);
                 break;
             default:
@@ -87,8 +93,8 @@ export function AddNewWorkoutProgram() :React.ReactElement {
     }, [stage]);
 
     useEffect(() => {
-
-    }, [sessions]);
+        console.log(currentSessionKey);
+    }, [currentSessionKey]);
     
     return (
         <div className={styles.wrapper}>
@@ -115,10 +121,11 @@ export function AddNewWorkoutProgram() :React.ReactElement {
                         {currentSession &&
                             <div>
                                 <p>hi</p>
-                                <ExerciseSession edit sessionKey={currentSession.sessionKey} 
-                                                 sessionName={currentSession.sessionName} 
-                                                 exercises={currentSession.exercises}
-                                                 onChange={handleAddNewExercise}/>
+                                <ExerciseSession 
+                                    key={currentSession.sessionKey} 
+                                    edit 
+                                    sessionProps={currentSession}
+                                    updateExercise={handleUpdateExercise}/>
                             </div>
                         }
                     </div>
