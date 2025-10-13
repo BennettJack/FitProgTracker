@@ -1,15 +1,15 @@
 ﻿using fpt_backend.Data;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.DbRepositories.GymRepositories.Interfaces;
 
 namespace fpt_backend.DbRepositories.GymRepositories;
 
-public class ExerciseRepository
+public class ExerciseRepository : BaseRepository<Exercise>, IExerciseRepository
 {
-    private readonly FptDbContext _context;
 
-    public ExerciseRepository(FptDbContext context)
+    public ExerciseRepository(FptDbContext context) : base(context)
     {
-        _context = context;
+        
     }
 
     public async Task GetExercise(Exercise exercise)

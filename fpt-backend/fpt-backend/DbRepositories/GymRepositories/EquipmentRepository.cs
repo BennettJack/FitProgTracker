@@ -1,16 +1,17 @@
 ﻿using fpt_backend.Data;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.DbRepositories.GymRepositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.DbRepositories.GymRepositories;
 
-public class EquipmentRepository
+public class EquipmentRepository  : BaseRepository<Equipment>, IEquipmentRepository
 {
-    private readonly FptDbContext _context;
     
-    public EquipmentRepository(FptDbContext context)
+    
+    public EquipmentRepository(FptDbContext context) : base(context)
     {
-        _context = context;
+      
     }
     
     public async Task<List<Equipment>> GetAllEquipment()

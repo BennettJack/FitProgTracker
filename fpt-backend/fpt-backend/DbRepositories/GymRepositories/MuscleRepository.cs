@@ -1,16 +1,15 @@
 ﻿using fpt_backend.Data;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.DbRepositories.GymRepositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.DbRepositories.GymRepositories;
 
-public class MuscleRepository
+public class MuscleRepository : BaseRepository<Muscle>, IMuscleRepository
 {
-    private readonly FptDbContext _context;
 
-    public MuscleRepository(FptDbContext context)
+    public MuscleRepository(FptDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<List<Muscle>> GetMultipleMusclesById(List<int> muscleIds)
