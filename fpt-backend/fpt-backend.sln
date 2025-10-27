@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fpt-backend", "fpt-backend\fpt-backend.csproj", "{78C7C12A-D0D0-4B90-B24C-1A149D3545BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fpt-backend-unit-tests", "fpt-backend-unit-tests\fpt-backend-unit-tests.csproj", "{5CA12941-1592-484F-9FF2-7485BC6A168E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{78C7C12A-D0D0-4B90-B24C-1A149D3545BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78C7C12A-D0D0-4B90-B24C-1A149D3545BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78C7C12A-D0D0-4B90-B24C-1A149D3545BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CA12941-1592-484F-9FF2-7485BC6A168E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CA12941-1592-484F-9FF2-7485BC6A168E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CA12941-1592-484F-9FF2-7485BC6A168E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CA12941-1592-484F-9FF2-7485BC6A168E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
