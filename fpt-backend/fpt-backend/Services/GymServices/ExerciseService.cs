@@ -3,26 +3,21 @@ using fpt_backend.Data.DTO.UserDTOs.ExerciseDtos;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Data.Models.UserModels;
 using fpt_backend.DbRepositories.GymRepositories;
+using fpt_backend.DbRepositories.UnitOfWork;
 
 namespace fpt_backend.Services.GymServices;
 
 public class ExerciseService
 {
-    private readonly ExerciseRepository _exerciseRepository;
-    private readonly MuscleRepository _muscleRepository;
-    private readonly EquipmentRepository _equipmentRepository;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public ExerciseService(ExerciseRepository exerciseRepository, 
-        MuscleRepository muscleRepository,
-        EquipmentRepository equipmentRepository)
+    public ExerciseService(IUnitOfWork unitOfWork)
     {
-        _exerciseRepository = exerciseRepository;
-        _muscleRepository = muscleRepository;
-        _equipmentRepository = equipmentRepository;
+        _unitOfWork =  unitOfWork;
     }
     public async Task<Result<Exercise>> AddExercise(AddExerciseRequestDto exerciseDto, string userName)
     {
-        Exercise exercise = new Exercise
+        /*Exercise exercise = new Exercise
         {
             ExerciseName = exerciseDto.ExerciseName,
             ExerciseDescription = exerciseDto.Description,
@@ -42,7 +37,7 @@ public class ExerciseService
         catch (Exception ex)
         {
             return Result<Exercise>.Fail("Failed to add exercise: " + ex.Message);
-        }
-        
+        }*/
+        throw new NotImplementedException();
     }
 }

@@ -7,18 +7,12 @@ namespace fpt_backend.DbRepositories.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly FptDbContext _context;
-    
-    public IEquipmentRepository EquipmentRepository { get; }
-    public IExerciseRepository ExerciseRepository { get; }
-    public IMuscleRepository MuscleRepository { get; }
 
-    public UnitOfWork(FptDbContext context)
+    public UnitOfWork(
+        FptDbContext context)
     {
         _context = context;
-        
-        EquipmentRepository = new EquipmentRepository(_context);
-        ExerciseRepository = new ExerciseRepository(_context);
-        MuscleRepository = new MuscleRepository(_context);
+
     }
 
     public async Task<int> CompleteAsync()
@@ -26,8 +20,8 @@ public class UnitOfWork : IUnitOfWork
         return await _context.SaveChangesAsync();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        _context.Dispose();
+        await _context.DisposeAsync();
     }
 }

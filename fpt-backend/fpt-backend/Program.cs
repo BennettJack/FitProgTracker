@@ -2,6 +2,7 @@ using System.Security.Claims;
 using fpt_backend.Controllers.GymControllers;
 using fpt_backend.Data;
 using fpt_backend.DbRepositories.GymRepositories;
+using fpt_backend.DbRepositories.UnitOfWork;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

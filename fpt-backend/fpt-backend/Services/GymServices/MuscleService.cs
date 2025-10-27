@@ -1,15 +1,23 @@
 ﻿using fpt_backend.Controllers;
 using fpt_backend.Data.DTO.GeneralDTOs;
+using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories.GymRepositories;
+using fpt_backend.DbRepositories.GymRepositories.Interfaces;
+using fpt_backend.DbRepositories.UnitOfWork;
+using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class MuscleService
+public class MuscleService : IMuscleService
 {
-    private readonly MuscleRepository _muscleRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMuscleRepository _muscleRepository;
     
-    public MuscleService(MuscleRepository muscleRepository)
+    public MuscleService(
+        IUnitOfWork unitOfWork,
+        IMuscleRepository muscleRepository)
     {
+        _unitOfWork = unitOfWork;
         _muscleRepository = muscleRepository;
     }
 
@@ -17,9 +25,10 @@ public class MuscleService
     {
         var dropdownList = new List<DropdownReturnDto>();
 
-        var muscles = await _muscleRepository.GetAllMuscles();
-        try
-        {
+        var res = await _muscleRepository.GetAllAsync();
+        var muscles = res.Entity;
+        if(muscles != null){
+            
             foreach (var muscle in muscles)
             {
                 dropdownList.Add(new DropdownReturnDto
@@ -30,9 +39,17 @@ public class MuscleService
             }
             return Result<List<DropdownReturnDto>>.Ok(dropdownList);
         }
-        catch (Exception ex)
-        {
-            return Result<List<DropdownReturnDto>>.Fail(ex.Message);
-        }
+        
+        return Result<List<DropdownReturnDto>>.Fail("No muscles found");
+    }
+
+    public Task<Result<List<Muscle>>> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<Muscle>> GetById(int id)
+    {
+        throw new NotImplementedException();
     }
 }

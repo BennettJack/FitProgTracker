@@ -1,13 +1,10 @@
-﻿using fpt_backend.DbRepositories.GymRepositories.Interfaces;
+﻿using fpt_backend.Data;
+using fpt_backend.DbRepositories.GymRepositories.Interfaces;
 
 namespace fpt_backend.DbRepositories.UnitOfWork;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork : IAsyncDisposable
 {
-    public IMuscleRepository MuscleRepository { get; }
-    public IEquipmentRepository EquipmentRepository { get; }
-    public IExerciseRepository ExerciseRepository { get; }
-
-    Task<int> CompleteAsync();
-
+    public Task<int> CompleteAsync();
+    
 }

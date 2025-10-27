@@ -3,7 +3,7 @@ using fpt_backend.DbRepositories.Interfaces;
 
 namespace fpt_backend.DbRepositories.GymRepositories.Interfaces;
 
-public interface IMuscleRepository : IBaseRepository<Muscle>
+public interface IExerciseSessionRepository : IBaseRepository<ExerciseSession>
 {
     
 }

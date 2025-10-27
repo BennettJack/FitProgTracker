@@ -18,11 +18,7 @@ public class EquipmentRepository  : BaseRepository<Equipment>, IEquipmentReposit
     {
         return await _context.Equipment.ToListAsync();
     }
-
-    public async Task<Equipment?> GetEquipment(int id)
-    {
-        return await _context.Equipment.FindAsync(id);
-    }
+    
     
     public async Task<List<Equipment>> GetMultipleEquipmentById(List<int> equipmentIds)
     {
