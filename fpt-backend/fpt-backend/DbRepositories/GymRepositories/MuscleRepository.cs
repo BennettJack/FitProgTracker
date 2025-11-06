@@ -12,14 +12,9 @@ public class MuscleRepository : BaseRepository<Muscle>, IMuscleRepository
     {
     }
 
-    public async Task<List<Muscle>> GetMultipleMusclesById(List<int> muscleIds)
+    public async Task<List<Muscle>> GetByIdAsync(List<int> muscleIds)
     {
-        return await _context.Muscles.Where(muscle => muscleIds.Contains
+        return await DbSet.Where(muscle => muscleIds.Contains
             (muscle.MuscleId)).ToListAsync();
-    }
-
-    public async Task<List<Muscle>> GetAllMuscles()
-    {
-        return await _context.Muscles.ToListAsync();
     }
 }

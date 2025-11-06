@@ -14,15 +14,9 @@ public class EquipmentRepository  : BaseRepository<Equipment>, IEquipmentReposit
       
     }
     
-    public async Task<List<Equipment>> GetAllEquipment()
+    public async Task<List<Equipment>> GetById(List<int> equipmentIds)
     {
-        return await _context.Equipment.ToListAsync();
-    }
-    
-    
-    public async Task<List<Equipment>> GetMultipleEquipmentById(List<int> equipmentIds)
-    {
-        return await _context.Equipment.Where(equip => equipmentIds.Contains
+        return await DbSet.Where(equip => equipmentIds.Contains
             (equip.EquipmentId)).ToListAsync();
     }
 }

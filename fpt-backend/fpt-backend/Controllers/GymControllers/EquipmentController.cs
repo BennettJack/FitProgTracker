@@ -30,7 +30,7 @@ public class EquipmentController : Controller
     }
     
     
-    /*[HttpGet("getOptionData")]
+    [HttpGet("getOptionData")]
     public async Task<IActionResult> GetOptionData()
     {
         var res = await _equipmentService.GetEquipmentListAsDropdown();
@@ -43,5 +43,5 @@ public class EquipmentController : Controller
             ResultStatus.Error => StatusCode(500, new { error = res.Message }),
             _ => StatusCode(500, new { error = "Internal server error" })
         };
-    }*/
+    }
 }

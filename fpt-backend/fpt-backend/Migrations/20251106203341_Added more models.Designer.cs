@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fpt_backend.Data;
 
@@ -11,9 +12,11 @@ using fpt_backend.Data;
 namespace fpt_backend.Migrations
 {
     [DbContext(typeof(FptDbContext))]
-    partial class FptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251106203341_Added more models")]
+    partial class Addedmoremodels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
