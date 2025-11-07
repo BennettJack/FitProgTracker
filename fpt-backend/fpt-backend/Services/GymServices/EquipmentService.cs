@@ -77,6 +77,10 @@ public class EquipmentService : IEquipmentService
 
     public async Task<OperationResult<List<Equipment>>> GetMultipleById(IEnumerable<int> ids)
     {
-        throw new NotImplementedException();
+        var res = _equipmentRepository.GetMultipleByIdAsync(ids);
+        if (ids.Any())
+        {
+            
+        }
     }
 }
