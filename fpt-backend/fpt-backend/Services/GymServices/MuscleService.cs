@@ -1,9 +1,11 @@
 ﻿using fpt_backend.Controllers;
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.DbRepositories;
 using fpt_backend.DbRepositories.GymRepositories;
 using fpt_backend.DbRepositories.GymRepositories.Interfaces;
 using fpt_backend.DbRepositories.UnitOfWork;
+using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
@@ -21,12 +23,12 @@ public class MuscleService : IMuscleService
         _muscleRepository = muscleRepository;
     }
 
-    public async Task<Result<List<DropdownReturnDto>>> GetMuscleListAsDropdown()
+    public async Task<OperationResult<List<DropdownReturnDto>>> GetMuscleListAsDropdown()
     {
         var dropdownList = new List<DropdownReturnDto>();
 
         var res = await _muscleRepository.GetAllAsync();
-        var muscles = res.Entity;
+        var muscles = res.Data;
         if(muscles != null){
             
             foreach (var muscle in muscles)
@@ -37,18 +39,23 @@ public class MuscleService : IMuscleService
                     Label = muscle.MuscleName
                 });
             }
-            return Result<List<DropdownReturnDto>>.Ok(dropdownList);
+            return OperationResult<List<DropdownReturnDto>>.Success(dropdownList);
         }
         
-        return Result<List<DropdownReturnDto>>.Fail("No muscles found");
+        return OperationResult<List<DropdownReturnDto>>.Failure("No muscles found");
     }
 
-    public Task<Result<List<Muscle>>> GetAll()
+    public Task<OperationResult<List<Muscle>>> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result<Muscle>> GetById(int id)
+    public Task<OperationResult<Muscle>> GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<List<Muscle>>> GetMultipleById(IEnumerable<int> ids)
     {
         throw new NotImplementedException();
     }

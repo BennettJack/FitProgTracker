@@ -37,7 +37,7 @@ public class BaseRepositoryTest
         var res = baseRepository.GetByIdAsync(9).Result;
         //Assert
         Assert.NotNull(res);
-        Assert.Equal(9, res.Entity.MuscleId);
-        Assert.Equal("Calf", res.Entity.MuscleName);
+        Assert.Equal(9, res.Data.MuscleId);
+        Assert.Equal("Calf", res.Data.MuscleName);
     }
 }

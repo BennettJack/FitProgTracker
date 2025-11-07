@@ -2,7 +2,7 @@
 
 namespace fpt_backend.Services.GymServices.Interfaces;
 
-public interface IEquipmentService : IBaseService<Equipment>
+public interface IExerciseSessionService : IBaseService<ExerciseSession>
 {
     
 }

@@ -1,5 +1,7 @@
 ﻿using fpt_backend.Data.DTO.UserDTOs.ExerciseDtos;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.DbRepositories;
+using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,10 +30,10 @@ public class ExerciseController : Controller
         return res.Status switch
         {
             //TODO - Make a good return DTO. This the created at action res.data will cause cycle errors
-            ResultStatus.Success => CreatedAtAction(nameof(AddExercise), new { id = res.Data!.ExerciseId }, "created"),
-            ResultStatus.BadRequest => BadRequest(new { error = res.Message }),
-            ResultStatus.NotFound => NotFound(new { error = res.Message }),
-            ResultStatus.Error => StatusCode(500, new { error = res.Message }),
+            OperationStatus.Success => CreatedAtAction(nameof(AddExercise), new { id = res.Data!.ExerciseId }, "created"),
+            OperationStatus.BadRequest => BadRequest(new { error = res.Message }),
+            OperationStatus.NotFound => NotFound(new { error = res.Message }),
+            OperationStatus.Error => StatusCode(500, new { error = res.Message }),
             _ => StatusCode(500, new { error = "Internal server error" })
         };
     }

@@ -2,13 +2,16 @@
 using fpt_backend.Data;
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.DbRepositories;
 using fpt_backend.DbRepositories.GymRepositories;
 using fpt_backend.DbRepositories.GymRepositories.Interfaces;
 using fpt_backend.DbRepositories.UnitOfWork;
+using fpt_backend.Helper_classes;
+using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class EquipmentService
+public class EquipmentService : IEquipmentService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEquipmentRepository _equipmentRepository;
@@ -25,25 +28,25 @@ public class EquipmentService
     {
         var res = await _equipmentRepository.GetByIdAsync(id);
         
-        return res.Entity;
+        return res.Data;
     }
 
     public async Task<Equipment> AddEquipment(Equipment equipment)
     {
         var res = await _equipmentRepository.AddAsync(equipment);
         await _unitOfWork.CompleteAsync();
-        return res.Entity;
+        return res.Data;
     }
     
-    public async Task<Result<List<DropdownReturnDto>>> GetEquipmentListAsDropdown()
+    public async Task<OperationResult<List<DropdownReturnDto>>> GetEquipmentListAsDropdown()
     {
         var dropdownList = new List<DropdownReturnDto>();
 
         var res = await _equipmentRepository.GetAllAsync();
-        var equipment = res.Entity;
+        var equipment = res.Data;
         
         if(equipment == null)
-            return Result<List<DropdownReturnDto>>.Fail("No equipment found");
+            return OperationResult<List<DropdownReturnDto>>.Failure("No equipment found");
         try
         {
             foreach (var eq in equipment)
@@ -54,11 +57,26 @@ public class EquipmentService
                     Label = eq.EquipmentName
                 });
             }
-            return Result<List<DropdownReturnDto>>.Ok(dropdownList);
+            return OperationResult<List<DropdownReturnDto>>.Success(dropdownList);
         }
         catch (Exception ex)
         {
-            return Result<List<DropdownReturnDto>>.Fail(ex.Message);
+            return OperationResult<List<DropdownReturnDto>>.Failure(ex.Message);
         }
+    }
+
+    public async Task<OperationResult<List<Equipment>>> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<Equipment>> GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<List<Equipment>>> GetMultipleById(IEnumerable<int> ids)
+    {
+        throw new NotImplementedException();
     }
 }

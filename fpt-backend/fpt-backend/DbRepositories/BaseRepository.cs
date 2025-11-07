@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using fpt_backend.Data;
 using fpt_backend.DbRepositories.Interfaces;
+using fpt_backend.Helper_classes;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.DbRepositories;
@@ -16,60 +17,60 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         DbSet = Context.Set<T>();
     }
     
-    public virtual async Task<RepositoryResult<IEnumerable<T>, RepositoryResultStatus>> GetAllAsync()
+    public virtual async Task<OperationResult<IEnumerable<T>>> GetAllAsync()
     {
         var items = await DbSet.ToListAsync();
-        return RepositoryResult<IEnumerable<T>, RepositoryResultStatus>.Ok(items);
+        return OperationResult<IEnumerable<T>>.Success(items);
     }
 
-    public virtual async Task<RepositoryResult<T, RepositoryResultStatus>> GetByIdAsync(int id)
+    public virtual async Task<OperationResult<T>> GetByIdAsync(int id)
     {
         var entity = await DbSet.FindAsync(id);
         if (entity == null)
         {
-            return RepositoryResult<T, RepositoryResultStatus>.NotFound(RepositoryResultStatus.NotFound);
+            return OperationResult<T>.NotFound("");
         }
 
-        return RepositoryResult<T, RepositoryResultStatus>.Ok(entity);
+        return OperationResult<T>.Success(entity);
     }
 
-    public virtual async Task<RepositoryResult<T, RepositoryResultStatus>> UpdateAsync(T entity)
+    public virtual async Task<OperationResult<T>> UpdateAsync(T entity)
     {
         var entityToUpdate = await DbSet.FindAsync(entity);
         if (entityToUpdate == null)
         {
-            return RepositoryResult<T, RepositoryResultStatus>.NotFound(RepositoryResultStatus.NotFound);
+            return OperationResult<T>.NotFound("Did not find entity");
         }
         Context.Entry(entityToUpdate).CurrentValues.SetValues(entity);
-        return RepositoryResult<T, RepositoryResultStatus>.Ok(entityToUpdate);
+        return OperationResult<T>.Success(entityToUpdate);
     }
 
-    public virtual async Task<RepositoryResult<T, RepositoryResultStatus>> DeleteAsync(T entity)
+    public virtual async Task<OperationResult<T>> DeleteAsync(T entity)
     {
         var entityToDelete = await DbSet.FindAsync(entity);
         if (entityToDelete == null)
         {
-            return RepositoryResult<T, RepositoryResultStatus>.NotFound(RepositoryResultStatus.NotFound);
+            return OperationResult<T>.NotFound("");
         }
         
         DbSet.Remove(entityToDelete);
-        return RepositoryResult<T, RepositoryResultStatus>.Ok(entity);
+        return OperationResult<T>.Success(entity);
     }
 
-    public virtual async Task<RepositoryResult<T, RepositoryResultStatus>> AddAsync(T entity)
+    public virtual async Task<OperationResult<T>> AddAsync(T entity)
     {
         await DbSet.AddAsync(entity);
-        return RepositoryResult<T, RepositoryResultStatus>.Ok(entity);
+        return OperationResult<T>.Success(entity);
     }
 
-    public virtual async Task<RepositoryResult<T, RepositoryResultStatus>> FindAsync(T entity)
+    public virtual async Task<OperationResult<T>> FindAsync(T entity)
     {
         var entityToFind = await DbSet.FindAsync(entity);
         if (entityToFind == null)
         {
-            return RepositoryResult<T, RepositoryResultStatus>.NotFound(RepositoryResultStatus.NotFound);
+            return OperationResult<T>.NotFound("NotFound");
         }
         
-        return RepositoryResult<T, RepositoryResultStatus>.Ok(entityToFind);
+        return OperationResult<T>.Success(entityToFind);
     }
 }

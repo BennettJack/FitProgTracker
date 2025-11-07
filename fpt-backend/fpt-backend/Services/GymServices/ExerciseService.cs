@@ -2,42 +2,66 @@
 using fpt_backend.Data.DTO.UserDTOs.ExerciseDtos;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Data.Models.UserModels;
+using fpt_backend.DbRepositories;
 using fpt_backend.DbRepositories.GymRepositories;
+using fpt_backend.DbRepositories.GymRepositories.Interfaces;
 using fpt_backend.DbRepositories.UnitOfWork;
+using fpt_backend.Helper_classes;
+using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class ExerciseService
+public class ExerciseService : IExerciseService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IExerciseRepository _exerciseRepository;
+    private readonly IMuscleService _muscleService;
+    private readonly IEquipmentService _equipmentService;
     
-    public ExerciseService(IUnitOfWork unitOfWork)
+    public ExerciseService(IUnitOfWork unitOfWork, 
+        IExerciseRepository exerciseRepository,
+        IMuscleService muscleService,
+        IEquipmentService equipmentService)
     {
         _unitOfWork =  unitOfWork;
+        _exerciseRepository = exerciseRepository;
+        _muscleService = muscleService;
+        _equipmentService = equipmentService;
     }
-    public async Task<Result<Exercise>> AddExercise(AddExerciseRequestDto exerciseDto, string userName)
+    public async Task<OperationResult<Exercise>> AddExercise(AddExerciseRequestDto exerciseDto, string userName)
     {
-        /*Exercise exercise = new Exercise
+        Exercise exercise = new Exercise
         {
             ExerciseName = exerciseDto.ExerciseName,
             ExerciseDescription = exerciseDto.Description,
-            Muscles = await _muscleRepository.GetMultipleMusclesById(exerciseDto.MuscleIds),
-            Equipment = await _equipmentRepository.GetMultipleEquipmentById(exerciseDto.EquipmentIds),
+            Muscles = (await _muscleService.GetMultipleById(exerciseDto.MuscleIds)).Data,
+            Equipment = (await _equipmentService.GetMultipleById(exerciseDto.EquipmentIds)).Data,
             Created = DateTime.Now,
             Modified = DateTime.Now,
             CreatedBy = userName,
             GloballyVisible = true
         };
-
-        try
+        
+        var createdExercise = await _exerciseRepository.AddAsync(exercise);
+        if (createdExercise.Data != null)
         {
-            var createdExercise = await _exerciseRepository.AddExercise(exercise);
-            return Result<Exercise>.Ok(createdExercise);
+            return OperationResult<Exercise>.Success(createdExercise.Data);    
         }
-        catch (Exception ex)
-        {
-            return Result<Exercise>.Fail("Failed to add exercise: " + ex.Message);
-        }*/
+        return OperationResult<Exercise>.Failure("Could not add exercise");
+    }
+
+    public async Task<OperationResult<List<Exercise>>> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<Exercise>> GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<List<Exercise>>> GetMultipleById(IEnumerable<int> ids)
+    {
         throw new NotImplementedException();
     }
 }
