@@ -2,6 +2,7 @@
 using fpt_backend.DbRepositories;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices;
+using fpt_backend.Services.GymServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,9 @@ namespace fpt_backend.Controllers.GymControllers;
 [Route("api/[controller]")]
 public class EquipmentController : Controller
 {
-    private readonly EquipmentService _equipmentService;
+    private readonly IEquipmentService _equipmentService;
     
-    public EquipmentController(EquipmentService equipmentService)
+    public EquipmentController(IEquipmentService equipmentService)
     {
         _equipmentService = equipmentService;
     }
@@ -27,7 +28,7 @@ public class EquipmentController : Controller
         }
         
         return Ok(
-            await _equipmentService.GetEquipment(id));
+            await _equipmentService.GetById(id));
         
     }
     
@@ -35,7 +36,7 @@ public class EquipmentController : Controller
     [HttpGet("getOptionData")]
     public async Task<IActionResult> GetOptionData()
     {
-        var res = await _equipmentService.GetEquipmentListAsDropdown();
+        var res = await _equipmentService.GetListAsDropdown();
 
         return res.Status switch
         {

@@ -1,6 +1,7 @@
 ﻿using fpt_backend.Controllers;
 using fpt_backend.Data;
 using fpt_backend.Data.DTO.GeneralDTOs;
+using fpt_backend.Data.DTO.UserDTOs.ExerciseDtos;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
 using fpt_backend.DbRepositories.GymRepositories;
@@ -37,8 +38,28 @@ public class EquipmentService : IEquipmentService
         await _unitOfWork.CompleteAsync();
         return res.Data;
     }
-    
-    public async Task<OperationResult<List<DropdownReturnDto>>> GetEquipmentListAsDropdown()
+
+    public async Task<OperationResult<List<Equipment>>> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<Equipment>> GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<List<Equipment>>> GetMultipleById(List<int> ids)
+    {
+        var res = await _equipmentRepository.GetMultipleByIdAsync(ids);
+        if (ids.Any())
+        {
+            return res;
+        }
+        return OperationResult<List<Equipment>>.Failure("failed");
+    }
+
+    public async Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown()
     {
         var dropdownList = new List<DropdownReturnDto>();
 
@@ -65,23 +86,28 @@ public class EquipmentService : IEquipmentService
         }
     }
 
-    public async Task<OperationResult<List<Equipment>>> GetAll()
+    public async Task<OperationResult<bool>> DeleteAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<Equipment>> GetById(int id)
+    public async Task<OperationResult<Equipment>> AddAsync(Equipment entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Equipment>>> GetMultipleById(List<int> ids)
+    public async Task<OperationResult<Equipment>> UpdateAsync(Equipment entity)
     {
-        var res = await _equipmentRepository.GetMultipleByIdAsync(ids);
-        if (ids.Any())
-        {
-            return res;
-        }
-        return OperationResult<List<Equipment>>.Failure("failed");
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<Equipment>> FindAsync(Equipment entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<Equipment>> AddAsync(AddExerciseRequestDto dto)
+    {
+        throw new NotImplementedException();
     }
 }

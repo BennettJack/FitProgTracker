@@ -3,6 +3,7 @@ using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices;
+using fpt_backend.Services.GymServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fpt_backend.Controllers.GymControllers;
@@ -10,9 +11,9 @@ namespace fpt_backend.Controllers.GymControllers;
 [Route("api/[controller]")]
 public class ExerciseController : Controller
 {
-    private readonly ExerciseService _exerciseService;
+    private readonly IExerciseService _exerciseService;
 
-    public ExerciseController(ExerciseService exerciseService)
+    public ExerciseController(IExerciseService exerciseService)
     {
         _exerciseService = exerciseService;
     }
@@ -25,7 +26,7 @@ public class ExerciseController : Controller
             return BadRequest(ModelState);
         }
         
-        var res = await _exerciseService.AddExercise(exerciseDto, User.Identity.Name);
+        var res = await _exerciseService.AddAsync(exerciseDto, User.Identity.Name);
 
         return res.Status switch
         {

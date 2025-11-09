@@ -3,15 +3,17 @@ using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using fpt_backend.Data.Models.GymModels;
+using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Controllers.GymControllers;
 
 [Route("api/[controller]")]
 public class MuscleController : Controller
 {
-    private readonly MuscleService _muscleService;
+    private readonly IMuscleService _muscleService;
 
-    public MuscleController(MuscleService muscleService)
+    public MuscleController(IMuscleService muscleService)
     {
         _muscleService = muscleService;
     }
@@ -19,7 +21,7 @@ public class MuscleController : Controller
     [HttpGet("getOptionData")]
     public async Task<IActionResult> GetOptionData()
     {
-        var res = await _muscleService.GetMuscleListAsDropdown();
+        var res = await _muscleService.GetListAsDropdown();
 
         return res.Status switch
         {

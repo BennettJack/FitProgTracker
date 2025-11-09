@@ -13,10 +13,13 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AThrowHelper_002ESerialization_002Ecs_002Fl_003AC_0021_003FUsers_003FJack_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003F6f4af9413b11943bfdd164b58f2c3faa476fb6ffee3bb2d63ea7882b139c1_003FThrowHelper_002ESerialization_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AUriExt_002Ecs_002Fl_003AC_0021_003FUsers_003FJack_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003F25edf3e734d0c76e87b29a9954b8b4a7383648a69396554742e5529205e2dd7_003FUriExt_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a9873972_002De240_002D4338_002D8438_002D9b44dfc6d3bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ConnectionTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::78C7C12A-D0D0-4B90-B24C-1A149D3545BD::net9.0::fpt_backend.Tests.UnitTests.Database_Tests.ConnectionTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::5CA12941-1592-484F-9FF2-7485BC6A168E::net9.0::fpt_backend_unit_tests.Repository_Tests.BaseRepositoryTest.BaseRepository_FindMuscleById_ReturnMuscle&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::5CA12941-1592-484F-9FF2-7485BC6A168E::net9.0::fpt_backend_unit_tests.Repository_Tests.BaseRepositoryTest.BaseRepository_FindMuscleById_ReturnMuscle_MockedContext&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::5CA12941-1592-484F-9FF2-7485BC6A168E::net9.0::fpt_backend_unit_tests.Repository_Tests.BaseRepositoryTest.BaseRepository_FindMuscleById_ReturnMuscle_ConcreteContext&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;xUnit::78C7C12A-D0D0-4B90-B24C-1A149D3545BD::net9.0::fpt_backend.Tests.UnitTests.Database_Tests.ConnectionTests&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;xUnit::5CA12941-1592-484F-9FF2-7485BC6A168E::net9.0::fpt_backend_unit_tests.Repository_Tests.BaseRepositoryTest.BaseRepository_FindMuscleById_ReturnMuscle&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;xUnit::5CA12941-1592-484F-9FF2-7485BC6A168E::net9.0::fpt_backend_unit_tests.Repository_Tests.BaseRepositoryTest.BaseRepository_FindMuscleById_ReturnMuscle_MockedContext&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;xUnit::5CA12941-1592-484F-9FF2-7485BC6A168E::net9.0::fpt_backend_unit_tests.Repository_Tests.BaseRepositoryTest.BaseRepository_FindMuscleById_ReturnMuscle_ConcreteContext&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;ProjectFile&gt;5CA12941-1592-484F-9FF2-7485BC6A168E/d:Repository Tests/f:BaseRepositoryTest.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

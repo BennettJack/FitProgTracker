@@ -22,8 +22,28 @@ public class MuscleService : IMuscleService
         _unitOfWork = unitOfWork;
         _muscleRepository = muscleRepository;
     }
+    
+    public Task<OperationResult<List<Muscle>>> GetAll()
+    {
+        throw new NotImplementedException();
+    }
 
-    public async Task<OperationResult<List<DropdownReturnDto>>> GetMuscleListAsDropdown()
+    public Task<OperationResult<Muscle>> GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<List<Muscle>>> GetMultipleById(List<int> ids)
+    {
+        var res = await _muscleRepository.GetMultipleByIdAsync(ids);
+        if (ids.Any())
+        {
+            return res;
+        }
+        return OperationResult<List<Muscle>>.Failure("failed");
+    }
+
+    public async Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown()
     {
         var dropdownList = new List<DropdownReturnDto>();
 
@@ -45,17 +65,22 @@ public class MuscleService : IMuscleService
         return OperationResult<List<DropdownReturnDto>>.Failure("No muscles found");
     }
 
-    public Task<OperationResult<List<Muscle>>> GetAll()
+    public async Task<OperationResult<bool>> DeleteAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<OperationResult<Muscle>> GetById(int id)
+    public async Task<OperationResult<Muscle>> AddAsync(Muscle entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Muscle>>> GetMultipleById(List<int> ids)
+    public async Task<OperationResult<Muscle>> UpdateAsync(Muscle entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<Muscle>> FindAsync(Muscle entity)
     {
         throw new NotImplementedException();
     }

@@ -1,4 +1,5 @@
 ﻿using fpt_backend.Controllers;
+using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
 using fpt_backend.Helper_classes;
@@ -19,6 +20,31 @@ public class ExerciseSessionService : IExerciseSessionService
     }
 
     public async Task<OperationResult<List<ExerciseSession>>> GetMultipleById(List<int> ids)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<bool>> DeleteAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<ExerciseSession>> AddAsync(ExerciseSession entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<ExerciseSession>> UpdateAsync(ExerciseSession entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult<ExerciseSession>> FindAsync(ExerciseSession entity)
     {
         throw new NotImplementedException();
     }

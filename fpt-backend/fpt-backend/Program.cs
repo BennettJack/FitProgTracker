@@ -42,8 +42,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<FptDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConString"))); //temp connection string
-builder.Services.AddScoped<EquipmentService>();
-builder.Services.AddScoped<EquipmentRepository>();
 
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/dataprotection"))
