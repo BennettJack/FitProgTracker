@@ -21,7 +21,7 @@ public class EquipmentRepository  : BaseRepository<Equipment>, IEquipmentReposit
             (equip.EquipmentId)).ToListAsync();
     }
 
-    public async Task<OperationResult<List<Equipment>>> GetMultipleByIdAsync(IEnumerable<int> ids)
+    public async Task<OperationResult<List<Equipment>>> GetMultipleByIdAsync(List<int> ids)
     {
         var data = await DbSet.Where(equipment => ids.Contains(equipment.EquipmentId)).ToListAsync();
         return OperationResult<List<Equipment>>.Success(data);

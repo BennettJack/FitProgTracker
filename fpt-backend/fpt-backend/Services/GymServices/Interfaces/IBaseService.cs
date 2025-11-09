@@ -9,6 +9,6 @@ public interface IBaseService<T> where T : class
     public Task<OperationResult<List<T>>> GetAll();
 
     public Task<OperationResult<T>> GetById(int id);
-    public Task<OperationResult<List<T>>> GetMultipleById(IEnumerable<int> ids);
+    public Task<OperationResult<List<T>>> GetMultipleById(List<int> ids);
 
 }

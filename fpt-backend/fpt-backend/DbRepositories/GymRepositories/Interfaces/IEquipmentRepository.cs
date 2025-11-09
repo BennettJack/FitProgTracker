@@ -6,5 +6,5 @@ namespace fpt_backend.DbRepositories.GymRepositories.Interfaces;
 
 public interface IEquipmentRepository : IBaseRepository<Equipment>
 {
-    public Task<OperationResult<List<Equipment>>> GetMultipleByIdAsync(IEnumerable<int> ids);
+    public Task<OperationResult<List<Equipment>>> GetMultipleByIdAsync(List<int> ids);
 }

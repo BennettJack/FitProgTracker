@@ -30,6 +30,7 @@ public class ExerciseService : IExerciseService
     }
     public async Task<OperationResult<Exercise>> AddExercise(AddExerciseRequestDto exerciseDto, string userName)
     {
+        
         Exercise exercise = new Exercise
         {
             ExerciseName = exerciseDto.ExerciseName,
@@ -45,7 +46,9 @@ public class ExerciseService : IExerciseService
         var createdExercise = await _exerciseRepository.AddAsync(exercise);
         if (createdExercise.Data != null)
         {
-            return OperationResult<Exercise>.Success(createdExercise.Data);    
+            await _unitOfWork.CompleteAsync();
+            return OperationResult<Exercise>.Success(createdExercise.Data);
+            
         }
         return OperationResult<Exercise>.Failure("Could not add exercise");
     }
@@ -60,7 +63,7 @@ public class ExerciseService : IExerciseService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Exercise>>> GetMultipleById(IEnumerable<int> ids)
+    public async Task<OperationResult<List<Exercise>>> GetMultipleById(List<int> ids)
     {
         throw new NotImplementedException();
     }

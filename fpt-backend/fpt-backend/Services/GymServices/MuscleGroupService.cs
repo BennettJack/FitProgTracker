@@ -18,7 +18,7 @@ public class MuscleGroupService : IMuscleGroupService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<MuscleGroup>>> GetMultipleById(IEnumerable<int> ids)
+    public async Task<OperationResult<List<MuscleGroup>>> GetMultipleById(List<int> ids)
     {
         throw new NotImplementedException();
     }

@@ -19,7 +19,7 @@ public class MuscleRepository : BaseRepository<Muscle>, IMuscleRepository
             (muscle.MuscleId)).ToListAsync();
     }
 
-    public async Task<OperationResult<List<Muscle>>> GetMultipleByIdAsync(IEnumerable<int> ids)
+    public async Task<OperationResult<List<Muscle>>> GetMultipleByIdAsync(List<int> ids)
     {
         var data = await DbSet.Where(muscle => ids.Contains(muscle.MuscleId)).ToListAsync();
         return OperationResult<List<Muscle>>.Success(data);

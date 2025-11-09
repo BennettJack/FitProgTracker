@@ -18,7 +18,7 @@ public class ExerciseSessionRecordService : IExerciseSessionRecordService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<ExerciseSessionRecord>>> GetMultipleById(IEnumerable<int> ids)
+    public async Task<OperationResult<List<ExerciseSessionRecord>>> GetMultipleById(List<int> ids)
     {
         throw new NotImplementedException();
     }

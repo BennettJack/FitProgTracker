@@ -75,12 +75,13 @@ public class EquipmentService : IEquipmentService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Equipment>>> GetMultipleById(IEnumerable<int> ids)
+    public async Task<OperationResult<List<Equipment>>> GetMultipleById(List<int> ids)
     {
-        var res = _equipmentRepository.GetMultipleByIdAsync(ids);
+        var res = await _equipmentRepository.GetMultipleByIdAsync(ids);
         if (ids.Any())
         {
-            
+            return res;
         }
+        return OperationResult<List<Equipment>>.Failure("failed");
     }
 }
