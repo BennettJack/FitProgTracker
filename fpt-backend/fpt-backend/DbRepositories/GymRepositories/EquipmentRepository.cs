@@ -1,31 +1,29 @@
 ﻿using fpt_backend.Data;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.DbRepositories.GymRepositories.Interfaces;
+using fpt_backend.Helper_classes;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.DbRepositories.GymRepositories;
 
-public class EquipmentRepository
+public class EquipmentRepository  : BaseRepository<Equipment>, IEquipmentRepository
 {
-    private readonly FptDbContext _context;
     
-    public EquipmentRepository(FptDbContext context)
+    
+    public EquipmentRepository(FptDbContext context) : base(context)
     {
-        _context = context;
+      
     }
     
-    public async Task<List<Equipment>> GetAllEquipment()
+    public async Task<List<Equipment>> GetById(List<int> equipmentIds)
     {
-        return await _context.Equipment.ToListAsync();
+        return await DbSet.Where(equip => equipmentIds.Contains
+            (equip.EquipmentId)).ToListAsync();
     }
 
-    public async Task<Equipment?> GetEquipment(int id)
+    public async Task<OperationResult<List<Equipment>>> GetMultipleByIdAsync(List<int> ids)
     {
-        return await _context.Equipment.FindAsync(id);
-    }
-    
-    public async Task<List<Equipment>> GetMultipleEquipmentById(List<int> equipmentIds)
-    {
-        return await _context.Equipment.Where(equip => equipmentIds.Contains
-            (equip.EquipmentId)).ToListAsync();
+        var data = await DbSet.Where(equipment => ids.Contains(equipment.EquipmentId)).ToListAsync();
+        return OperationResult<List<Equipment>>.Success(data);
     }
 }

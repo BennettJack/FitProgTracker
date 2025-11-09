@@ -37,21 +37,6 @@ namespace fpt_backend.Migrations
                     b.ToTable("EquipmentExercise");
                 });
 
-            modelBuilder.Entity("ExerciseExerciseSession", b =>
-                {
-                    b.Property<int>("ExerciseSessionsExerciseSessionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExercisesExerciseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExerciseSessionsExerciseSessionId", "ExercisesExerciseId");
-
-                    b.HasIndex("ExercisesExerciseId");
-
-                    b.ToTable("ExerciseExerciseSession");
-                });
-
             modelBuilder.Entity("ExerciseMuscle", b =>
                 {
                     b.Property<int>("ExercisesExerciseId")
@@ -139,6 +124,9 @@ namespace fpt_backend.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ExerciseId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
@@ -151,9 +139,122 @@ namespace fpt_backend.Migrations
 
                     b.HasKey("ExerciseSessionId");
 
+                    b.HasIndex("ExerciseId");
+
                     b.HasIndex("WorkoutProgramId");
 
                     b.ToTable("ExerciseSessions");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSessionRecord", b =>
+                {
+                    b.Property<int>("ExerciseSessionRecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExerciseSessionRecordId"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExerciseSetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ExerciseSessionRecordId");
+
+                    b.ToTable("ExerciseSessionRecords");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSet", b =>
+                {
+                    b.Property<int>("ExerciseSetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExerciseSetId"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExerciseSessionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RepCeiling")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RepFloor")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExerciseSetId");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.HasIndex("ExerciseSessionId");
+
+                    b.ToTable("ExerciseSets");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSetRecord", b =>
+                {
+                    b.Property<int>("ExerciseSetRecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExerciseSetRecordId"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ExerciseSessionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExerciseSessionRecordId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExerciseSetId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Reps")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExerciseSetRecordId");
+
+                    b.HasIndex("ExerciseSessionId");
+
+                    b.HasIndex("ExerciseSessionRecordId");
+
+                    b.HasIndex("ExerciseSetId");
+
+                    b.ToTable("ExerciseSetRecords");
                 });
 
             modelBuilder.Entity("fpt_backend.Data.Models.GymModels.Muscle", b =>
@@ -262,21 +363,6 @@ namespace fpt_backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ExerciseExerciseSession", b =>
-                {
-                    b.HasOne("fpt_backend.Data.Models.GymModels.ExerciseSession", null)
-                        .WithMany()
-                        .HasForeignKey("ExerciseSessionsExerciseSessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fpt_backend.Data.Models.GymModels.Exercise", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisesExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ExerciseMuscle", b =>
                 {
                     b.HasOne("fpt_backend.Data.Models.GymModels.Exercise", null)
@@ -294,9 +380,55 @@ namespace fpt_backend.Migrations
 
             modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSession", b =>
                 {
+                    b.HasOne("fpt_backend.Data.Models.GymModels.Exercise", null)
+                        .WithMany("ExerciseSessions")
+                        .HasForeignKey("ExerciseId");
+
                     b.HasOne("fpt_backend.Data.Models.GymModels.WorkoutProgram", null)
                         .WithMany("ExerciseSessions")
                         .HasForeignKey("WorkoutProgramId");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSet", b =>
+                {
+                    b.HasOne("fpt_backend.Data.Models.GymModels.Exercise", "Exercise")
+                        .WithMany()
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("fpt_backend.Data.Models.GymModels.ExerciseSession", "ExerciseSession")
+                        .WithMany("ExerciseSets")
+                        .HasForeignKey("ExerciseSessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("ExerciseSession");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSetRecord", b =>
+                {
+                    b.HasOne("fpt_backend.Data.Models.GymModels.ExerciseSession", null)
+                        .WithMany("ExerciseSetRecords")
+                        .HasForeignKey("ExerciseSessionId");
+
+                    b.HasOne("fpt_backend.Data.Models.GymModels.ExerciseSessionRecord", "ExerciseSessionRecord")
+                        .WithMany("ExerciseSetRecords")
+                        .HasForeignKey("ExerciseSessionRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("fpt_backend.Data.Models.GymModels.ExerciseSet", "ExerciseSet")
+                        .WithMany("ExerciseSetRecords")
+                        .HasForeignKey("ExerciseSetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExerciseSessionRecord");
+
+                    b.Navigation("ExerciseSet");
                 });
 
             modelBuilder.Entity("fpt_backend.Data.Models.GymModels.Muscle", b =>
@@ -308,6 +440,28 @@ namespace fpt_backend.Migrations
                         .IsRequired();
 
                     b.Navigation("MuscleGroup");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.Exercise", b =>
+                {
+                    b.Navigation("ExerciseSessions");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSession", b =>
+                {
+                    b.Navigation("ExerciseSetRecords");
+
+                    b.Navigation("ExerciseSets");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSessionRecord", b =>
+                {
+                    b.Navigation("ExerciseSetRecords");
+                });
+
+            modelBuilder.Entity("fpt_backend.Data.Models.GymModels.ExerciseSet", b =>
+                {
+                    b.Navigation("ExerciseSetRecords");
                 });
 
             modelBuilder.Entity("fpt_backend.Data.Models.GymModels.MuscleGroup", b =>

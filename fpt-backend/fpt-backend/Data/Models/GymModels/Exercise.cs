@@ -7,8 +7,8 @@ public class Exercise : BaseModel
     public string? ExerciseDescription { get; set; }
     public bool GloballyVisible { get; set; }
     
-    public List<Equipment> Equipment { get; set; } = new();
-    public List<ExerciseSession> ExerciseSessions { get; set; } = new();
-    public List<Muscle> Muscles { get; set; } = new();
+    public List<Equipment>? Equipment { get; set; } = new();
+    public List<ExerciseSession>? ExerciseSessions { get; set; } = new();
+    public List<Muscle>? Muscles { get; set; } = new();
     
 }
