@@ -17,10 +17,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         DbSet = Context.Set<T>();
     }
     
-    public virtual async Task<OperationResult<IEnumerable<T>>> GetAllAsync()
+    public virtual async Task<OperationResult<List<T>>> GetAllAsync()
     {
         var items = await DbSet.ToListAsync();
-        return OperationResult<IEnumerable<T>>.Success(items);
+        return OperationResult<List<T>>.Success(items);
     }
 
     public virtual async Task<OperationResult<T>> GetByIdAsync(int id)
