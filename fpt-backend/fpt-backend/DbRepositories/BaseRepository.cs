@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using fpt_backend.Data;
+using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories.Interfaces;
 using fpt_backend.Helper_classes;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,16 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         await DbSet.AddAsync(entity);
         return OperationResult<T>.Success(entity);
+    }
+
+    public async Task<OperationResult<List<T>>> AddMultipleAsync(List<T> entities)
+    {
+        foreach (var entity in entities)
+        {
+            await DbSet.AddAsync(entity);
+        }
+
+        return OperationResult<List<T>>.Success(entities);
     }
 
     public virtual async Task<OperationResult<T>> FindAsync(T entity)

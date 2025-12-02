@@ -96,6 +96,11 @@ public class EquipmentService : IEquipmentService
         throw new NotImplementedException();
     }
 
+    public async Task<OperationResult<List<Equipment>>> AddMultipleAsync(List<Equipment> entities)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<OperationResult<Equipment>> UpdateAsync(Equipment entity)
     {
         throw new NotImplementedException();

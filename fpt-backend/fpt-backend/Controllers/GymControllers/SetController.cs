@@ -14,7 +14,8 @@ public class SetController : Controller
         _setService = setService;
     }
 
-    [Route("/Add")]
+    [HttpPost("/Add")]
+    
     public async Task<IActionResult> AddSet([FromBody] ExerciseSet set)
     {
         var res = await _setService.AddAsync(set);
@@ -25,9 +26,10 @@ public class SetController : Controller
         return BadRequest(res.Message);
     }
 
-    [Route("/AddMultiple")]
+    [HttpPost("/AddMultiple")]
     public async Task<IActionResult> AddMultipleSets([FromBody] List<ExerciseSet> sets)
     {
-        var res = await _setService.AddAsync(sets)
+        var res = await _setService.AddMultipleAsync(sets);
+        return Ok(res.Data);
     }
 }

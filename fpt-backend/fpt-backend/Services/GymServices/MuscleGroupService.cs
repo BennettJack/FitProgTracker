@@ -39,6 +39,11 @@ public class MuscleGroupService : IMuscleGroupService
         throw new NotImplementedException();
     }
 
+    public async Task<OperationResult<List<MuscleGroup>>> AddMultipleAsync(List<MuscleGroup> entities)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<OperationResult<MuscleGroup>> UpdateAsync(MuscleGroup entity)
     {
         throw new NotImplementedException();

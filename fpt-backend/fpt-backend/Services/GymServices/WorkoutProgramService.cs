@@ -39,6 +39,11 @@ public class WorkoutProgramService : IWorkoutProgramService
         throw new NotImplementedException();
     }
 
+    public async Task<OperationResult<List<WorkoutProgram>>> AddMultipleAsync(List<WorkoutProgram> entities)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<OperationResult<WorkoutProgram>> UpdateAsync(WorkoutProgram entity)
     {
         throw new NotImplementedException();

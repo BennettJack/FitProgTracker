@@ -39,6 +39,11 @@ public class ExerciseSetRecordService : IExerciseSetRecordService
         throw new NotImplementedException();
     }
 
+    public async Task<OperationResult<List<ExerciseSetRecord>>> AddMultipleAsync(List<ExerciseSetRecord> entities)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<OperationResult<ExerciseSetRecord>> UpdateAsync(ExerciseSetRecord entity)
     {
         throw new NotImplementedException();

@@ -14,8 +14,10 @@ public interface IBaseService<T> where T : class
     public Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown();
     public Task<OperationResult<bool>> DeleteAsync(int id);
     public Task<OperationResult<T>> AddAsync(T entity);
+    public Task<OperationResult<List<T>>> AddMultipleAsync(List<T> entities);
     public Task<OperationResult<T>> UpdateAsync(T entity);
     public Task<OperationResult<T>> FindAsync(T entity);
+    
 
 
 }

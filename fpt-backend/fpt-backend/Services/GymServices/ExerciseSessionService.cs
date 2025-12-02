@@ -39,6 +39,11 @@ public class ExerciseSessionService : IExerciseSessionService
         throw new NotImplementedException();
     }
 
+    public async Task<OperationResult<List<ExerciseSession>>> AddMultipleAsync(List<ExerciseSession> entities)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<OperationResult<ExerciseSession>> UpdateAsync(ExerciseSession entity)
     {
         throw new NotImplementedException();
