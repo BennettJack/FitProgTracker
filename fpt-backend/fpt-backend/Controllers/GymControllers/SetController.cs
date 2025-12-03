@@ -1,3 +1,4 @@
+using fpt_backend.Data.DTO.GymDTOs;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Services.GymServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ public class SetController : Controller
 
     [HttpPost("/Add")]
     
-    public async Task<IActionResult> AddSet([FromBody] ExerciseSet set)
+    public async Task<IActionResult> AddSet([FromBody] ExerciseSetCreationDto set)
     {
         var res = await _setService.AddAsync(set);
         if (res.IsSuccess)
