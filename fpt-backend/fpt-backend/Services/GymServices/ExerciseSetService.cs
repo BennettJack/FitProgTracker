@@ -13,16 +13,19 @@ namespace fpt_backend.Services.GymServices;
 public class ExerciseSetService : IExerciseSetService
 {
     private readonly IExerciseSetRepository _exerciseSetRepository;
-    private readonly IExerciseRepository _exerciseRepository;
+    private readonly IExerciseService _exerciseService;
+    private readonly IExerciseSessionService _exerciseSessionService;
     private readonly IUnitOfWork _unitOfWork;
 
     public ExerciseSetService(IExerciseSetRepository repository,
-        IExerciseRepository exerciseRepository,
+        IExerciseService exerciseService,
+        IExerciseSessionService exerciseSessionService,
         IUnitOfWork unitOfWork
         )
     {
         _exerciseSetRepository = repository;
-        _exerciseRepository = exerciseRepository;
+        _exerciseService = exerciseService;
+        _exerciseSessionService = exerciseSessionService;
         _unitOfWork = unitOfWork;
     }
     
@@ -74,18 +77,24 @@ public class ExerciseSetService : IExerciseSetService
 
     public async Task<OperationResult<ExerciseSet>> AddAsync(ExerciseSetCreationDto exerciseSet)
     {
-        var exercise = await _exerciseRepository.GetByIdAsync(exerciseSet.ExerciseId);
+        var exercise = await _exerciseService.GetById(exerciseSet.ExerciseId);
         if (exercise.Data == null)
         {
             return OperationResult<ExerciseSet>.Failure("Exercise set not found");
         }
 
+        var exerciseSession = await _exerciseSessionService.GetById(exerciseSet.ExerciseSessionId);
+        if (exerciseSession.Data == null)
+        {
+            return OperationResult<ExerciseSet>.Failure("Exercise session not found");
+        }
         ExerciseSet set = new()
         {
             Name =  exerciseSet.Name,
             Exercise = exercise.Data,
             RepFloor = exerciseSet.RepFloor,
-            RepCeiling = exerciseSet.RepCeiling
+            RepCeiling = exerciseSet.RepCeiling,
+            ExerciseSessions = [exerciseSession.Data]
         };
         
         var res = await _exerciseSetRepository.AddAsync(set);

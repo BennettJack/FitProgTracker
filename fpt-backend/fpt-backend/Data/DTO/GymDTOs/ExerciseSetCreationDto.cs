@@ -6,4 +6,5 @@ public class ExerciseSetCreationDto
     public required int RepCeiling { get; set; }
     public required int RepFloor { get; set; }
     public required int ExerciseId { get; set; }
+    public int ExerciseSessionId { get; set; }
 }

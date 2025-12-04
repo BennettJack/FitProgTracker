@@ -10,6 +10,6 @@ public class ExerciseSet : BaseModel
     public required string Name { get; set; }
 
     public Exercise Exercise { get; set; }
-    public ExerciseSession? ExerciseSession { get; set; }
-    public List<ExerciseSetRecord>? ExerciseSetRecords { get; set; }
+    public List<ExerciseSession> ExerciseSessions { get; set; }
+    public List<ExerciseSetRecord> ExerciseSetRecords { get; set; }
 }
