@@ -6,5 +6,6 @@ public class SessionBuilderDTO
 {
     public int SessionId { get; set; }
     public string SessionName { get; set; }
-    public Dictionary<int, List<ExerciseSet>> Exercises { get; set; }
+    
+    public List<ExerciseSetBloc> ExerciseSetBlocs { get; set; }
 }
