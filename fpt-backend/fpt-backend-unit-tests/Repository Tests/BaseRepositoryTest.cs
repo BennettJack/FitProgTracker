@@ -31,7 +31,7 @@ public class BaseRepositoryTest
         context.Muscles.AddRange(data);
         await context.SaveChangesAsync();
         
-        var baseRepository = new BaseRepository<Muscle>(context);
+        var baseRepository = new BaseService<Muscle>(context);
         //Act
 
         var res = baseRepository.GetByIdAsync(9).Result;

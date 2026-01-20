@@ -2,7 +2,6 @@
 
 public class WorkoutProgram : BaseModel
 {
-    public int WorkoutProgramId { get; set; }
     public string WorkoutProgramName { get; set; }
     public string WorkoutProgramDescription { get; set; }
     

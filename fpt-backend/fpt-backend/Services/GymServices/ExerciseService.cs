@@ -2,11 +2,7 @@
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.DTO.UserDTOs.ExerciseDtos;
 using fpt_backend.Data.Models.GymModels;
-using fpt_backend.Data.Models.UserModels;
 using fpt_backend.DbRepositories;
-using fpt_backend.DbRepositories.GymRepositories;
-using fpt_backend.DbRepositories.GymRepositories.Interfaces;
-using fpt_backend.DbRepositories.UnitOfWork;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices.Interfaces;
 
@@ -40,7 +36,7 @@ public class ExerciseService : IExerciseService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Exercise>>> GetMultipleById(List<int> ids)
+    public async Task<OperationResult<List<Exercise>>> GetById(List<int> ids)
     {
         throw new NotImplementedException();
     }
@@ -82,7 +78,7 @@ public class ExerciseService : IExerciseService
             ExerciseName = dto.ExerciseName,
             ExerciseDescription = dto.Description,
             Muscles = (await _muscleService.GetMultipleById(dto.MuscleIds)).Data,
-            Equipment = (await _equipmentService.GetMultipleById(dto.EquipmentIds)).Data,
+            Equipment = (await _equipmentService.GetById(dto.EquipmentIds)).Data,
             Created = DateTime.Now,
             Modified = DateTime.Now,
             CreatedBy = userName,

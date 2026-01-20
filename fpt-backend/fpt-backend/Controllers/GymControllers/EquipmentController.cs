@@ -28,7 +28,7 @@ public class EquipmentController : Controller
         }
         
         return Ok(
-            await _equipmentService.GetById(id));
+            await _equipmentService.GetByIdAsync(id));
         
     }
     
@@ -36,7 +36,7 @@ public class EquipmentController : Controller
     [HttpGet("getOptionData")]
     public async Task<IActionResult> GetOptionData()
     {
-        var res = await _equipmentService.GetListAsDropdown();
+        var res = await _equipmentService.GetListAsDropdownAsync();
 
         return res.Status switch
         {

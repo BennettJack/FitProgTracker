@@ -4,27 +4,15 @@ using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.DTO.UserDTOs.ExerciseDtos;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
-using fpt_backend.DbRepositories.GymRepositories;
-using fpt_backend.DbRepositories.GymRepositories.Interfaces;
-using fpt_backend.DbRepositories.UnitOfWork;
+using fpt_backend.DbRepositories.Interfaces;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class EquipmentService : IEquipmentService
+public class EquipmentService(FptDbContext context) 
+    : BaseService<Equipment>(context), IEquipmentService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IEquipmentRepository _equipmentRepository;
-
-    public EquipmentService(
-        IUnitOfWork  unitOfWork,
-        IEquipmentRepository equipmentRepository)
-    {
-        _unitOfWork = unitOfWork;
-        _equipmentRepository = equipmentRepository;
-    }
-    
     public async Task<Equipment?> GetEquipment(int id)
     {
         var res = await _equipmentRepository.GetByIdAsync(id);
@@ -35,7 +23,6 @@ public class EquipmentService : IEquipmentService
     public async Task<Equipment> AddEquipment(Equipment equipment)
     {
         var res = await _equipmentRepository.AddAsync(equipment);
-        await _unitOfWork.CompleteAsync();
         return res.Data;
     }
 
@@ -49,7 +36,7 @@ public class EquipmentService : IEquipmentService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Equipment>>> GetMultipleById(List<int> ids)
+    public async Task<OperationResult<List<Equipment>>> GetById(List<int> ids)
     {
         var res = await _equipmentRepository.GetMultipleByIdAsync(ids);
         if (ids.Any())

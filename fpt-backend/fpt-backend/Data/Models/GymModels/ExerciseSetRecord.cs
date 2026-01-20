@@ -2,7 +2,6 @@
 
 public class ExerciseSetRecord : BaseModel
 {
-    public required int ExerciseSetRecordId { get; set; }
     public required int Reps { get; set; }
     public required int Weight { get; set; }
     

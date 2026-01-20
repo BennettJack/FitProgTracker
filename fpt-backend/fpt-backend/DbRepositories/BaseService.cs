@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
 using fpt_backend.Data;
+using fpt_backend.Data.DTO.GeneralDTOs;
+using fpt_backend.Data.Models;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories.Interfaces;
 using fpt_backend.Helper_classes;
@@ -7,12 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.DbRepositories;
 
-public class BaseRepository<T> : IBaseRepository<T> where T : class
+public class BaseService<T> : IBaseService<T> where T : BaseModel
 {
     protected readonly FptDbContext Context;
     protected readonly DbSet<T> DbSet;
     
-    public BaseRepository(FptDbContext context)
+    public BaseService(FptDbContext context)
     {
         Context = context;
         DbSet = Context.Set<T>();
@@ -33,6 +35,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         }
 
         return OperationResult<T>.Success(entity);
+    }
+
+    public async Task<OperationResult<List<T>>> GetById(List<int> ids)
+    {
+        var entities = await DbSet.Where(e => ids.Contains(e.Id)).ToListAsync();
+        return OperationResult<List<T>>.Success(entities);
     }
 
     public virtual async Task<OperationResult<T>> UpdateAsync(T entity)
@@ -83,5 +91,21 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         }
         
         return OperationResult<T>.Success(entityToFind);
+    }
+
+    public async Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown()
+    {
+        var entities = await DbSet.ToListAsync();
+        var dropdownDtoList = new List<DropdownReturnDto>();
+
+        foreach (var entity in entities)
+        {
+            dropdownDtoList.Add(new()
+            {
+                Value = entity.Id,
+                Label = "",
+            });
+        }
+        return  OperationResult<List<DropdownReturnDto>>.Success(dropdownDtoList);
     }
 }

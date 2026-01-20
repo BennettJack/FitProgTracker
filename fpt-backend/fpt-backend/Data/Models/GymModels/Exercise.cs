@@ -2,7 +2,6 @@
 
 public class Exercise : BaseModel
 {
-    public int ExerciseId { get; set; }
     public required string ExerciseName { get; set; }
     public string? ExerciseDescription { get; set; }
     public bool GloballyVisible { get; set; }

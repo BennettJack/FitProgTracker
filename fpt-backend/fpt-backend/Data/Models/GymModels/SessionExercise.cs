@@ -2,7 +2,6 @@
 
 public class SessionExercise : BaseModel
 {
-    public int SessionExerciseId { get; set; }
     public required Exercise Exercise { get; set; }
     public required int Sets { get; set; }
     public required int Reps { get; set; }
