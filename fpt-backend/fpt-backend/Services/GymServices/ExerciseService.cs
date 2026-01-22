@@ -1,4 +1,5 @@
 ﻿using fpt_backend.Controllers;
+using fpt_backend.Data;
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.DTO.UserDTOs.ExerciseDtos;
 using fpt_backend.Data.Models.GymModels;
@@ -8,20 +9,17 @@ using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class ExerciseService : IExerciseService
+public class ExerciseService : BaseService<Exercise>, IExerciseService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IExerciseRepository _exerciseRepository;
     private readonly IMuscleService _muscleService;
     private readonly IEquipmentService _equipmentService;
     
-    public ExerciseService(IUnitOfWork unitOfWork, 
-        IExerciseRepository exerciseRepository,
+    public ExerciseService(
+        FptDbContext context,
         IMuscleService muscleService,
-        IEquipmentService equipmentService)
+        IEquipmentService equipmentService
+        ) : base(context)
     {
-        _unitOfWork =  unitOfWork;
-        _exerciseRepository = exerciseRepository;
         _muscleService = muscleService;
         _equipmentService = equipmentService;
     }
@@ -36,12 +34,12 @@ public class ExerciseService : IExerciseService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Exercise>>> GetById(List<int> ids)
+    public async Task<List<Exercise>> GetByIdAsync(List<int> ids)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown()
+    public async Task<List<DropdownReturnDto>> GetListAsDropdownAsync()
     {
         throw new NotImplementedException();
     }
@@ -51,12 +49,12 @@ public class ExerciseService : IExerciseService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<Exercise>> AddAsync(Exercise entity)
+    public async Task<Exercise> AddAsync(Exercise entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<List<Exercise>>> AddMultipleAsync(List<Exercise> entities)
+    public async Task<List<Exercise>> AddMultipleAsync(List<Exercise> entities)
     {
         throw new NotImplementedException();
     }
@@ -66,32 +64,27 @@ public class ExerciseService : IExerciseService
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<Exercise>> FindAsync(Exercise entity)
+    public async Task<Exercise> FindAsync(Exercise entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<OperationResult<Exercise>> AddAsync(AddExerciseRequestDto dto, string userName)
+    public async Task<Exercise> AddAsync(AddExerciseRequestDto dto, string userName)
     {
         Exercise exercise = new Exercise
         {
             ExerciseName = dto.ExerciseName,
             ExerciseDescription = dto.Description,
-            Muscles = (await _muscleService.GetMultipleById(dto.MuscleIds)).Data,
-            Equipment = (await _equipmentService.GetById(dto.EquipmentIds)).Data,
+            Muscles = await _muscleService.GetByIdAsync(dto.MuscleIds),
+            Equipment = await _equipmentService.GetByIdAsync(dto.EquipmentIds),
             Created = DateTime.Now,
             Modified = DateTime.Now,
             CreatedBy = userName,
             GloballyVisible = true
         };
         
-        var createdExercise = await _exerciseRepository.AddAsync(exercise);
-        if (createdExercise.Data != null)
-        {
-            await _unitOfWork.CompleteAsync();
-            return OperationResult<Exercise>.Success(createdExercise.Data);
-            
-        }
-        return OperationResult<Exercise>.Failure("Could not add exercise");
+        var createdExercise = await AddAsync(exercise);
+        await Context.SaveChangesAsync();
+        return createdExercise;
     }
 }

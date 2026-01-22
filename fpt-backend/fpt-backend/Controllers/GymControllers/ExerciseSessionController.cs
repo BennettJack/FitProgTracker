@@ -1,6 +1,4 @@
-﻿using fpt_backend.Data.DTO.GymDTOs;
-using fpt_backend.Data.Models.GymModels;
-using fpt_backend.DbRepositories.GymRepositories.Interfaces;
+﻿using fpt_backend.Services.GymServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fpt_backend.Controllers.GymControllers;
@@ -8,11 +6,10 @@ namespace fpt_backend.Controllers.GymControllers;
 [Route("api/[controller]")]
 public class ExerciseSessionController : Controller
 {
-    //remove this after testing
-    private readonly IExerciseRepository _repository;
-    public ExerciseSessionController(IExerciseRepository repository)
+    private readonly IExerciseSessionService _exerciseSessionService;
+    public ExerciseSessionController(IExerciseSessionService exerciseSessionService)
     {
-        _repository = repository;
+        _exerciseSessionService = exerciseSessionService;
     }
 
     [HttpGet("GetExerciseSession")]

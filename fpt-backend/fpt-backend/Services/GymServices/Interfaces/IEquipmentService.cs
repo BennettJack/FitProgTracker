@@ -7,5 +7,5 @@ namespace fpt_backend.Services.GymServices.Interfaces;
 
 public interface IEquipmentService : IBaseService<Equipment>
 {
-    public Task<OperationResult<Equipment>> AddAsync(AddExerciseRequestDto dto);
+    public Task<Equipment> AddAsync(AddExerciseRequestDto dto);
 }

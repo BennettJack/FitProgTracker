@@ -5,6 +5,7 @@ using fpt_backend.Data.Models;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories.Interfaces;
 using fpt_backend.Helper_classes;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.DbRepositories;
@@ -20,80 +21,85 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
         DbSet = Context.Set<T>();
     }
     
-    public virtual async Task<OperationResult<List<T>>> GetAllAsync()
+    public virtual async Task<List<T>> GetAllAsync()
     {
         var items = await DbSet.ToListAsync();
-        return OperationResult<List<T>>.Success(items);
+        return items;
     }
 
-    public virtual async Task<OperationResult<T>> GetByIdAsync(int id)
+    //TODO Fix null
+    public virtual async Task<T> GetByIdAsync(int id)
     {
         var entity = await DbSet.FindAsync(id);
         if (entity == null)
         {
-            return OperationResult<T>.NotFound("");
+            return null;
         }
 
-        return OperationResult<T>.Success(entity);
+        return entity;
     }
 
-    public async Task<OperationResult<List<T>>> GetById(List<int> ids)
+    public virtual async Task<List<T>> GetByIdAsync(List<int> ids)
     {
         var entities = await DbSet.Where(e => ids.Contains(e.Id)).ToListAsync();
-        return OperationResult<List<T>>.Success(entities);
+        return entities;
     }
 
-    public virtual async Task<OperationResult<T>> UpdateAsync(T entity)
+    //TODO Fix null
+    public virtual async Task<T> UpdateAsync(T entity)
     {
         var entityToUpdate = await DbSet.FindAsync(entity);
         if (entityToUpdate == null)
         {
-            return OperationResult<T>.NotFound("Did not find entity");
+            return null;
         }
         Context.Entry(entityToUpdate).CurrentValues.SetValues(entity);
-        return OperationResult<T>.Success(entityToUpdate);
+        return entityToUpdate;
     }
-
-    public virtual async Task<OperationResult<T>> DeleteAsync(T entity)
+    
+    //TODO fix null
+    public virtual async Task<T> DeleteAsync(T entity)
     {
         var entityToDelete = await DbSet.FindAsync(entity);
         if (entityToDelete == null)
         {
-            return OperationResult<T>.NotFound("");
+            return null;
         }
         
         DbSet.Remove(entityToDelete);
-        return OperationResult<T>.Success(entity);
+        return entity;
     }
 
-    public virtual async Task<OperationResult<T>> AddAsync(T entity)
+    public virtual async Task<T> AddAsync(T entity)
     {
         await DbSet.AddAsync(entity);
-        return OperationResult<T>.Success(entity);
+        return entity;
     }
 
-    public async Task<OperationResult<List<T>>> AddMultipleAsync(List<T> entities)
+    public virtual async Task<List<T>> AddMultipleAsync(List<T> entities)
     {
         foreach (var entity in entities)
         {
             await DbSet.AddAsync(entity);
         }
 
-        return OperationResult<List<T>>.Success(entities);
+        return entities;
     }
 
-    public virtual async Task<OperationResult<T>> FindAsync(T entity)
+    //TODO fix null
+    public virtual async Task<T> FindAsync(T entity)
     {
         var entityToFind = await DbSet.FindAsync(entity);
         if (entityToFind == null)
         {
-            return OperationResult<T>.NotFound("NotFound");
+            return null;
         }
         
-        return OperationResult<T>.Success(entityToFind);
+        return entityToFind;
     }
 
-    public async Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown()
+    //TODO fix null
+    public virtual async Task<List<DropdownReturnDto>> GetListAsDropdownAsync()
     {
         var entities = await DbSet.ToListAsync();
         var dropdownDtoList = new List<DropdownReturnDto>();
@@ -106,6 +112,6 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
                 Label = "",
             });
         }
-        return  OperationResult<List<DropdownReturnDto>>.Success(dropdownDtoList);
+        return  dropdownDtoList;
     }
 }

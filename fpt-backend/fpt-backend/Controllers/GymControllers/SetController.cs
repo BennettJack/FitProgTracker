@@ -20,17 +20,16 @@ public class SetController : Controller
     public async Task<IActionResult> AddSet([FromBody] ExerciseSetCreationDto set)
     {
         var res = await _setService.AddAsync(set);
-        if (res.IsSuccess)
-        {
-            return Ok(res.Data);
-        }
-        return BadRequest(res.Message);
+
+        
+        return Ok(res);
+
     }
 
     [HttpPost("/AddMultiple")]
     public async Task<IActionResult> AddMultipleSets([FromBody] List<ExerciseSet> sets)
     {
         var res = await _setService.AddMultipleAsync(sets);
-        return Ok(res.Data);
+        return Ok(res);
     }
 }

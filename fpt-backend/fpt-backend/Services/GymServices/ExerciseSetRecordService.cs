@@ -1,4 +1,5 @@
 ﻿using fpt_backend.Controllers;
+using fpt_backend.Data;
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
@@ -7,50 +8,8 @@ using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class ExerciseSetRecordService : IExerciseSetRecordService
+public class ExerciseSetRecordService : BaseService<ExerciseSetRecord>, IExerciseSetRecordService
 {
-    public async Task<OperationResult<List<ExerciseSetRecord>>> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<ExerciseSetRecord>> GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<List<ExerciseSetRecord>>> GetMultipleById(List<int> ids)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<List<DropdownReturnDto>>> GetListAsDropdown()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<bool>> DeleteAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<ExerciseSetRecord>> AddAsync(ExerciseSetRecord entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<List<ExerciseSetRecord>>> AddMultipleAsync(List<ExerciseSetRecord> entities)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<ExerciseSetRecord>> UpdateAsync(ExerciseSetRecord entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult<ExerciseSetRecord>> FindAsync(ExerciseSetRecord entity)
-    {
-        throw new NotImplementedException();
-    }
+    public ExerciseSetRecordService(
+        FptDbContext context) : base(context){}
 }

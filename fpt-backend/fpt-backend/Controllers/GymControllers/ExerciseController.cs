@@ -28,14 +28,6 @@ public class ExerciseController : Controller
         
         var res = await _exerciseService.AddAsync(exerciseDto, User.Identity.Name);
 
-        return res.Status switch
-        {
-            //TODO - Make a good return DTO. This the created at action res.data will cause cycle errors
-            OperationStatus.Success => CreatedAtAction(nameof(AddExercise), new { id = res.Data!.ExerciseId }, "created"),
-            OperationStatus.BadRequest => BadRequest(new { error = res.Message }),
-            OperationStatus.NotFound => NotFound(new { error = res.Message }),
-            OperationStatus.Error => StatusCode(500, new { error = res.Message }),
-            _ => StatusCode(500, new { error = "Internal server error" })
-        };
+        return Ok(res);
     }
 }
