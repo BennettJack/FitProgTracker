@@ -56,15 +56,17 @@ export function WorkoutProgrammeBuilder({workoutProgrammeId, mode} : WorkoutProg
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
-                <div className={styles.header}></div>
+                <div className={styles.header}>
+                    <h2>{workoutProgrammeData?.name}</h2>
+                </div>
                 <div className={styles.sidebar}>
                     <p className={styles.sessionSidebar}>Session 1 here!</p>
                     <p className={styles.sessionSidebar}>aa</p>
                     <p className={styles.sessionSidebar}>aa</p>
                 </div>
                 <div className={styles.content}></div>
+                <div className={styles.footer}></div>
             </div>
-            <div className={styles.footer}></div>
         </div>
     )
 }

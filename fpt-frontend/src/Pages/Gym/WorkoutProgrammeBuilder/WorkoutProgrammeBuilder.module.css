@@ -25,7 +25,7 @@
     background-color: var(--colour-primary-accent);
 }
 
-.sidebar > div > p{
+.sidebar > p{
     text-align: center;
     margin: 0;
     padding-top: 4px;
@@ -53,4 +53,5 @@
     grid-area: header;
     height: 50px;
     border: 1px solid var(--colour-default-border);
+    text-align: center;
 }

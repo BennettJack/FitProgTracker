@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
         children:[
             {path: "loginSignup", element: <LoginSignup/>},
             {path: "testAccess", element: <AccessTests/>},
-            {path: "newWorkoutProgram", element: <WorkoutProgrammeBuilder mode={"create"}/>}
+            {path: "newWorkoutProgramme", element: <WorkoutProgrammeBuilder mode={"create"}/>}
         ]
     },
 ]);
