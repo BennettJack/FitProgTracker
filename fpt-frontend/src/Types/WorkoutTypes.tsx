@@ -1,4 +1,4 @@
-﻿export type WorkoutProgram = {
+﻿export type WorkoutProgramme = {
     id?: number
     name: string
     workoutSessions: WorkoutSession[]
@@ -30,12 +30,12 @@ export type ExerciseSetRecord = {
     weight: number
 }
 
+export type ProgrammeMode = "create" | "edit" | "input"
 
-
-export type WorkoutProgramBuilderProps = {
-    workoutProgramId? : number
-    sessionCount?: number
-    workoutProgramName?: string
+export type WorkoutProgrammeBuilderProps = {
+    workoutProgrammeId? : number
+    workoutProgrammeName?: string
+    mode: ProgrammeMode
 }
 
 export type sessionBuilderProps = {
