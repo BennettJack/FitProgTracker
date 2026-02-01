@@ -2,7 +2,7 @@
 import {createBrowserRouter} from "react-router-dom"
 import App from "./App";
 import AccessTests from "./Pages/Testing/AccessTests";
-import {WorkoutProgrammeBuilder} from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeBuilder";
+import {WorkoutProgrammeController} from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
 
 
 
@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
         children:[
             {path: "loginSignup", element: <LoginSignup/>},
             {path: "testAccess", element: <AccessTests/>},
-            {path: "newWorkoutProgramme", element: <WorkoutProgrammeBuilder mode={"create"}/>}
+            {path: "newWorkoutProgramme", element: <WorkoutProgrammeController mode={"create"}/>}
         ]
     },
 ]);
