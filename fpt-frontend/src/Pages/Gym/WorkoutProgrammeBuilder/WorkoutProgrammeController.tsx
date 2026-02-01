@@ -4,11 +4,11 @@ import {
     ControllerMode,
     WorkoutProgramme,
     WorkoutProgrammeControllerProps,
-    ExerciseSession, ExerciseSessionControllerProps
+    ExerciseSession, UpdateProgrammeData
 } from "../../../Types/WorkoutTypes";
 import {ExerciseSessionController} from "../../../Components/Gym Components/ExerciseSessionController";
 import axios from "axios";
-import {Session} from "node:inspector";
+import { v4 as uuidv4 } from "uuid";
 
 
 
@@ -20,7 +20,10 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
         workoutSessions: []
     });
     
-    const [selectedSession, setSelectedSession ] = useState<ExerciseSession | null>(null);
+    const [selectedSessionId, setSelectedSessionId ] = useState<number | string | null>(null);
+    const [nextTempId, setNextTempId ] = useState(1);
+    
+    
 
     useEffect(() => {
         console.log(workoutProgrammeData);
@@ -49,6 +52,13 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
 
     }, [workoutProgrammeId]);
 
+    const selectedSession = workoutProgrammeData.workoutSessions.find(
+        s => (s.id ?? s.tempId) === selectedSessionId
+    ) ?? null;
+
+    const updateProgrammeData : UpdateProgrammeData = (updater) => {
+        setWorkoutProgrammeData(prevState => updater(prevState));
+    }
 
     //functions
     const fetchWorkoutProgrammeData = async ():Promise<WorkoutProgramme | undefined> => {
@@ -66,8 +76,9 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
         let sessionCount : number = workoutProgrammeData.workoutSessions.length
         sessionCount += 1
         const newSession: ExerciseSession = {
+            tempId: uuidv4(),
             name: "session" + sessionCount,
-            exerciseSetBlocks: []
+            exerciseSetBlocs: []
         }
         setWorkoutProgrammeData(prev => ({
             ...prev,
@@ -75,6 +86,9 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
         }))
     }
 
+    useEffect(() => {
+        console.log(selectedSessionId);
+    }, [selectedSessionId]);
 
 
     return (
@@ -85,9 +99,9 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
                 </div>
                 <div className={styles.sidebar}>
                 {workoutProgrammeData?.workoutSessions.map((session, index) => 
-                    <div key={index}>
-                        <p className={styles.sessionSidebar} onClick={() => setSelectedSession(
-                            session
+                    <div key={session.id ?? session.tempId}>
+                        <p className={styles.sessionSidebar} onClick={() => setSelectedSessionId(
+                            session.id ?? session.tempId ?? null
                         )}>{session.name}</p>
                     </div>
                 )}
@@ -97,6 +111,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
                     {selectedSession && (
                         <ExerciseSessionController
                             exerciseSession={selectedSession}
+                            updateProgramme={updateProgrammeData}
                             mode="create"
                         />
                     )}

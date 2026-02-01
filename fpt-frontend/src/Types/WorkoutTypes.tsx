@@ -6,19 +6,23 @@
 
 export type ExerciseSession = {
     id?: number
+    tempId?: string
     name: string
-    exerciseSetBlocks: ExerciseSetBloc[]
+    exerciseSetBlocs: ExerciseSetBloc[]
 }
 
 export type ExerciseSetBloc = {
     id?: number
+    tempId?: string
     name: string
     exerciseSets: ExerciseSet[]
 }
 
 export type ExerciseSet = {
     id?: number
+    tempId?: string
     name: string
+    description: string
     repCeiling: number
     repFloor: number
     
@@ -41,5 +45,18 @@ export type WorkoutProgrammeControllerProps = {
 export type ExerciseSessionControllerProps = {
     exerciseSession: ExerciseSession
     mode: ControllerMode
-    
+    updateProgramme?: (
+        updater: (prev: WorkoutProgramme) => WorkoutProgramme
+    ) => void;
 }
+
+export type ExerciseSetBlocControllerProps = {
+    exerciseSetBloc: ExerciseSetBloc
+    mode: ControllerMode
+    updateSession?: (
+        updater: (prev: ExerciseSession) => ExerciseSession
+    ) => void
+}
+
+export type UpdateProgrammeData = (
+    updater: (prev: WorkoutProgramme) => WorkoutProgramme) => void
