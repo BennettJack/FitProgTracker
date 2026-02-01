@@ -58,5 +58,13 @@ export type ExerciseSetBlocControllerProps = {
     ) => void
 }
 
+export type ExerciseSetControllerProps = {
+    exerciseSet: ExerciseSet
+    mode: ControllerMode
+    updateExerciseSetBloc: (
+        updater:(prev: ExerciseSetBloc) => ExerciseSetBloc
+    ) => void
+}
+
 export type UpdateProgrammeData = (
     updater: (prev: WorkoutProgramme) => WorkoutProgramme) => void

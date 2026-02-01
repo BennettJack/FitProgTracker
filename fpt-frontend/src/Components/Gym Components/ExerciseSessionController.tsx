@@ -1,6 +1,7 @@
 ﻿import {ExerciseSession, ExerciseSessionControllerProps, ExerciseSetBloc} from "../../Types/WorkoutTypes";
 import React from "react";
 import {ExerciseSetBlocController} from "./ExerciseSetBlocController";
+import {v4 as uuidv4} from "uuid";
 
 
 export function ExerciseSessionController(
@@ -28,6 +29,7 @@ export function ExerciseSessionController(
         blocCount += 1
         
         const newBloc: ExerciseSetBloc = {
+            tempId: uuidv4(),
             name: "Exercise" + blocCount,
             exerciseSets: []
         }
