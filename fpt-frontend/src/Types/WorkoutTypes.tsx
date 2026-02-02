@@ -23,8 +23,8 @@ export type ExerciseSet = {
     tempId?: string
     name: string
     description: string
-    repCeiling: number
-    repFloor: number
+    repCeiling: string
+    repFloor: string
     
 }
 
@@ -64,6 +64,7 @@ export type ExerciseSetControllerProps = {
     updateExerciseSetBloc: (
         updater:(prev: ExerciseSetBloc) => ExerciseSetBloc
     ) => void
+    removeExerciseSet: () => void
 }
 
 export type UpdateProgrammeData = (

@@ -32,8 +32,8 @@ export function ExerciseSetBlocController(
             tempId: uuidv4(),
             name: `set ${setCount}`,
             description: "",
-            repCeiling: 0,
-            repFloor: 0,
+            repCeiling: String(0),
+            repFloor: String(0),
         };
 
         updateBloc(prev => ({
@@ -41,7 +41,16 @@ export function ExerciseSetBlocController(
             exerciseSets: [...prev.exerciseSets, newSet],
         }));
     };
-
+    
+    const removeExerciseSet = (id : number | string | undefined) => {
+        updateBloc?.(prev => ({
+            ...prev,
+            exerciseSets: exerciseSetBloc.exerciseSets.filter(set =>
+                (set.id ?? set.tempId) !== id
+            ),
+        }));
+    }
+    
     return (
         <>
             <p>{exerciseSetBloc.name}</p>
@@ -50,6 +59,7 @@ export function ExerciseSetBlocController(
                     <ExerciseSetController
                         exerciseSet={set}
                         updateExerciseSetBloc={updateBloc}
+                        removeExerciseSet={() => removeExerciseSet(set.id ?? set.tempId)}
                         mode={mode}
                     />
                 </div>

@@ -1,16 +1,84 @@
-﻿import {ExerciseSetControllerProps} from "../../Types/WorkoutTypes";
+﻿import {ExerciseSet, ExerciseSetControllerProps} from "../../Types/WorkoutTypes";
+import React from "react";
 
 
 export function ExerciseSetController(
     {
         exerciseSet,
         updateExerciseSetBloc,
+        removeExerciseSet,
         mode
     } : ExerciseSetControllerProps): React.ReactElement{
     
+    const updateExerciseSet = (
+        updater:(prev: ExerciseSet) => ExerciseSet) => {
+        updateExerciseSetBloc?.(prevExerciseSetBloc => ({
+            ...prevExerciseSetBloc,
+            exerciseSets: prevExerciseSetBloc.exerciseSets.map(set =>
+                (set.id ?? set.tempId) ===
+                (exerciseSet.id ?? exerciseSet.tempId)
+                    ? updater(set)
+                    : set
+            ),
+        }))
+    }
+
+    const updateSetValues = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const {name, value} = e.target;
+
+        updateExerciseSet(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
     
+    const removeSet = () => {
+        
+    }
     
-    return (
-        <p>{exerciseSet.name}</p>
+    return(
+        <div>
+            <label htmlFor={"name"}>
+                Name
+            </label>
+            <input 
+                name={"name"}
+                onChange={updateSetValues}
+                value={exerciseSet.name}
+                type="text"
+            />
+            <label htmlFor={"repFloor"}>
+                Rep floor
+            </label>
+            <input
+                name={"repFloor"}
+                onChange={updateSetValues}
+                value={exerciseSet.repFloor}
+                type="number"
+            />
+            <label htmlFor={"repCeiling"}>
+                Rep Ceiling
+            </label>
+            <input 
+                name={"repCeiling"} 
+                onChange={updateSetValues} 
+                value={exerciseSet.repCeiling} 
+                type="number" 
+            />
+            <label htmlFor={"description"}>
+                Description
+            </label>
+            <input
+                name={"description"}
+                onChange={updateSetValues}
+                value={exerciseSet.description}
+                type="text"
+            />
+            <button
+                onClick={removeExerciseSet}
+                > Remove Set</button>
+        </div>
     )
 }
