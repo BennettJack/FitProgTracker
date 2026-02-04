@@ -27,7 +27,7 @@ public class SetController : Controller
     }
 
     [HttpPost("/AddMultiple")]
-    public async Task<IActionResult> AddMultipleSets([FromBody] List<ExerciseSet> sets)
+    public async Task<IActionResult> AddMultipleSets([FromBody] List<Set> sets)
     {
         var res = await _setService.AddMultipleAsync(sets);
         return Ok(res);

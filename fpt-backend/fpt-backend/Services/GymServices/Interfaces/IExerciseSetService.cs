@@ -5,7 +5,7 @@ using fpt_backend.Helper_classes;
 
 namespace fpt_backend.Services.GymServices.Interfaces;
 
-public interface IExerciseSetService : IBaseService<ExerciseSet>
+public interface IExerciseSetService : IBaseService<Set>
 {
-    public Task<ExerciseSet> AddAsync(ExerciseSetCreationDto exerciseSet);
+    public Task<Set> AddAsync(ExerciseSetCreationDto exerciseSet);
 }

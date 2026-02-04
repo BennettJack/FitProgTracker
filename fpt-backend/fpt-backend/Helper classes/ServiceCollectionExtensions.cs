@@ -16,12 +16,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IEquipmentService, EquipmentService>();
         services.AddScoped<IExerciseService, ExerciseService>();
         services.AddScoped<IMuscleService, MuscleService>();
-        services.AddScoped<IExerciseSessionRecordService, ExerciseSessionRecordService>();
         services.AddScoped<IExerciseSessionService, ExerciseSessionService>();
         services.AddScoped<IMuscleGroupService, MuscleGroupService>();
         services.AddScoped<IExerciseSetService, ExerciseSetService>();
         services.AddScoped<IExerciseSetRecordService, ExerciseSetRecordService>();
-        services.AddScoped<IWorkoutProgramService, WorkoutProgramService>();
+        services.AddScoped<IWorkoutProgrammeService, WorkoutProgrammeService>();
         return services;
     }
 }

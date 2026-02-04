@@ -9,7 +9,7 @@ using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class ExerciseSetService : BaseService<ExerciseSet>, IExerciseSetService
+public class ExerciseSetService : BaseService<Set>, IExerciseSetService
 {
     private readonly IExerciseService _exerciseService;
     private readonly IExerciseSessionService _exerciseSessionService;
@@ -23,24 +23,9 @@ public class ExerciseSetService : BaseService<ExerciseSet>, IExerciseSetService
         _exerciseService = exerciseService;
         _exerciseSessionService = exerciseSessionService;
     }
-    
 
-    public async Task<ExerciseSet> AddAsync(ExerciseSetCreationDto exerciseSet)
+    public async Task<Set> AddAsync(ExerciseSetCreationDto exerciseSet)
     {
-        var exercise = await _exerciseService.GetByIdAsync(exerciseSet.ExerciseId);
-
-        var exerciseSession = await _exerciseSessionService.GetByIdAsync(exerciseSet.ExerciseSessionId);
-
-        ExerciseSet set = new()
-        {
-            Name =  exerciseSet.Name,
-            Exercise = exercise,
-            RepFloor = exerciseSet.RepFloor,
-            RepCeiling = exerciseSet.RepCeiling,
-            ExerciseSessions = [exerciseSession]
-        };
-        
-        var res = await AddAsync(set);
-        return res;
+        throw new NotImplementedException();
     }
 }

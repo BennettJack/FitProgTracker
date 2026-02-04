@@ -8,7 +8,7 @@ using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class ExerciseSessionService : BaseService<ExerciseSession>, IExerciseSessionService
+public class ExerciseSessionService : BaseService<Session>, IExerciseSessionService
 {
     public ExerciseSessionService(
         FptDbContext context) : base(context){}

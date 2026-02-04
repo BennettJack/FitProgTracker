@@ -72,7 +72,7 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
 
     public virtual async Task<T> AddAsync(T entity)
     {
-        await DbSet.AddAsync(entity);
+        await Context.Set<T>().AddAsync(entity);
         return entity;
     }
 
