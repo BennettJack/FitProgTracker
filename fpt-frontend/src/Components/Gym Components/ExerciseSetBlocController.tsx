@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import {ExerciseSession, ExerciseSet, ExerciseSetBloc, ExerciseSetBlocControllerProps} from "../../Types/WorkoutTypes";
+import {Session, Set, SetBloc, ExerciseSetBlocControllerProps} from "../../Types/WorkoutTypes";
 import {v4 as uuidv4} from "uuid";
 import {ExerciseSetController} from "./ExerciseSetController";
 
@@ -12,11 +12,11 @@ export function ExerciseSetBlocController(
     }: ExerciseSetBlocControllerProps): React.ReactElement {
 
     const updateBloc = (
-        updater: (prev: ExerciseSetBloc) => ExerciseSetBloc
+        updater: (prev: SetBloc) => SetBloc
     ) => {
         updateSession?.(prevSession => ({
             ...prevSession,
-            exerciseSetBlocs: prevSession.exerciseSetBlocs.map(bloc =>
+            exerciseSetBlocs: prevSession.setBlocs.map(bloc =>
                 (bloc.id ?? bloc.tempId) ===
                 (exerciseSetBloc.id ?? exerciseSetBloc.tempId)
                     ? updater(bloc)
@@ -26,9 +26,9 @@ export function ExerciseSetBlocController(
     };
 
     const addSet = () => {
-        const setCount = exerciseSetBloc.exerciseSets.length + 1;
+        const setCount = exerciseSetBloc.sets.length + 1;
 
-        const newSet: ExerciseSet = {
+        const newSet: Set = {
             tempId: uuidv4(),
             name: `set ${setCount}`,
             description: "",
@@ -38,14 +38,14 @@ export function ExerciseSetBlocController(
 
         updateBloc(prev => ({
             ...prev,
-            exerciseSets: [...prev.exerciseSets, newSet],
+            exerciseSets: [...prev.sets, newSet],
         }));
     };
     
     const removeExerciseSet = (id : number | string | undefined) => {
         updateBloc?.(prev => ({
             ...prev,
-            exerciseSets: exerciseSetBloc.exerciseSets.filter(set =>
+            exerciseSets: exerciseSetBloc.sets.filter(set =>
                 (set.id ?? set.tempId) !== id
             ),
         }));
@@ -54,7 +54,7 @@ export function ExerciseSetBlocController(
     return (
         <>
             <p>{exerciseSetBloc.name}</p>
-            {exerciseSetBloc.exerciseSets.map(set => (
+            {exerciseSetBloc.sets.map(set => (
                 <div key={set.id ?? set.tempId}>
                     <ExerciseSetController
                         exerciseSet={set}

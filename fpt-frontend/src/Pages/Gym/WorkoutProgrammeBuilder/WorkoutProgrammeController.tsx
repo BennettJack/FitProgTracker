@@ -4,7 +4,7 @@ import {
     ControllerMode,
     WorkoutProgramme,
     WorkoutProgrammeControllerProps,
-    ExerciseSession, UpdateProgrammeData
+    Session, UpdateProgrammeData
 } from "../../../Types/WorkoutTypes";
 import {ExerciseSessionController} from "../../../Components/Gym Components/ExerciseSessionController";
 import axios from "axios";
@@ -17,7 +17,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
 
     const [workoutProgrammeData, setWorkoutProgrammeData ] = useState<WorkoutProgramme>({
         name: "New Programme",
-        workoutSessions: []
+        sessions: []
     });
     
     const [selectedSessionId, setSelectedSessionId ] = useState<number | string | null>(null);
@@ -35,7 +35,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
             if(mode === "create"){
                 setWorkoutProgrammeData({
                     name: "New Programme",
-                    workoutSessions: []
+                    sessions: []
                 } as WorkoutProgramme);
                 return
             }
@@ -52,7 +52,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
 
     }, [workoutProgrammeId]);
 
-    const selectedSession = workoutProgrammeData.workoutSessions.find(
+    const selectedSession = workoutProgrammeData.sessions.find(
         s => (s.id ?? s.tempId) === selectedSessionId
     ) ?? null;
 
@@ -72,17 +72,18 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
         }
     };
     
+    
     const addSession = () =>{
-        let sessionCount : number = workoutProgrammeData.workoutSessions.length
+        let sessionCount : number = workoutProgrammeData.sessions.length
         sessionCount += 1
-        const newSession: ExerciseSession = {
+        const newSession: Session = {
             tempId: uuidv4(),
             name: "session" + sessionCount,
-            exerciseSetBlocs: []
+            setBlocs: []
         }
         setWorkoutProgrammeData(prev => ({
             ...prev,
-            workoutSessions: [...prev.workoutSessions, newSession]
+            sessions: [...prev.sessions, newSession]
         }))
     }
 
@@ -99,7 +100,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
         const json = JSON.stringify(workoutProgrammeData)
         try {
             await axios.post("https://localhost:7206/api/WorkoutProgramme/newWorkoutProgramme", workoutProgrammeData).then((data) => {
-
+                
             })
         }
         catch(error){}
@@ -110,7 +111,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
     const getWorkoutProgramme = async () =>{
         try{
             await axios.get("https://localhost:7206/api/WorkoutProgramme/getWorkoutProgramme?id=1").then((data) => {
-                console.log(data)
+                setWorkoutProgrammeData(data.data)
             })
         }catch(error){}
     }
@@ -121,7 +122,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
                     <h2>{workoutProgrammeData?.name}</h2>
                 </div>
                 <div className={styles.sidebar}>
-                {workoutProgrammeData?.workoutSessions.map((session, index) => 
+                {workoutProgrammeData?.sessions.map((session, index) => 
                     <div key={session.id ?? session.tempId}>
                         <p className={styles.sessionSidebar} onClick={() => setSelectedSessionId(
                             session.id ?? session.tempId ?? null

@@ -1,24 +1,24 @@
 ﻿export type WorkoutProgramme = {
     id?: number
     name: string
-    workoutSessions: ExerciseSession[]
+    sessions: Session[]
 }
 
-export type ExerciseSession = {
+export type Session = {
     id?: number
     tempId?: string
     name: string
-    exerciseSetBlocs: ExerciseSetBloc[]
+    setBlocs: SetBloc[]
 }
 
-export type ExerciseSetBloc = {
+export type SetBloc = {
     id?: number
     tempId?: string
     name: string
-    exerciseSets: ExerciseSet[]
+    sets: Set[]
 }
 
-export type ExerciseSet = {
+export type Set = {
     id?: number
     tempId?: string
     name: string
@@ -28,7 +28,7 @@ export type ExerciseSet = {
     
 }
 
-export type ExerciseSetRecord = {
+export type SetRecord = {
     exerciseSetId: number
     repsCompleted: number
     weight: number
@@ -43,7 +43,7 @@ export type WorkoutProgrammeControllerProps = {
 }
 
 export type ExerciseSessionControllerProps = {
-    exerciseSession: ExerciseSession
+    exerciseSession: Session
     mode: ControllerMode
     updateProgramme?: (
         updater: (prev: WorkoutProgramme) => WorkoutProgramme
@@ -51,18 +51,18 @@ export type ExerciseSessionControllerProps = {
 }
 
 export type ExerciseSetBlocControllerProps = {
-    exerciseSetBloc: ExerciseSetBloc
+    exerciseSetBloc: SetBloc
     mode: ControllerMode
     updateSession?: (
-        updater: (prev: ExerciseSession) => ExerciseSession
+        updater: (prev: Session) => Session
     ) => void
 }
 
 export type ExerciseSetControllerProps = {
-    exerciseSet: ExerciseSet
+    exerciseSet: Set
     mode: ControllerMode
     updateExerciseSetBloc: (
-        updater:(prev: ExerciseSetBloc) => ExerciseSetBloc
+        updater:(prev: SetBloc) => SetBloc
     ) => void
     removeExerciseSet: () => void
 }

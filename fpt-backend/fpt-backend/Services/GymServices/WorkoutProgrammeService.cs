@@ -2,7 +2,9 @@
 using fpt_backend.Data;
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.DTO.GymDTOs.CreateRequests;
+using fpt_backend.Data.DTO.GymDTOs.ReturnDtos;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.Data.Models.GymModels.Dto;
 using fpt_backend.DbRepositories;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices.Interfaces;
@@ -15,17 +17,39 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
     public WorkoutProgrammeService(
         FptDbContext context) : base(context){}
 
-    public override async Task<WorkoutProgramme> GetByIdAsync(int id)
+    public async Task<WorkoutProgrammeReturnDto?> GetAsDtoAsync(int id)
     {
-       var temp = await Context.WorkoutProgrammes
-           .Include(x => x.Sessions)
-           .ThenInclude(x => x.SetBlocs)
-           .ThenInclude(x => x.Sets)
-           .FirstOrDefaultAsync(x => x.Id == id);
-       return temp;
+        var programme = await Context.WorkoutProgrammes
+            .Where(x => x.Id == id)
+            .Select(x => new WorkoutProgrammeReturnDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Sessions = x.Sessions.Select(s => new SessionReturnDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    DisplayOrder = s.DisplayOrder,
+                    SetBlocs = s.SetBlocs.Select(sb => new SetBlocReturnDto
+                    {
+                        Id = sb.Id,
+                        DisplayOrder = sb.DisplayOrder,
+                        Name = sb.Name,
+                        Sets = sb.Sets.Select(set => new SetReturnDto
+                        {
+                            Id = set.Id,
+                            RepCeiling = set.RepCeiling,
+                            RepFloor = set.RepFloor,
+                            DisplayOrder = set.DisplayOrder,
+                        }).ToList()
+                    }).ToList()
+                }).ToList()
+            })
+            .FirstOrDefaultAsync();
+        return programme;
     }
-
-    public async Task<WorkoutProgramme> AddAsync(WorkoutProgrammeCreateRequest req)
+    
+    public async Task<WorkoutProgrammeReturnDto?> AddAsync(WorkoutProgrammeCreateRequest req)
     {
         var programme = new WorkoutProgramme();
         programme.Name = req.Name;
@@ -75,7 +99,7 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
 
         Context.WorkoutProgrammes.Add(programme);
         await Context.SaveChangesAsync();
-        //TODO make a good DTO
-        return new WorkoutProgramme();
+        
+        return await GetAsDtoAsync(programme.Id);
     }
 }

@@ -28,7 +28,7 @@ public class WorkoutProgrammeController : Controller
     public async Task<ActionResult<WorkoutProgramme>>GetById(int Id)
     {
         Console.WriteLine(Id);
-        var programme = await _workoutProgrammeService.GetByIdAsync(Id);
+        var programme = await _workoutProgrammeService.GetAsDtoAsync(Id);
         return Ok(programme);
     }
 }

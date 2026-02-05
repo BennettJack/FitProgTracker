@@ -1,4 +1,4 @@
-﻿import {ExerciseSession, ExerciseSessionControllerProps, ExerciseSetBloc} from "../../Types/WorkoutTypes";
+﻿import {Session, ExerciseSessionControllerProps, SetBloc} from "../../Types/WorkoutTypes";
 import React from "react";
 import {ExerciseSetBlocController} from "./ExerciseSetBlocController";
 import {v4 as uuidv4} from "uuid";
@@ -12,11 +12,11 @@ export function ExerciseSessionController(
     } : ExerciseSessionControllerProps){
 
     const updateSession = (
-        updater: (prev: ExerciseSession) => ExerciseSession
+        updater: (prev: Session) => Session
     ) => {
         updateProgramme?.(prevProgramme => ({
             ...prevProgramme,
-            workoutSessions: prevProgramme.workoutSessions.map(session =>
+            workoutSessions: prevProgramme.sessions.map(session =>
                 (session.id ?? session.tempId) === (exerciseSession.id ?? exerciseSession.tempId)
                     ? updater(session)
                     : session
@@ -25,18 +25,18 @@ export function ExerciseSessionController(
     };
     
     const addBloc = () =>{
-        let blocCount = exerciseSession.exerciseSetBlocs.length
+        let blocCount = exerciseSession.setBlocs.length
         blocCount += 1
         
-        const newBloc: ExerciseSetBloc = {
+        const newBloc: SetBloc = {
             tempId: uuidv4(),
             name: "Exercise" + blocCount,
-            exerciseSets: []
+            sets: []
         }
         
         updateSession(prev => ({
             ...prev,
-            exerciseSetBlocs: [...prev.exerciseSetBlocs, newBloc]
+            exerciseSetBlocs: [...prev.setBlocs, newBloc]
         }))
     }
 
@@ -61,7 +61,7 @@ export function ExerciseSessionController(
                 value={exerciseSession.name}
             />
             <p>Exercises:</p>
-            {exerciseSession.exerciseSetBlocs.map((bloc, index) =>
+            {exerciseSession.setBlocs.map((bloc, index) =>
             <ExerciseSetBlocController 
                 mode={mode}
                 updateSession={updateSession}

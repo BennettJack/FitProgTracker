@@ -1,4 +1,4 @@
-﻿import {ExerciseSet, ExerciseSetControllerProps} from "../../Types/WorkoutTypes";
+﻿import {Set, ExerciseSetControllerProps} from "../../Types/WorkoutTypes";
 import React from "react";
 
 
@@ -11,10 +11,10 @@ export function ExerciseSetController(
     } : ExerciseSetControllerProps): React.ReactElement{
     
     const updateExerciseSet = (
-        updater:(prev: ExerciseSet) => ExerciseSet) => {
+        updater:(prev: Set) => Set) => {
         updateExerciseSetBloc?.(prevExerciseSetBloc => ({
             ...prevExerciseSetBloc,
-            exerciseSets: prevExerciseSetBloc.exerciseSets.map(set =>
+            exerciseSets: prevExerciseSetBloc.sets.map(set =>
                 (set.id ?? set.tempId) ===
                 (exerciseSet.id ?? exerciseSet.tempId)
                     ? updater(set)
