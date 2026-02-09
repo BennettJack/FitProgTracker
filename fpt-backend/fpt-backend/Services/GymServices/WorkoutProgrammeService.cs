@@ -3,6 +3,7 @@ using fpt_backend.Data;
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 using fpt_backend.Data.DTO.GymDTOs.ReturnDtos;
+using fpt_backend.Data.Models;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Data.Models.GymModels.Dto;
 using fpt_backend.DbRepositories;
@@ -14,9 +15,22 @@ namespace fpt_backend.Services.GymServices;
 
 public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutProgrammeService
 {
-    public WorkoutProgrammeService(
-        FptDbContext context) : base(context){}
+    private readonly IExerciseSetService _exerciseSetService;
+    private readonly IExerciseSessionService _exerciseSessionService;
+    private readonly ISetBlocService _setBlocService;
 
+    public WorkoutProgrammeService(
+        FptDbContext context,
+        IExerciseSessionService exerciseSessionService,
+        IExerciseSetService exerciseSetService,
+        ISetBlocService setBlocService) : base(context)
+    {
+        _exerciseSessionService = exerciseSessionService;
+        _setBlocService = setBlocService;
+        _exerciseSetService = exerciseSetService;
+    }
+
+    
     public async Task<WorkoutProgrammeReturnDto?> GetAsDtoAsync(int id)
     {
         var programme = await Context.WorkoutProgrammes
@@ -38,6 +52,7 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                         Sets = sb.Sets.Select(set => new SetReturnDto
                         {
                             Id = set.Id,
+                            Description = set.Description,
                             RepCeiling = set.RepCeiling,
                             RepFloor = set.RepFloor,
                             DisplayOrder = set.DisplayOrder,
@@ -54,8 +69,10 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         var programme = new WorkoutProgramme();
         programme.Name = req.Name;
         programme.Description = "";
+        programme.Created = DateTime.Now;
+        programme.CreatedBy = "SYSTEM";
         
-        foreach (var session in req.WorkoutSessions)
+        foreach (var session in req.Sessions)
         {
             var sessionToAdd = new Session()
             {
@@ -68,28 +85,13 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             };
             
             var blocsToAdd = new List<SetBloc>();
-            foreach (var bloc in session.ExerciseSetBlocs)
+            foreach (var bloc in session.SetBlocs)
             {
-                var blocToAdd = new SetBloc()
-                {
-                    Name =  bloc.Name,
-                    Session =  sessionToAdd,
-                    SessionId = sessionToAdd.Id,
-                    DisplayOrder = 5,
-                    Created =  DateTime.Now,
-                    CreatedBy = "SYSTEM"
-                };
-                var setsToAdd = bloc.ExerciseSets
-                    .Select(set => new Set
-                    {
-                        SetBloc = blocToAdd,
-                        SetBlocId = blocToAdd.Id,
-                        RepFloor = Int32.Parse(set.RepFloor),
-                        RepCeiling =  Int32.Parse(set.RepCeiling),
-                        DisplayOrder = 11,
-                        Created =   DateTime.Now,
-                        CreatedBy = "SYSTEM"
-                    }).ToList();
+                var blocToAdd = AddBloc(bloc, sessionToAdd);
+                var setsToAdd = bloc.Sets
+                    .Select(set =>
+                        AddSet(set, blocToAdd)
+                        ).ToList();
                 blocToAdd.Sets = setsToAdd;
                 blocsToAdd.Add(blocToAdd);
             }
@@ -102,4 +104,146 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         
         return await GetAsDtoAsync(programme.Id);
     }
+
+    public async Task<WorkoutProgrammeReturnDto?> UpdateTestAsync(WorkoutProgrammeCreateRequest req)
+    {
+        var programme = await Context.WorkoutProgrammes
+            .Include(x => x.Sessions)
+            .ThenInclude(x => x.SetBlocs)
+            .ThenInclude(x => x.Sets)
+            .FirstAsync(x => x.Id == req.Id);
+        
+        
+        programme.Name = req.Name;
+        programme.Description = req.Description;
+        programme.Modified = DateTime.Now;
+        
+        
+        //handle removed sessions
+        var sessionsToRemove = ComparisonHelper<Session>.GetRemoved(
+            programme.Sessions,
+            req.Sessions.Select(id => id.Id).ToList());
+        foreach (var removedSession in sessionsToRemove)
+        {
+            programme.Sessions.Remove(removedSession);
+        }
+        
+        foreach (var session in req.Sessions)
+        {
+            //if session exists
+            if (session.Id is not null)
+            {
+                var sessionRecord = programme.Sessions.Find(s => s.Id == session.Id);
+                sessionRecord!.Name = session.Name;
+                sessionRecord.DisplayOrder = session.DisplayOrder;
+                sessionRecord.Modified = DateTime.Now;
+                
+                
+                //handle setBloc removals
+                var setBlocsToRemove = ComparisonHelper<SetBloc>.GetRemoved(
+                    sessionRecord.SetBlocs,
+                    session.SetBlocs.Select(id => id.Id).ToList());
+                
+                foreach (var removedSetBloc in setBlocsToRemove)
+                {
+                    sessionRecord.SetBlocs.Remove(removedSetBloc);
+                }
+
+                //handle each set bloc in request
+                foreach (var setBloc in session.SetBlocs)
+                {
+                    //if setBloc exists
+                    if (setBloc.Id is not null)
+                    {
+                        var setBlocRecord = sessionRecord.SetBlocs.Find(s => s.Id == setBloc.Id);
+                        setBlocRecord!.DisplayOrder = setBloc.DisplayOrder;
+                        setBlocRecord.Name = setBloc.Name;
+                        setBlocRecord.Modified = DateTime.Now;
+                        
+                    }
+                    //if setBloc does not exist
+                    else
+                    {
+                        var blocToAdd = AddBloc(setBloc, sessionRecord);
+                        blocToAdd.Sets = setBloc.Sets
+                            .Select(set =>
+                                AddSet(set, blocToAdd)
+                            ).ToList();
+                    }
+   
+                }
+                
+            }
+            //if session does not exist
+            else
+            {
+                var sessionToAdd = AddSession(session, programme);
+                foreach (var setBloc in session.SetBlocs)
+                {
+                    var blocToAdd = AddBloc(setBloc, sessionToAdd);
+                    var setsToAdd = setBloc.Sets
+                        .Select(set =>
+                            AddSet(set, blocToAdd)
+                        ).ToList();
+                    blocToAdd.Sets = setsToAdd;
+                }
+                programme.Sessions.Add(sessionToAdd);
+            }
+
+        }
+        
+        await Context.SaveChangesAsync();
+        return await GetAsDtoAsync(ret.Entity.Id);
+    }
+
+    private Session AddSession
+    (ExerciseSessionCreateRequest sessionReq,
+        WorkoutProgramme programme)
+    {
+        var session = new Session()
+        {
+            Name = sessionReq.Name,
+            WorkoutProgramme = programme,
+            WorkoutProgrammeId = programme.Id,
+            DisplayOrder = sessionReq.DisplayOrder,
+            Created = DateTime.Now,
+            CreatedBy = "SYSTEM"
+        };
+        return session;
+    }
+    
+    private SetBloc AddBloc
+        (ExerciseSetBlocCreateRequest blocReq,
+            Session session)
+    {
+        var blocToAdd = new SetBloc()
+        {
+            Name =  blocReq.Name,
+            Session =  session,
+            SessionId = session.Id,
+            DisplayOrder = blocReq.DisplayOrder,
+            Created =  DateTime.Now,
+            CreatedBy = "SYSTEM"
+        };
+        
+        return blocToAdd;
+    }
+
+    private Set AddSet
+    (ExerciseSetCreateRequest setReq,
+        SetBloc setBloc)
+    {
+        return new Set
+        {
+            SetBloc = setBloc,
+            SetBlocId = setBloc.Id,
+            Description = setReq.Description,
+            RepFloor = setReq.RepFloor,
+            RepCeiling = setReq.RepCeiling,
+            DisplayOrder = setReq.DisplayOrder,
+            Created = DateTime.Now,
+            CreatedBy = "SYSTEM"
+        };
+    }
+    
 }

@@ -88,8 +88,6 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
     }
 
     useEffect(() => {
-        const json = JSON.stringify(workoutProgrammeData)
-        console.log(json);
     }, [selectedSessionId]);
 
     const logData = () =>{
@@ -98,14 +96,23 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
     
     const submitData = async() => {
         const json = JSON.stringify(workoutProgrammeData)
+        console.log(json);
         try {
             await axios.post("https://localhost:7206/api/WorkoutProgramme/newWorkoutProgramme", workoutProgrammeData).then((data) => {
                 
             })
         }
         catch(error){}
-        const jso = {name: "testaa"}
-        console.log(jso)
+    }
+    
+    const updateProgramme = async() => {
+        const json = JSON.stringify(workoutProgrammeData)
+        try {
+            await axios.post("https://localhost:7206/api/WorkoutProgramme/updateWorkoutProgramme", workoutProgrammeData).then((data) => {
+
+            })
+        }
+        catch(error){}
     }
     
     const getWorkoutProgramme = async () =>{
@@ -143,6 +150,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
                 <button onClick={logData}>Log Data</button>
                 <button onClick={submitData}>Submit</button>
                 <button onClick={getWorkoutProgramme}>Get programme</button>
+                <button onClick={updateProgramme}>Update programme</button>
                 <div className={styles.footer}></div>
             </div>
         </div>

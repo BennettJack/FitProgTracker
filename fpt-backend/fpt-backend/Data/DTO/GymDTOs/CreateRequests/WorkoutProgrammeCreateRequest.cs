@@ -2,8 +2,9 @@
 
 namespace fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 
-public class WorkoutProgrammeCreateRequest
+public class WorkoutProgrammeCreateRequest : BaseCreateRequest
 {
+    public string? Description { get; set; }
     public string Name { get; set; }
-    public List<ExerciseSessionCreateRequest> WorkoutSessions { get; set; }
+    public List<ExerciseSessionCreateRequest> Sessions { get; set; }
 }

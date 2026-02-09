@@ -1,7 +1,8 @@
 ﻿namespace fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 
-public class ExerciseSessionCreateRequest
+public class ExerciseSessionCreateRequest : BaseCreateRequest
 {
     public string Name { get; set; }
-    public List<ExerciseSetBlocCreateRequest> ExerciseSetBlocs { get; set; }
+    public int DisplayOrder { get; set; }
+    public List<ExerciseSetBlocCreateRequest> SetBlocs { get; set; }
 }

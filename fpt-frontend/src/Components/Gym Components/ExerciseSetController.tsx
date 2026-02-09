@@ -14,7 +14,7 @@ export function ExerciseSetController(
         updater:(prev: Set) => Set) => {
         updateExerciseSetBloc?.(prevExerciseSetBloc => ({
             ...prevExerciseSetBloc,
-            exerciseSets: prevExerciseSetBloc.sets.map(set =>
+            sets: prevExerciseSetBloc.sets.map(set =>
                 (set.id ?? set.tempId) ===
                 (exerciseSet.id ?? exerciseSet.tempId)
                     ? updater(set)
@@ -23,14 +23,15 @@ export function ExerciseSetController(
         }))
     }
 
-    const updateSetValues = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const {name, value} = e.target;
+    const updateSetValues = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
 
         updateExerciseSet(prev => ({
             ...prev,
-            [name]: value
+            [name]:
+                name === "repFloor" || name === "repCeiling"
+                    ? Number(value)
+                    : value,
         }));
     };
     
@@ -40,15 +41,6 @@ export function ExerciseSetController(
     
     return(
         <div>
-            <label htmlFor={"name"}>
-                Name
-            </label>
-            <input 
-                name={"name"}
-                onChange={updateSetValues}
-                value={exerciseSet.name}
-                type="text"
-            />
             <label htmlFor={"repFloor"}>
                 Rep floor
             </label>

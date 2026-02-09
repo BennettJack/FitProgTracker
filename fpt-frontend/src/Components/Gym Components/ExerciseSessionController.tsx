@@ -16,7 +16,7 @@ export function ExerciseSessionController(
     ) => {
         updateProgramme?.(prevProgramme => ({
             ...prevProgramme,
-            workoutSessions: prevProgramme.sessions.map(session =>
+            sessions: prevProgramme.sessions.map(session =>
                 (session.id ?? session.tempId) === (exerciseSession.id ?? exerciseSession.tempId)
                     ? updater(session)
                     : session
@@ -36,7 +36,7 @@ export function ExerciseSessionController(
         
         updateSession(prev => ({
             ...prev,
-            exerciseSetBlocs: [...prev.setBlocs, newBloc]
+            setBlocs: [...prev.setBlocs, newBloc]
         }))
     }
 

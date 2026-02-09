@@ -16,7 +16,7 @@ export function ExerciseSetBlocController(
     ) => {
         updateSession?.(prevSession => ({
             ...prevSession,
-            exerciseSetBlocs: prevSession.setBlocs.map(bloc =>
+            setBlocs: prevSession.setBlocs.map(bloc =>
                 (bloc.id ?? bloc.tempId) ===
                 (exerciseSetBloc.id ?? exerciseSetBloc.tempId)
                     ? updater(bloc)
@@ -38,14 +38,14 @@ export function ExerciseSetBlocController(
 
         updateBloc(prev => ({
             ...prev,
-            exerciseSets: [...prev.sets, newSet],
+            sets: [...prev.sets, newSet],
         }));
     };
     
     const removeExerciseSet = (id : number | string | undefined) => {
         updateBloc?.(prev => ({
             ...prev,
-            exerciseSets: exerciseSetBloc.sets.filter(set =>
+            sets: exerciseSetBloc.sets.filter(set =>
                 (set.id ?? set.tempId) !== id
             ),
         }));

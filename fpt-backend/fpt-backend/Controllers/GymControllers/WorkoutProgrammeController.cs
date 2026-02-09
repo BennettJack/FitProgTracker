@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.Data.Models.GymModels.Dto;
 using fpt_backend.Services.GymServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,5 +31,13 @@ public class WorkoutProgrammeController : Controller
         Console.WriteLine(Id);
         var programme = await _workoutProgrammeService.GetAsDtoAsync(Id);
         return Ok(programme);
+    }
+
+    [HttpPost("updateWorkoutProgramme")]
+    public async Task<ActionResult<WorkoutProgrammeReturnDto>>
+        Update([FromBody] WorkoutProgramme programme)
+    {
+        var ret = await _workoutProgrammeService.UpdateAsync(programme);
+        return Ok(ret);
     }
 }

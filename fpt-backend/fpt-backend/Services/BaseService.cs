@@ -48,12 +48,13 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
     //TODO Fix null
     public virtual async Task<T> UpdateAsync(T entity)
     {
-        var entityToUpdate = await DbSet.FindAsync(entity);
+        var entityToUpdate = await DbSet.FindAsync(entity.Id);
         if (entityToUpdate == null)
         {
             return null;
         }
         Context.Entry(entityToUpdate).CurrentValues.SetValues(entity);
+        await Context.SaveChangesAsync();
         return entityToUpdate;
     }
     
