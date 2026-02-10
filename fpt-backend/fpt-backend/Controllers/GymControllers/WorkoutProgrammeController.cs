@@ -35,9 +35,9 @@ public class WorkoutProgrammeController : Controller
 
     [HttpPost("updateWorkoutProgramme")]
     public async Task<ActionResult<WorkoutProgrammeReturnDto>>
-        Update([FromBody] WorkoutProgramme programme)
+        Update([FromBody] WorkoutProgrammeCreateRequest programme)
     {
-        var ret = await _workoutProgrammeService.UpdateAsync(programme);
+        var ret = await _workoutProgrammeService.UpdateTestAsync(programme);
         return Ok(ret);
     }
 }

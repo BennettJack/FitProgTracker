@@ -1,4 +1,5 @@
-﻿using fpt_backend.Data.Models.GymModels;
+﻿using fpt_backend.Data.Models;
+using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Data.Models.GymModels.Instances;
 using fpt_backend.Data.Models.GymModels.JoiningModels;
 using Microsoft.EntityFrameworkCore;
@@ -36,27 +37,35 @@ public class FptDbContext : DbContext
     
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    base.OnModelCreating(modelBuilder);
+    {
+        base.OnModelCreating(modelBuilder);
 
-    modelBuilder.Entity<Session>()
-        .HasOne(s => s.WorkoutProgramme)
-        .WithMany(p => p.Sessions)
-        .HasForeignKey(s => s.WorkoutProgrammeId)
-        .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Session>()
+            .HasOne(s => s.WorkoutProgramme)
+            .WithMany(p => p.Sessions)
+            .HasForeignKey(s => s.WorkoutProgrammeId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<SetBloc>()
-        .HasOne(sb => sb.Session)
-        .WithMany(s => s.SetBlocs)
-        .HasForeignKey(sb => sb.SessionId)
-        .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<SetBloc>()
+            .HasOne(sb => sb.Session)
+            .WithMany(s => s.SetBlocs)
+            .HasForeignKey(sb => sb.SessionId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<Set>()
-        .HasOne(s => s.SetBloc)
-        .WithMany(sb => sb.Sets)
-        .HasForeignKey(s => s.SetBlocId)
-        .OnDelete(DeleteBehavior.Cascade);
-}
+        modelBuilder.Entity<Set>()
+            .HasOne(s => s.SetBloc)
+            .WithMany(sb => sb.Sets)
+            .HasForeignKey(s => s.SetBlocId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(BaseModel).IsAssignableFrom(entityType.ClrType))
+            {
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property(nameof(BaseModel.Id))
+                    .ValueGeneratedOnAdd();
+            }
+        }
+    }
 }

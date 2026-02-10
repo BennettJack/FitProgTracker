@@ -105,6 +105,8 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         return await GetAsDtoAsync(programme.Id);
     }
 
+    //new sets dont get added to existing sessions
+    //
     public async Task<WorkoutProgrammeReturnDto?> UpdateTestAsync(WorkoutProgrammeCreateRequest req)
     {
         var programme = await Context.WorkoutProgrammes
@@ -159,16 +161,50 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                         setBlocRecord!.DisplayOrder = setBloc.DisplayOrder;
                         setBlocRecord.Name = setBloc.Name;
                         setBlocRecord.Modified = DateTime.Now;
+                        //handle set removals
+                        var setsToRemove = ComparisonHelper<Set>.GetRemoved(
+                            setBlocRecord.Sets,
+                            setBloc.Sets.Select(id => id.Id).ToList());
+
+                        foreach (var removedSet in setsToRemove)
+                        {
+                            setBlocRecord.Sets.Remove(removedSet);
+                        }
+                        foreach (var set in setBloc.Sets)
+                        {
+
+
+                            //handle existing set
+                            if (set.Id is not null)
+                            {
+                                var setRecord =  setBlocRecord.Sets.Find(s => s.Id == set.Id);
+                                setRecord!.Description = set.Description;
+                                setRecord.DisplayOrder = set.DisplayOrder;
+                                setRecord.Modified = DateTime.Now;
+                                setRecord.RepFloor = set.RepFloor;
+                                setRecord.RepCeiling = set.RepCeiling;
+                            }
+                            else
+                            {
+                                var setToAdd = AddSet(set, setBlocRecord);
+                                Context.Sets.Add(setToAdd);
+                                setBlocRecord.Sets.Add(setToAdd);
+                            }
+                        }
                         
                     }
                     //if setBloc does not exist
                     else
                     {
                         var blocToAdd = AddBloc(setBloc, sessionRecord);
-                        blocToAdd.Sets = setBloc.Sets
+                        var setsToAdd= setBloc.Sets
                             .Select(set =>
                                 AddSet(set, blocToAdd)
                             ).ToList();
+                        blocToAdd.Sets = setsToAdd;
+                        sessionRecord.SetBlocs.Add(blocToAdd);
+                        Context.SetBlocs.Add(blocToAdd);
+                        Context.Sets.AddRange(setsToAdd);
                     }
    
                 }
@@ -186,14 +222,17 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                             AddSet(set, blocToAdd)
                         ).ToList();
                     blocToAdd.Sets = setsToAdd;
+                    Context.SetBlocs.Add(blocToAdd);
+                    Context.Sets.AddRange(setsToAdd);
                 }
                 programme.Sessions.Add(sessionToAdd);
+                Context.Sessions.Add(sessionToAdd);
             }
 
         }
         
         await Context.SaveChangesAsync();
-        return await GetAsDtoAsync(ret.Entity.Id);
+        return await GetAsDtoAsync(programme.Id);
     }
 
     private Session AddSession
