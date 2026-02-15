@@ -43,6 +43,5 @@
 }
 
 button:hover{
-    background-color: var(--colour-primary-button-hover);
-    cursor: pointer;
+    
 }

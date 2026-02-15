@@ -1,9 +1,23 @@
 ﻿.wrapper{
     color: var(--colour-primary-text);
-    
+}
+.programmeContainer button{
+    cursor: pointer;
 }
 
-.container{
+.programmeContainer input{
+    background-color: var(--colour-input-background);
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+    border-bottom-style: inset;
+    color: var(--colour-primary-text);
+}
+.programmeContainer input:focus{
+    border-color: var(--colour-primary-button-hover);
+    outline: none;
+}
+.programmeContainer{
     display: grid;
     grid-template-areas: 
             "header header"
@@ -20,6 +34,7 @@
     min-width: 100px;
     max-width: 250px;
     grid-area: sidebar;
+    align-self: start;
 }
 
 .sessionSidebar:hover{
@@ -55,4 +70,38 @@
     height: 50px;
     border: 1px solid var(--colour-default-border);
     text-align: center;
+}
+
+.addBtn{
+    border: none;
+    width: 150px;
+    border-radius: 2px;
+    background-color: var(--colour-primary-button);
+}
+
+.addBtn:hover{
+    color: var(--colour-primary-text);
+}
+
+.addSessionBtn{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    text-align: center;
+}
+
+.addSessionBtnWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.showBtn, .hideBtn{
+    font-size: 40px;
+    border: none;
+    background: none;
+    color: var(--colour-primary-text);
+    float: right;
 }

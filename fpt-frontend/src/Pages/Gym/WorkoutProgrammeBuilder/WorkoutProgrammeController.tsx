@@ -20,8 +20,9 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
         sessions: []
     });
     
+    const [waitingUpdateResponse, setWaitingUpdateResponse ] = useState<boolean>(false);
+    
     const [selectedSessionId, setSelectedSessionId ] = useState<number | string | null>(null);
-    const [nextTempId, setNextTempId ] = useState(1);
     
     
 
@@ -62,6 +63,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
 
     //functions
     const fetchWorkoutProgrammeData = async ():Promise<WorkoutProgramme | undefined> => {
+        
         try {
             const {data} = await axios.get<WorkoutProgramme>(
                 "/api/workoutProgramme",
@@ -70,6 +72,7 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
         } catch (error) {
             console.error(error);
         }
+        
     };
     
     
@@ -103,16 +106,16 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
             })
         }
         catch(error){}
+        
     }
     
     const updateProgramme = async() => {
-        const json = JSON.stringify(workoutProgrammeData)
+        setWaitingUpdateResponse(true);
         try {
-            await axios.post("https://localhost:7206/api/WorkoutProgramme/updateWorkoutProgramme", workoutProgrammeData).then((data) => {
-
-            })
+            await axios.post("https://localhost:7206/api/WorkoutProgramme/updateWorkoutProgramme", workoutProgrammeData)
         }
         catch(error){}
+        setWaitingUpdateResponse(false);
     }
     
     const getWorkoutProgramme = async () =>{
@@ -124,19 +127,28 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
     }
     return (
         <div className={styles.wrapper}>
-            <div className={styles.container}>
+            <div className={styles.programmeContainer}>
                 <div className={styles.header}>
                     <h2>{workoutProgrammeData?.name}</h2>
                 </div>
                 <div className={styles.sidebar}>
-                {workoutProgrammeData?.sessions.map((session, index) => 
-                    <div key={session.id ?? session.tempId}>
-                        <p className={styles.sessionSidebar} onClick={() => setSelectedSessionId(
-                            session.id ?? session.tempId ?? null
-                        )}>{session.name}</p>
+                    {workoutProgrammeData?.sessions.map((session, index) => 
+                        <div key={session.id ?? session.tempId}>
+                            <p className={styles.sessionSidebar} onClick={() => setSelectedSessionId(
+                                session.id ?? session.tempId ?? null
+                            )}>{session.name}</p>
+                        </div>
+                    )}
+                    <div
+                        className={styles.addSessionBtnWrapper}
+                        >
+                        <button
+                            className={`${styles.addBtn} ${styles.addSessionBtn}`}
+                            onClick={addSession}>
+                            Add Session
+                        </button>
                     </div>
-                )}
-                <button onClick={addSession}>Add Session</button>
+                    
                 </div>
                 <div className={styles.content}>
                     {selectedSession && (
@@ -150,7 +162,10 @@ export function WorkoutProgrammeController({workoutProgrammeId, mode} : WorkoutP
                 <button onClick={logData}>Log Data</button>
                 <button onClick={submitData}>Submit</button>
                 <button onClick={getWorkoutProgramme}>Get programme</button>
-                <button onClick={updateProgramme}>Update programme</button>
+                <button
+                    disabled={waitingUpdateResponse} 
+                    onClick={updateProgramme}
+                >Update programme</button>
                 <div className={styles.footer}></div>
             </div>
         </div>

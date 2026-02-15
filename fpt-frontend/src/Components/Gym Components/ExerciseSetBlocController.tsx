@@ -1,7 +1,8 @@
-﻿import React from "react";
+﻿import React, {ReactEventHandler, useState} from "react";
 import {Session, Set, SetBloc, ExerciseSetBlocControllerProps} from "../../Types/WorkoutTypes";
 import {v4 as uuidv4} from "uuid";
 import {ExerciseSetController} from "./ExerciseSetController";
+import styles from "../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController.module.css"
 
 
 export function ExerciseSetBlocController(
@@ -11,6 +12,8 @@ export function ExerciseSetBlocController(
         mode,
     }: ExerciseSetBlocControllerProps): React.ReactElement {
 
+    const [showBloc, setShowBloc] = useState(true);
+    
     const updateBloc = (
         updater: (prev: SetBloc) => SetBloc
     ) => {
@@ -51,26 +54,50 @@ export function ExerciseSetBlocController(
         }));
     }
     
+    const updateSetBlocValues = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        
+        updateBloc(prev => ({
+            ...prev,
+            [name]: value,
+        }))
+    }
+    
+    const handleShowHide = () => {
+        showBloc 
+            ? setShowBloc(false)
+            : setShowBloc(true);
+    }
+    
     return (
         <>
-            <p>{exerciseSetBloc.name}</p>
-            {exerciseSetBloc.sets.map(set => (
-                <div key={set.id ?? set.tempId}>
-                    <ExerciseSetController
-                        exerciseSet={set}
-                        updateExerciseSetBloc={updateBloc}
-                        removeExerciseSet={() => removeExerciseSet(set.id ?? set.tempId)}
-                        mode={mode}
-                    />
-                </div>
-            ))}
-
-            {mode === "create" && (
+            <label htmlFor={"setBlocName"}>Name: </label>
+            <input name={"setBlocName"} value={exerciseSetBloc.name} onChange={updateSetBlocValues}/>
+            {!showBloc &&
+                <button className={styles.showBtn} onClick={handleShowHide}>-</button>
+            }
+            {showBloc &&
                 <div>
-                    <p>Add a set to this exercise</p>
-                    <button onClick={addSet}>Add a set</button>
+                    <button className={styles.hideBtn} onClick={handleShowHide}>+</button>
+                    {exerciseSetBloc.sets.map(set => (
+                        <div key={set.id ?? set.tempId}>
+                            <ExerciseSetController
+                                exerciseSet={set}
+                                updateExerciseSetBloc={updateBloc}
+                                removeExerciseSet={() => removeExerciseSet(set.id ?? set.tempId)}
+                                mode={mode}
+                            />
+                        </div>
+                    ))}
+        
+                    {mode === "create" && (
+                        <div>
+                            <p>Add a set to this exercise</p>
+                            <button onClick={addSet}>Add a set</button>
+                        </div>
+                    )}
                 </div>
-            )}
+            }
         </>
     );
 }
