@@ -1,82 +1,79 @@
 ﻿.wrapper {
-    position: relative;
-    color: var(--colour-primary-text);
-    border: 1px solid var(--colour-default-border);
-    border-radius: 4px;
-    width: 20em;
-    min-height: 1.5em;
-    display: flex;
-    align-items: center;
-    gap: .5em;
-    padding: .5em;
-    outline: none;
+  position: relative;
+  color: var(--colour-primary-text);
+  border: 1px solid var(--colour-default-border);
+  border-radius: 4px;
+  width: 20em;
+  min-height: 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em;
+  outline: none;
 }
 
 .wrapper:focus {
-    border: 1px solid var(--colour-primary-accent);
+  border: 1px solid var(--colour-primary-accent);
 }
 
-.clearButton{
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: var(--colour-primary-text);
+.clearButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--colour-primary-text);
 }
 
-.value{
-    flex-grow: 1;
+.value {
+  flex-grow: 1;
 }
 
-.removeButton{
-    
+.removeButton {
 }
 
-.options{
-    position: absolute;
-    display: none;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    max-height: 15em;
-    overflow-y: auto;
-    background-color: var(--colour-primary-background);
-    border: 1px solid var(--colour-default-border);
-    border-radius: .25em;
-    width: 100%;
-    left:0;
-    top: calc(100% + .25em);
-    z-index: 100;
-    
+.options {
+  position: absolute;
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 15em;
+  overflow-y: auto;
+  background-color: var(--colour-primary-background);
+  border: 1px solid var(--colour-default-border);
+  border-radius: 0.25em;
+  width: 100%;
+  left: 0;
+  top: calc(100% + 0.25em);
+  z-index: 100;
 }
 
-.option:hover{
-    background-color: var(--colour-primary-accent);
-    cursor: pointer;
+.option:hover {
+  background-color: var(--colour-primary-accent);
+  cursor: pointer;
 }
-.show{
-    display: block;
+.show {
+  display: block;
 }
 
 .search {
-    border: none;
-    background: none;
-    color: var(--colour-primary-text);
+  border: none;
+  background: none;
+  color: var(--colour-primary-text);
 }
 
-.search:focus{
-    outline: none;
-    
+.search:focus {
+  outline: none;
 }
 
-.divider{
-    background-color: var(--colour-primary-text);
-    align-self: stretch;
-    width: .05em;
+.divider {
+  background-color: var(--colour-primary-text);
+  align-self: stretch;
+  width: 0.05em;
 }
 
-.caret{
-    translate: 0 25%;
-    border: .25em solid transparent;
-    border-top-color: var(--colour-primary-text);
+.caret {
+  translate: 0 25%;
+  border: 0.25em solid transparent;
+  border-top-color: var(--colour-primary-text);
 }

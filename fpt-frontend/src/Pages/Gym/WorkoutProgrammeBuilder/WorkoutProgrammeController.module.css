@@ -1,107 +1,131 @@
-﻿.wrapper{
-    color: var(--colour-primary-text);
+﻿.wrapper {
+  color: var(--colour-primary-text);
 }
-.programmeContainer button{
-    cursor: pointer;
-}
-
-.programmeContainer input{
-    background-color: var(--colour-input-background);
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;
-    border-bottom-style: inset;
-    color: var(--colour-primary-text);
-}
-.programmeContainer input:focus{
-    border-color: var(--colour-primary-button-hover);
-    outline: none;
-}
-.programmeContainer{
-    display: grid;
-    grid-template-areas: 
-            "header header"
-            "sidebar content"
-            "footer footer";
-    grid-template-columns: minmax(100px, 250px) 1fr;
-    align-items: center;
-    width: 80%;
-    margin: 0 auto;
+.programmeContainer button {
+  cursor: pointer;
 }
 
-.sidebar{
-    border-right: 1px solid var(--colour-default-border);
-    min-width: 100px;
-    max-width: 250px;
-    grid-area: sidebar;
-    align-self: start;
+.programmeContainer input {
+  background-color: var(--colour-input-background);
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  border-bottom-style: inset;
+  color: var(--colour-primary-text);
+}
+.programmeContainer input:focus {
+  border-color: var(--colour-primary-button-hover);
+  outline: none;
+}
+.programmeContainer {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar content"
+    "footer footer";
+  grid-template-columns: minmax(100px, 250px) 1fr;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
 }
 
-.sessionSidebar:hover{
-    background-color: var(--colour-primary-accent);
+.sidebar {
+  border-right: 1px solid var(--colour-default-border);
+  min-width: 100px;
+  max-width: 250px;
+  grid-area: sidebar;
+  align-self: start;
 }
 
-.sidebar > div > p{
-    text-align: center;
-    margin: 0;
-    padding-top: 4px;
-    padding-bottom: 4px;
+.sessionSidebar:hover {
+  background-color: var(--colour-primary-accent);
 }
 
-.sidebar > div:hover{
-    cursor: pointer;
+.sidebar > div > p {
+  text-align: center;
+  margin: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
-.content{
-    grid-area: content;
-    background-color: var(--colour-primary-foreground);
-    height: 100%;
-    width: 100%;
+.sidebar > div:hover {
+  cursor: pointer;
 }
 
-.footer{
-    grid-area: footer;
-    height: 50px;
-    border: 1px solid var(--colour-default-border);
+.content {
+  grid-area: content;
+  background-color: var(--colour-primary-foreground);
+  height: 100%;
+  width: 100%;
 }
 
-.header{
-    grid-area: header;
-    height: 50px;
-    border: 1px solid var(--colour-default-border);
-    text-align: center;
+.footer {
+  grid-area: footer;
+  height: 50px;
+  border: 1px solid var(--colour-default-border);
 }
 
-.addBtn{
-    border: none;
-    width: 150px;
-    border-radius: 2px;
-    background-color: var(--colour-primary-button);
+.header {
+  grid-area: header;
+  height: 50px;
+  border: 1px solid var(--colour-default-border);
+  text-align: center;
 }
 
-.addBtn:hover{
-    color: var(--colour-primary-text);
+.addBtn {
+  border: none;
+  width: 150px;
+  border-radius: 2px;
+  background-color: var(--colour-primary-button);
 }
 
-.addSessionBtn{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    position: relative;
-    text-align: center;
+.addBtn:hover {
+  color: var(--colour-primary-text);
 }
 
-.addSessionBtnWrapper{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.addSessionBtn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  text-align: center;
 }
 
-.showBtn, .hideBtn{
-    font-size: 40px;
-    border: none;
-    background: none;
-    color: var(--colour-primary-text);
-    float: right;
+.addSessionBtnWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.showBtn,
+.hideBtn {
+  font-size: 40px;
+  border: none;
+  background: none;
+  color: var(--colour-primary-text);
+}
+
+/* set bloc */
+.setBlocWrapper {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.setBlocHeader{
+  display: flex;
+  background-color: var(--colour-primary-background);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+.setBlocHeader button {
+  margin-left: auto;
+}
+
+.setBlocHeader input {
+  height: 30px;
+  margin-left: 15px;
 }

@@ -1,7 +1,3 @@
-﻿
-export function UserWorkoutPrograms() {
-    return(
-        <>
-        </>
-    )
+﻿export function UserWorkoutPrograms() {
+  return <></>;
 }

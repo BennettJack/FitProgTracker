@@ -1,27 +1,25 @@
 ﻿:root {
-    /* Backgrounds */
-    --colour-primary-background: #18181B;
-    --colour-primary-foreground: #27272A;
-    --colour-elevated: #323234;
-    
+  /* Backgrounds */
+  --colour-primary-background: #18181b;
+  --colour-primary-foreground: #27272a;
+  --colour-elevated: #323234;
 
-    
-    /* Text */
-    --colour-primary-text: #F5F5F5;
-    --colour-secondary-text: #A1A1AA;
-    --colour-dark-text: #52525B;
-    
-    /* Accents */
-    --colour-primary-accent: #7C3AED;
-    --colour-secondary-accent: #34D399;
-    --colour-highlight-info: #38BDF8;
-    --colour-success-result: #22C55E;
-    --colour-alert-warning: #FACC15;
-    --colour-alert-error: #EF4444;
-    
-    /* UI components */
-    --colour-default-border: #3F3F46;
-    --colour-input-background: #1F1F23;
-    --colour-primary-button: #A1A1AA;
-    --colour-primary-button-hover: #7C3AED;
+  /* Text */
+  --colour-primary-text: #f5f5f5;
+  --colour-secondary-text: #a1a1aa;
+  --colour-dark-text: #52525b;
+
+  /* Accents */
+  --colour-primary-accent: #7c3aed;
+  --colour-secondary-accent: #34d399;
+  --colour-highlight-info: #38bdf8;
+  --colour-success-result: #22c55e;
+  --colour-alert-warning: #facc15;
+  --colour-alert-error: #ef4444;
+
+  /* UI components */
+  --colour-default-border: #3f3f46;
+  --colour-input-background: #1f1f23;
+  --colour-primary-button: #a1a1aa;
+  --colour-primary-button-hover: #7c3aed;
 }
