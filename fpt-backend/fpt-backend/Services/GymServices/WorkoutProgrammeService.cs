@@ -30,6 +30,35 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         _exerciseSetService = exerciseSetService;
     }
 
+    public WorkoutProgrammeReturnDto WorkoutProgrammeToDto(WorkoutProgramme programme)
+    {
+        return new WorkoutProgrammeReturnDto
+        {
+            Id = programme.Id,
+            Name = programme.Name,
+            Sessions = programme.Sessions.Select(s => new SessionReturnDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                DisplayOrder = s.DisplayOrder,
+                SetBlocs = s.SetBlocs.Select(sb => new SetBlocReturnDto
+                {
+                    Id = sb.Id,
+                    DisplayOrder = sb.DisplayOrder,
+                    Name = sb.Name,
+                    Sets = sb.Sets.Select(set => new SetReturnDto
+                    {
+                        Id = set.Id,
+                        Description = set.Description,
+                        RepCeiling = set.RepCeiling,
+                        RepFloor = set.RepFloor,
+                        DisplayOrder = set.DisplayOrder,
+                    }).ToList()
+                }).ToList()
+            }).ToList()
+        };
+    }
+
     
     public async Task<WorkoutProgrammeReturnDto?> GetAsDtoAsync(int id)
     {
@@ -102,10 +131,9 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         Context.WorkoutProgrammes.Add(programme);
         await Context.SaveChangesAsync();
         
-        return await GetAsDtoAsync(programme.Id);
+        return WorkoutProgrammeToDto(programme);
     }
-
-    //new sets dont get added to existing sessions
+    
     //
     public async Task<WorkoutProgrammeReturnDto?> UpdateTestAsync(WorkoutProgrammeCreateRequest req)
     {
@@ -119,8 +147,10 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         programme.Name = req.Name;
         programme.Description = req.Description;
         programme.Modified = DateTime.Now;
-        
-        
+
+        var createdSessionsIdMap = new Dictionary<Session, string>();
+        var createdSetBlocsIdMap = new Dictionary<SetBloc, string>();
+        var createdSetsIdMap = new Dictionary<Set, string>();
         //handle removed sessions
         var sessionsToRemove = ComparisonHelper<Session>.GetRemoved(
             programme.Sessions,
@@ -187,7 +217,7 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                             else
                             {
                                 var setToAdd = AddSet(set, setBlocRecord);
-                                Context.Sets.Add(setToAdd);
+                                createdSetsIdMap[setToAdd] = set.TempId;
                                 setBlocRecord.Sets.Add(setToAdd);
                             }
                         }
@@ -203,8 +233,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                             ).ToList();
                         blocToAdd.Sets = setsToAdd;
                         sessionRecord.SetBlocs.Add(blocToAdd);
-                        Context.SetBlocs.Add(blocToAdd);
-                        Context.Sets.AddRange(setsToAdd);
                     }
    
                 }
@@ -214,25 +242,58 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             else
             {
                 var sessionToAdd = AddSession(session, programme);
+                createdSessionsIdMap[sessionToAdd] = session.TempId;
+
                 foreach (var setBloc in session.SetBlocs)
                 {
                     var blocToAdd = AddBloc(setBloc, sessionToAdd);
-                    var setsToAdd = setBloc.Sets
-                        .Select(set =>
-                            AddSet(set, blocToAdd)
-                        ).ToList();
-                    blocToAdd.Sets = setsToAdd;
-                    Context.SetBlocs.Add(blocToAdd);
-                    Context.Sets.AddRange(setsToAdd);
+                    createdSetBlocsIdMap[blocToAdd] = setBloc.TempId;
+
+                    foreach (var set in setBloc.Sets)
+                    {
+                        var setToAdd = AddSet(set, blocToAdd);
+                        blocToAdd.Sets.Add(setToAdd);
+                        createdSetsIdMap[setToAdd] = set.TempId;
+                    }
+
+                    sessionToAdd.SetBlocs.Add(blocToAdd);
                 }
+
                 programme.Sessions.Add(sessionToAdd);
-                Context.Sessions.Add(sessionToAdd);
             }
 
         }
         
         await Context.SaveChangesAsync();
-        return await GetAsDtoAsync(programme.Id);
+        var dto = WorkoutProgrammeToDto(programme);
+        var sessionsIdMap = createdSessionsIdMap.ToDictionary(x => x.Key.Id, x => x.Value);
+        var setBlocsIdMap = createdSetBlocsIdMap.ToDictionary(x => x.Key.Id, x => x.Value);
+        var setsIdMap = createdSetsIdMap.ToDictionary(x => x.Key.Id, x => x.Value);
+        foreach (var session in dto.Sessions)
+        {
+            if (sessionsIdMap.TryGetValue(session.Id, out var sessionValue))
+            {
+                session.TempId = sessionValue;
+            }
+
+            foreach (var bloc in session.SetBlocs)
+            {
+                if (setBlocsIdMap.TryGetValue(bloc.Id, out var blocValue))
+                {
+                    bloc.TempId = blocValue;
+                }
+
+                foreach (var set in bloc.Sets)
+                {
+                    if (setsIdMap.TryGetValue(set.Id, out var setValue))
+                    {
+                        set.TempId = setValue;
+                    }
+                }
+            }
+        }
+
+        return dto;
     }
 
     private Session AddSession

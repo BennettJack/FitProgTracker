@@ -1,7 +1,8 @@
-﻿namespace fpt_backend.Data.DTO.GymDTOs.ResponseDtos;
+﻿using fpt_backend.Data.DTO.GymDTOs.ReturnDtos;
 
-public class EquipmentReturnDto
+namespace fpt_backend.Data.DTO.GymDTOs.ResponseDtos;
+
+public class EquipmentReturnDto : BaseReturnDto
 {
-    public required int Id { get; init; }
     public required string EquipmentName { get; init; }
 }

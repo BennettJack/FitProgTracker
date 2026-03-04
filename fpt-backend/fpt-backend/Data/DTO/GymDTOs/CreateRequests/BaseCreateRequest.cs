@@ -3,4 +3,5 @@
 public class BaseCreateRequest
 {
     public int? Id { get; set; }
+    public string? TempId { get; set; }
 }

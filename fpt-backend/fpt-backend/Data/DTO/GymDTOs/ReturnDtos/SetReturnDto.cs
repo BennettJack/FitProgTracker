@@ -1,8 +1,8 @@
 ﻿namespace fpt_backend.Data.DTO.GymDTOs.ReturnDtos;
 
-public class SetReturnDto
+
+public class SetReturnDto : BaseReturnDto
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public int DisplayOrder { get; set; }

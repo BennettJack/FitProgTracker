@@ -8,7 +8,7 @@ import {
   UpdateProgrammeData,
 } from "../../../Types/WorkoutTypes";
 import { ExerciseSessionController } from "../../../Components/Gym Components/ExerciseSessionController";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { v4 as uuidv4 } from "uuid";
 
 export function WorkoutProgrammeController({
@@ -53,10 +53,19 @@ export function WorkoutProgrammeController({
     });
   }, [workoutProgrammeId]);
 
-  const selectedSession =
-    workoutProgrammeData.sessions.find(
-      (s) => (s.id ?? s.tempId) === selectedSessionId,
-    ) ?? null;
+  const getSelectedSession = (): Session | null => {
+    if (!selectedSessionId) return null;
+
+    return (
+      workoutProgrammeData.sessions.find(
+        (session) =>
+          session.id === selectedSessionId ||
+          session.tempId === selectedSessionId,
+      ) ?? null
+    );
+  };
+
+  const selectedSession = getSelectedSession();
 
   const updateProgrammeData: UpdateProgrammeData = (updater) => {
     setWorkoutProgrammeData((prevState) => updater(prevState));
@@ -75,7 +84,16 @@ export function WorkoutProgrammeController({
       console.error(error);
     }
   };
+  const updateWorkoutProgrammeData = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    const { name, value } = e.target;
 
+    setWorkoutProgrammeData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
   const addSession = () => {
     let sessionCount: number = workoutProgrammeData.sessions.length;
     sessionCount += 1;
@@ -93,7 +111,8 @@ export function WorkoutProgrammeController({
   useEffect(() => {}, [selectedSessionId]);
 
   const logData = () => {
-    console.log(workoutProgrammeData);
+    console.log(`session: ${workoutProgrammeData}`);
+    console.log(`current session: ${selectedSessionId}`);
   };
 
   const submitData = async () => {
@@ -112,10 +131,12 @@ export function WorkoutProgrammeController({
   const updateProgramme = async () => {
     setWaitingUpdateResponse(true);
     try {
-      await axios.post(
-        "https://localhost:7206/api/WorkoutProgramme/updateWorkoutProgramme",
-        workoutProgrammeData,
-      );
+      const { data }: AxiosResponse<WorkoutProgramme> =
+        await axios.post<WorkoutProgramme>(
+          "https://localhost:7206/api/WorkoutProgramme/updateWorkoutProgramme",
+          workoutProgrammeData,
+        );
+      setWorkoutProgrammeData(data);
     } catch (error) {}
     setWaitingUpdateResponse(false);
   };
@@ -135,7 +156,13 @@ export function WorkoutProgrammeController({
     <div className={styles.wrapper}>
       <div className={styles.programmeContainer}>
         <div className={styles.header}>
-          <h2>{workoutProgrammeData?.name}</h2>
+          <h2>
+            <input
+              name={"name"}
+              value={workoutProgrammeData?.name}
+              onChange={updateWorkoutProgrammeData}
+            />
+          </h2>
         </div>
         <div className={styles.sidebar}>
           {workoutProgrammeData?.sessions.map((session, index) => (
