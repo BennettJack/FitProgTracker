@@ -140,7 +140,14 @@ export function WorkoutProgrammeController({
     } catch (error) {}
     setWaitingUpdateResponse(false);
   };
-
+  const removeSession = (id: number | string | undefined) => {
+    setWorkoutProgrammeData?.((prev) => ({
+      ...prev,
+      sessions: prev.sessions.filter(
+        (session) => (session.id ?? session.tempId) !== id,
+      ),
+    }));
+  };
   const getWorkoutProgramme = async () => {
     try {
       await axios
@@ -175,6 +182,11 @@ export function WorkoutProgrammeController({
               >
                 {session.name}
               </p>
+              <button
+                onClick={() => removeSession(session.id ?? session.tempId)}
+              >
+                x
+              </button>
             </div>
           ))}
           <div className={styles.addSessionBtnWrapper}>
@@ -191,6 +203,9 @@ export function WorkoutProgrammeController({
             <ExerciseSessionController
               exerciseSession={selectedSession}
               updateProgramme={updateProgrammeData}
+              removeSession={() =>
+                removeSession(selectedSession.id ?? selectedSession.tempId)
+              }
               mode="create"
             />
           )}

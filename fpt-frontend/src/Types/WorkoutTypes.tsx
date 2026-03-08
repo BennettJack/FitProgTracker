@@ -47,6 +47,7 @@ export type ExerciseSessionControllerProps = {
   updateProgramme?: (
     updater: (prev: WorkoutProgramme) => WorkoutProgramme,
   ) => void;
+  removeSession: () => void;
 };
 
 export type ExerciseSetBlocControllerProps = {

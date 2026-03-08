@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 export function ExerciseSessionController({
   exerciseSession,
   updateProgramme,
+  removeSession,
   mode,
 }: ExerciseSessionControllerProps) {
   const updateSession = (updater: (prev: Session) => Session) => {

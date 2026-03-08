@@ -39,6 +39,7 @@ public class FptDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
 
         modelBuilder.Entity<Session>()
             .HasOne(s => s.WorkoutProgramme)

@@ -28,8 +28,6 @@ export function ExerciseSetController({
     }));
   };
 
-  const removeSet = () => {};
-
   return (
     <div>
       <label htmlFor={"repFloor"}>Rep floor</label>
