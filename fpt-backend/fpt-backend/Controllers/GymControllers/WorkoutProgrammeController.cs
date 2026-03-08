@@ -40,4 +40,11 @@ public class WorkoutProgrammeController : Controller
         var ret = await _workoutProgrammeService.UpdateTestAsync(programme);
         return Ok(ret);
     }
+
+    [HttpPost("createFiveThreeOneProgramme")]
+    public async Task<ActionResult<WorkoutProgrammeReturnDto>>
+        CreateFiveThreeOneProgramme()
+    {
+        return Ok();
+    }
 }

@@ -66,3 +66,5 @@ export type ExerciseSetControllerProps = {
 export type UpdateProgrammeData = (
   updater: (prev: WorkoutProgramme) => WorkoutProgramme,
 ) => void;
+
+export type UnitOfWeight = "kg" | "lbs";
