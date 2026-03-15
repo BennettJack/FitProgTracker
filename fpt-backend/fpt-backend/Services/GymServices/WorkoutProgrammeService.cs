@@ -6,9 +6,12 @@ using fpt_backend.Data.DTO.GymDTOs.ReturnDtos;
 using fpt_backend.Data.Models;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Data.Models.GymModels.Dto;
+using fpt_backend.Data.Models.GymModels.Instances;
 using fpt_backend.DbRepositories;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.Services.GymServices;
@@ -343,6 +346,29 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             DisplayOrder = setReq.DisplayOrder,
             Created = DateTime.Now,
             CreatedBy = "SYSTEM"
+        };
+    }
+
+    public async Task TestYouCanDelThis()
+    {
+        var template = new WorkoutProgrammeTemplate()
+        {
+            Name = "Five Three One Template",
+            CreatedBy = "SYSTEM",
+            Created = DateTime.Now,
+            SessionTemplates = new List<SessionTemplate>()
+            {
+                new()
+                {
+                    Name = "Overhead Press",
+                    DisplayOrder = 1,
+                    SetBlocTemplates = new List<SetBlocTemplate>()
+                    {
+
+                    }
+
+                }
+            }
         };
     }
     

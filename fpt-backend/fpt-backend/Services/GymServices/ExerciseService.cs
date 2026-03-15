@@ -49,11 +49,6 @@ public class ExerciseService : BaseService<Exercise>, IExerciseService
         throw new NotImplementedException();
     }
 
-    public async Task<Exercise> AddAsync(Exercise entity)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<List<Exercise>> AddMultipleAsync(List<Exercise> entities)
     {
         throw new NotImplementedException();
@@ -73,7 +68,7 @@ public class ExerciseService : BaseService<Exercise>, IExerciseService
     {
         Exercise exercise = new Exercise
         {
-            ExerciseName = dto.ExerciseName,
+            ExerciseName = dto.Name,
             ExerciseDescription = dto.Description,
             Muscles = await _muscleService.GetByIdAsync(dto.MuscleIds),
             Equipment = await _equipmentService.GetByIdAsync(dto.EquipmentIds),

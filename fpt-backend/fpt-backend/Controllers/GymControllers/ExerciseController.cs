@@ -26,8 +26,8 @@ public class ExerciseController : Controller
             return BadRequest(ModelState);
         }
         
-        var res = await _exerciseService.AddAsync(exerciseDto, User.Identity.Name);
+        var res = await _exerciseService.AddAsync(exerciseDto, "System");
 
-        return Ok(res);
+        return Ok();
     }
 }

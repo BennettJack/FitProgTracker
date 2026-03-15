@@ -21,7 +21,7 @@ public class EquipmentService(FptDbContext context)
             return null;
 
         var dropdownList = equipment.Select(eq => 
-            new DropdownReturnDto { Value = eq.Id, Label = eq.EquipmentName }).ToList();
+            new DropdownReturnDto { Value = eq.Id, Label = eq.Name }).ToList();
         
         return dropdownList;
     }

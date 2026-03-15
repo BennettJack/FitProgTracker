@@ -2,7 +2,7 @@
 
 public class Equipment : BaseModel
 {
-    public required string EquipmentName { get; set; }
-    
-    public List<Exercise> Exercises { get; set; }
+    public string Name { get; set; }
+
+    public List<Exercise> Exercises { get; set; } = new();
 }

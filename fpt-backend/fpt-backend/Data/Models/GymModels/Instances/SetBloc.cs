@@ -6,10 +6,13 @@ public class SetBloc : BaseModel
 {
     public int SessionId { get; set; }
     public Session Session { get; set; }
-    
+
+    public int ExerciseId { get; set; }
+    public Exercise Exercise { get; set; }
+
     public int? SetBlocTemplateId { get; set; }
-    public ExerciseSetBlocTemplate? SetBlocTemplate { get; set; }
-    
+    public SetBlocTemplate? SetBlocTemplate { get; set; }
+
     public string Name { get; set; }
     public int DisplayOrder { get; set; }
 
