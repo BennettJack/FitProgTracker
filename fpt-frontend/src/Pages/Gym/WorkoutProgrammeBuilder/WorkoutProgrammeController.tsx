@@ -152,7 +152,7 @@ export function WorkoutProgrammeController({
     try {
       await axios
         .get(
-          "https://localhost:7206/api/WorkoutProgramme/getWorkoutProgramme?id=1",
+          "https://localhost:7206/api/WorkoutProgramme/getWorkoutProgramme?id=3",
         )
         .then((data) => {
           setWorkoutProgrammeData(data.data);

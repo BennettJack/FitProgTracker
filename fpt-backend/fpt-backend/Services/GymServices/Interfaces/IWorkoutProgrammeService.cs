@@ -12,4 +12,5 @@ public interface IWorkoutProgrammeService  : IBaseService<WorkoutProgramme>
     Task<WorkoutProgrammeReturnDto?> GetAsDtoAsync(int id);
     
     Task<WorkoutProgrammeReturnDto?> UpdateTestAsync(WorkoutProgrammeCreateRequest dto);
+    Task<WorkoutProgrammeReturnDto?> CreateProgrammeFromTemplate(int templateId);
 }

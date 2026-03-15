@@ -45,6 +45,7 @@ public class WorkoutProgrammeController : Controller
     public async Task<ActionResult<WorkoutProgrammeReturnDto>>
         CreateFiveThreeOneProgramme()
     {
-        return Ok();
+        var res = await _workoutProgrammeService.CreateProgrammeFromTemplate(2);
+        return Ok(res);
     }
 }

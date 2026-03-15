@@ -349,27 +349,56 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         };
     }
 
-    public async Task TestYouCanDelThis()
+    public async Task<WorkoutProgrammeReturnDto?> CreateProgrammeFromTemplate(int templateId)
     {
-        var template = new WorkoutProgrammeTemplate()
+        var template = await Context.WorkoutProgrammeTemplates
+            .Include(x => x.SessionTemplates)
+            .ThenInclude(x => x.SetBlocTemplates)
+            .ThenInclude(x => x.SetTemplates)
+            .Include(workoutProgrammeTemplate => workoutProgrammeTemplate.SessionTemplates)
+            .ThenInclude(sessionTemplate => sessionTemplate.SetBlocTemplates)
+            .ThenInclude(setBlocTemplate => setBlocTemplate.Exercise)
+            .FirstOrDefaultAsync(x => x.Id == templateId);
+
+        if (template is null) return null;
+
+        var programme = new WorkoutProgramme
         {
-            Name = "Five Three One Template",
-            CreatedBy = "SYSTEM",
+            WorkoutProgrammeTemplateID = template.Id,
+            Name = template.Name,
+            Description = template.Description,
             Created = DateTime.Now,
-            SessionTemplates = new List<SessionTemplate>()
-            {
-                new()
+            CreatedBy = "SYSTEM",
+            Sessions = template.SessionTemplates.Select(s =>
+                new Session
                 {
-                    Name = "Overhead Press",
-                    DisplayOrder = 1,
-                    SetBlocTemplates = new List<SetBlocTemplate>()
-                    {
-
-                    }
-
-                }
-            }
+                    Name = s.Name,
+                    DisplayOrder = s.DisplayOrder,
+                    Created = DateTime.Now,
+                    CreatedBy = "SYSTEM",
+                    SessionTemplateId = s.Id,
+                    SetBlocs = s.SetBlocTemplates.Select(sb =>
+                        new SetBloc
+                        {
+                            Name = sb.Name,
+                            DisplayOrder = sb.DisplayOrder,
+                            ExerciseId = sb.Exercise.Id,
+                            SetBlocTemplateId = sb.Id,
+                            Sets = sb.SetTemplates.Select(set =>
+                                new Set
+                                {
+                                    SetTemplateId = set.Id,
+                                    DisplayOrder = set.DisplayOrder,
+                                    Created = DateTime.Now,
+                                    Description = set.Description,
+                                    RepFloor = set.RepFloor,
+                                    RepCeiling = set.RepCeiling,
+                                }).ToList()
+                        }).ToList()
+                }).ToList()
         };
+        await Context.WorkoutProgrammes.AddAsync(programme);
+        await Context.SaveChangesAsync();
+        return WorkoutProgrammeToDto(programme);
     }
-    
 }
