@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
       { path: "addExercise", element: <ExerciseController /> },
       {
         path: "newWorkoutProgramme",
-        element: <WorkoutProgrammeController mode={"create"} />,
+        element: <WorkoutProgrammeController mode={"input"} />,
       },
     ],
   },

@@ -52,7 +52,7 @@ export function WorkoutProgrammeController({
       setWorkoutProgrammeData(data);
     });
   }, [workoutProgrammeId]);
-
+  const editable: boolean = mode === "create" || "edit" ? true : false;
   const getSelectedSession = (): Session | null => {
     if (!selectedSessionId) return null;
 
@@ -107,8 +107,6 @@ export function WorkoutProgrammeController({
       sessions: [...prev.sessions, newSession],
     }));
   };
-
-  useEffect(() => {}, [selectedSessionId]);
 
   const logData = () => {
     console.log(`session: ${workoutProgrammeData}`);
@@ -166,6 +164,7 @@ export function WorkoutProgrammeController({
           <h2>
             <input
               name={"name"}
+              disabled={editable}
               value={workoutProgrammeData?.name}
               onChange={updateWorkoutProgrammeData}
             />
