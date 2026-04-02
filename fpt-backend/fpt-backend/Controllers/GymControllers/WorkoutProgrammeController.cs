@@ -3,6 +3,7 @@ using fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Data.Models.GymModels.Dto;
 using fpt_backend.Services.GymServices.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fpt_backend.Controllers.GymControllers;
@@ -26,6 +27,7 @@ public class WorkoutProgrammeController : Controller
     }
     
     [HttpGet("getWorkoutProgramme")]
+    [Authorize(Roles = "standardUser")]
     public async Task<ActionResult<WorkoutProgramme>>GetById(int Id)
     {
         Console.WriteLine(Id);
@@ -48,4 +50,5 @@ public class WorkoutProgrammeController : Controller
         var res = await _workoutProgrammeService.CreateProgrammeFromTemplate(2);
         return Ok(res);
     }
+    
 }

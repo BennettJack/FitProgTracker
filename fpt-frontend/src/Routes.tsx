@@ -5,6 +5,7 @@ import AccessTests from "./Pages/Testing/AccessTests";
 import { WorkoutProgrammeController } from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
 import FiveThreeOneController from "./Components/Gym Components/fiveThreeOneController";
 import ExerciseController from "./Components/ExerciseController";
+import UserMenu from "./a/testComponent";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
       { path: "testAccess", element: <AccessTests /> },
       { path: "test531", element: <FiveThreeOneController /> },
       { path: "addExercise", element: <ExerciseController /> },
+      { path: "keycloakTest", element: <UserMenu /> },
       {
         path: "newWorkoutProgramme",
         element: <WorkoutProgrammeController mode={"input"} />,

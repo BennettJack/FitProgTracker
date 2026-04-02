@@ -1,7 +1,9 @@
 using System.Security.Claims;
+using System.Text.Json;
 using fpt_backend.Data;
 using fpt_backend.Helper_classes;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -22,111 +24,72 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy.WithOrigins("https://localhost:3000") // React dev server
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials(); // must allow credentials for cookies
-        });
+    options.AddPolicy("react", policy =>
+    {
+        policy
+            .WithOrigins("https://localhost:3000") // your React URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
 });
 
 
 builder.Services.AddDbContext<FptDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConString"))); //temp connection string
 
-builder.Services.AddDataProtection()
-    .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/dataprotection"))
-    .SetApplicationName("bennettj.SSO");
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-})
-.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-{
-    options.Cookie.Name = ".bennettj.Sso";
-    options.Cookie.Domain = "localhost"; // if apps share parent domain
-    options.Cookie.SameSite = SameSiteMode.None;
-#if DEBUG
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-#else
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-#endif
-})
-.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-{
-    options.Authority = builder.Configuration["Authentication:OIDC:Authority"];
-    options.ClientId = builder.Configuration["Authentication:OIDC:ClientId"];
-    options.ClientSecret = builder.Configuration["Authentication:OIDC:ClientSecret"];
-    options.CallbackPath = "/signin-oidc"; 
-    options.ResponseType = "code";
-    options.UsePkce = true; // optional - safe to use
-    options.SaveTokens = true; // keep id/access/refresh tokens in auth properties
-    options.GetClaimsFromUserInfoEndpoint = true;
-
-    options.Scope.Clear();
-    options.Scope.Add("openid");
-    options.Scope.Add("profile");
-    options.Scope.Add("email");
-    options.Scope.Add("groups");
-    options.Scope.Add("offline_access"); // if you want refresh tokens
-    
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        NameClaimType = "preferred_username",
-        RoleClaimType = "groups"
-    };
+        options.Authority = "http://localhost:8080/realms/BennettApps";
+        options.RequireHttpsMetadata = false;
 
-    options.Events = new OpenIdConnectEvents
-    {
-        OnTokenValidated = context =>
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            Console.WriteLine("OnTokenValidated");
-            var identity = context.Principal.Identity as ClaimsIdentity;
+            ValidateAudience = true,
+            ValidAudience = "amino-backend",
+            ValidateIssuer = true,
+            ValidIssuer = "http://localhost:8080/realms/BennettApps",
+            ValidateLifetime = true,
+            RoleClaimType = ClaimTypes.Role
+        };
 
-            // Grab the groups claim
-            var groupsClaim = identity.FindAll("groups");
-
-            if (groupsClaim.Any())
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = context =>
             {
-                // Assuming groupsClaim is a JSON array, parse it
-                var claims = groupsClaim.Select(x => new Claim(x.Type, x.Value)).ToList();
+                var identity = (ClaimsIdentity)context.Principal.Identity;
 
-                foreach (var group in claims)
+                var resourceAccess = identity.FindFirst("resource_access")?.Value;
+
+                if (!string.IsNullOrEmpty(resourceAccess))
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, group.Value));
+                    using var doc = JsonDocument.Parse(resourceAccess);
+
+                    if (doc.RootElement.TryGetProperty("amino-frontend", out var client))
+                    {
+                        if (client.TryGetProperty("roles", out var roles))
+                        {
+                            foreach (var role in roles.EnumerateArray())
+                            {
+                                identity.AddClaim(
+                                    new Claim(ClaimTypes.Role, role.GetString())
+                                );
+                            }
+                        }
+                    }
                 }
-            }
 
-            return Task.CompletedTask;
-        },
-        OnRedirectToIdentityProviderForSignOut = ctx =>
-        {
-            // send id_token_hint if available
-            var idToken = ctx.HttpContext.User.FindFirst("id_token")?.Value;
-            if (!string.IsNullOrEmpty(idToken))
-            {
-                ctx.ProtocolMessage.IdTokenHint = idToken;
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
-        },
-        OnTicketReceived = ctx =>
-        {
-        // After successful OIDC login, redirect to frontend
-        Console.WriteLine("test thing");
-        ctx.ReturnUri = "https://localhost:3000";
-        return Task.CompletedTask;
-    }
-    };
-});
+        };
+    });
 
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseRouting();
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("react");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

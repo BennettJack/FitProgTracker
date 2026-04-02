@@ -10,6 +10,7 @@ import {
 import { ExerciseSessionController } from "../../../Components/Gym Components/ExerciseSessionController";
 import axios, { AxiosResponse } from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { keycloak } from "../../../keycloak.ts";
 
 export function WorkoutProgrammeController({
   workoutProgrammeId,
@@ -76,10 +77,10 @@ export function WorkoutProgrammeController({
     WorkoutProgramme | undefined
   > => {
     try {
-      const { data } = await axios.get<WorkoutProgramme>(
-        "/api/workoutProgramme",
-      );
-      return data;
+      const res = await axios.get<WorkoutProgramme>("/api/workoutProgramme", {
+        headers: { Authorization: `Bearer ${keycloak.token}` },
+      });
+      return res.data;
     } catch (error) {
       console.error(error);
     }
@@ -148,9 +149,13 @@ export function WorkoutProgrammeController({
   };
   const getWorkoutProgramme = async () => {
     try {
+      keycloak.updateToken(30);
       await axios
         .get(
           "https://localhost:7206/api/WorkoutProgramme/getWorkoutProgramme?id=3",
+          {
+            headers: { Authorization: `Bearer ${keycloak.token}` },
+          },
         )
         .then((data) => {
           setWorkoutProgrammeData(data.data);

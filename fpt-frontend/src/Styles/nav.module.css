@@ -1,0 +1,43 @@
+﻿.navContainer {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    grid-template-areas: "logo links userControls";
+    justify-items: center;
+    border: 1px solid var(--colour-primary-text);
+    height: 60px;
+    
+    align-items: stretch;
+}
+
+.logo{
+    align-self: center;
+}
+.links {
+    display: flex;
+}
+.links ul {
+    align-items: stretch;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.links ul li {
+    display: flex;
+    align-items: stretch;
+}
+
+.links a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--colour-primary-text);
+    padding: 0 15px;
+}
+.links a:hover{
+    background-color: var(--colour-primary-button-hover);
+}
+
+.userControls{
+    align-self: center;
+}
