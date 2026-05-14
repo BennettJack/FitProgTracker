@@ -1,54 +1,46 @@
-﻿import axios from "axios";
-import { useState } from "react";
+﻿import { useState } from "react";
+import { api } from "../../api/apiClient";
+
 export default function AccessTests() {
   const [message, setMessage] = useState<string>("");
-  const baseUrl: string = "https://localhost:7206/UserAccount";
 
   const checkUserRole = async () => {
     try {
-      const response = await axios.get(
-        "https://localhost:7206/UserAccount/testUserRole",
-        { withCredentials: true },
+      const response = await api.get("/UserAccount/testUserRole");
+
+      setMessage(
+        `User role access granted: ${response.data.username ?? response.data.Username}`,
       );
-      setMessage(`User role access granted: ${response.data.Username}`);
     } catch (error: any) {
-      if (error.response) {
-        setMessage(`User role access denied: ${error.response.status}`);
-      } else {
-        setMessage("Error checking user role");
-      }
+      setMessage(
+        `User role access denied: ${error.response?.status ?? "unknown"}`,
+      );
     }
   };
 
   const checkSuperUserRole = async () => {
     try {
-      const response = await axios.get(baseUrl + "/testSuperUserRole", {
-        withCredentials: true,
-      });
-      setMessage(`SuperUser role access granted: ${response.data.Username}`);
+      const response = await api.get("/UserAccount/testSuperUserRole");
+
+      setMessage(
+        `SuperUser role access granted: ${response.data.username ?? response.data.Username}`,
+      );
     } catch (error: any) {
-      if (error.response) {
-        setMessage(`SuperUser role access denied: ${error.response.status}`);
-      } else {
-        setMessage("Error checking superuser role");
-      }
+      setMessage(
+        `SuperUser role access denied: ${error.response?.status ?? "unknown"}`,
+      );
     }
   };
 
   const checkCookie = async () => {
     try {
-      const response = await axios.get(baseUrl + "/checkcookie", {
-        withCredentials: true,
-      });
+      const response = await api.get("/UserAccount/checkcookie");
+
       setMessage(
         `Cookie check → Authenticated: ${response.data.authenticated}, Username: ${response.data.username}, Roles: ${response.data.roles?.join(", ")}`,
       );
     } catch (error: any) {
-      if (error.response) {
-        setMessage(`Cookie check failed: ${error.response.status}`);
-      } else {
-        setMessage("Error checking cookie");
-      }
+      setMessage(`Cookie check failed: ${error.response?.status ?? "unknown"}`);
     }
   };
 
@@ -59,6 +51,7 @@ export default function AccessTests() {
         <button onClick={checkSuperUserRole}>Check SuperUser Role</button>
         <button onClick={checkCookie}>Check Cookie</button>
       </div>
+
       {message && <p className="testText">{message}</p>}
     </div>
   );

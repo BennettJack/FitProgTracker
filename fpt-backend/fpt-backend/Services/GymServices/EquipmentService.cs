@@ -8,8 +8,8 @@ using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class EquipmentService(FptDbContext context) 
-    : BaseService<Equipment>(context), IEquipmentService
+public class EquipmentService(FptDbContext context, ICurrentUserService currentUserService) 
+    : BaseService<Equipment>(context, currentUserService), IEquipmentService
 {
 
     //TODO fix null

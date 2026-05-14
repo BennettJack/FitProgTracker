@@ -10,6 +10,6 @@ public class WorkoutProgramme : BaseModel
     public int? WorkoutProgrammeTemplateID { get; set; }
     public WorkoutProgrammeTemplate? WorkoutProgrammeTemplate { get; set; }
     
-   
     public List<Session> Sessions { get; set; } = new();
+    
 }

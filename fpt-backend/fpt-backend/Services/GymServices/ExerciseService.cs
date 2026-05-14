@@ -17,8 +17,9 @@ public class ExerciseService : BaseService<Exercise>, IExerciseService
     public ExerciseService(
         FptDbContext context,
         IMuscleService muscleService,
-        IEquipmentService equipmentService
-        ) : base(context)
+        IEquipmentService equipmentService,
+        ICurrentUserService currentUserService
+        ) : base(context, currentUserService)
     {
         _muscleService = muscleService;
         _equipmentService = equipmentService;

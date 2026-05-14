@@ -3,8 +3,10 @@ using fpt_backend.Data;
 using fpt_backend.Data.DTO.GeneralDTOs;
 using fpt_backend.Data.Models;
 using fpt_backend.Data.Models.GymModels;
+using fpt_backend.Data.Models.UserModels;
 using fpt_backend.DbRepositories.Interfaces;
 using fpt_backend.Helper_classes;
+using fpt_backend.Services.GymServices.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +16,15 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
 {
     protected readonly FptDbContext Context;
     protected readonly DbSet<T> DbSet;
-    
-    public BaseService(FptDbContext context)
+    protected readonly ICurrentUserService CurrentUser;
+
+    protected string CurrentUserId => CurrentUser.UserId;
+
+    public BaseService(FptDbContext context, ICurrentUserService  currentUserService)
     {
         Context = context;
         DbSet = Context.Set<T>();
+        CurrentUser = currentUserService;
     }
     
     public virtual async Task<List<T>> GetAllAsync()

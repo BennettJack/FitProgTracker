@@ -6,20 +6,54 @@ import { WorkoutProgrammeController } from "./Pages/Gym/WorkoutProgrammeBuilder/
 import FiveThreeOneController from "./Components/Gym Components/fiveThreeOneController";
 import ExerciseController from "./Components/ExerciseController";
 import UserMenu from "./a/testComponent";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "loginSignup", element: <LoginSignup /> },
-      { path: "testAccess", element: <AccessTests /> },
-      { path: "test531", element: <FiveThreeOneController /> },
-      { path: "addExercise", element: <ExerciseController /> },
-      { path: "keycloakTest", element: <UserMenu /> },
+      { path: "login", element: <LoginSignup /> },
+
+      {
+        path: "testAccess",
+        element: (
+          <ProtectedRoute>
+            <AccessTests />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "test531",
+        element: (
+          <ProtectedRoute>
+            <FiveThreeOneController />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "addExercise",
+        element: (
+          <ProtectedRoute>
+            <ExerciseController />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "keycloakTest",
+        element: (
+          <ProtectedRoute>
+            <UserMenu />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: "newWorkoutProgramme",
-        element: <WorkoutProgrammeController mode={"input"} />,
+        element: (
+          <ProtectedRoute>
+            <WorkoutProgrammeController mode={"input"} />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

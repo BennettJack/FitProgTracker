@@ -5,10 +5,15 @@ using fpt_backend.Services.GymServices.Interfaces;
 
 namespace fpt_backend.Services.GymServices;
 
-public class SetBlocService : BaseService<SetBloc>, ISetBlocService 
+public class SetBlocService : BaseService<SetBloc>, ISetBlocService
 {
-    public SetBlocService(FptDbContext context,
-        IExerciseSetService exerciseSetService) : base(context)
+    public SetBlocService(
+        FptDbContext context,
+        IExerciseSetService exerciseSetService,
+        ICurrentUserService currentUserService
+    )
+        : base(context, currentUserService)
     {
+        { }
     }
 }

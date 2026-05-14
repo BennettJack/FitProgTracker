@@ -17,9 +17,8 @@ public class ExerciseSetService : BaseService<Set>, IExerciseSetService
     public ExerciseSetService(
         FptDbContext context,
         IExerciseService exerciseService,
-        IExerciseSessionService exerciseSessionService
-        ) : base(context)
-    {
+        IExerciseSessionService exerciseSessionService,
+            ICurrentUserService currentUserService) : base(context, currentUserService){
         _exerciseService = exerciseService;
         _exerciseSessionService = exerciseSessionService;
     }

@@ -11,5 +11,5 @@ namespace fpt_backend.Services.GymServices;
 public class ExerciseSetRecordService : BaseService<ExerciseSetRecord>, IExerciseSetRecordService
 {
     public ExerciseSetRecordService(
-        FptDbContext context) : base(context){}
+        FptDbContext context, ICurrentUserService currentUserService) : base(context, currentUserService){}
 }

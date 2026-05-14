@@ -2,6 +2,7 @@
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
 using fpt_backend.DbRepositories.Interfaces;
+using fpt_backend.Services;
 using fpt_backend.Services.GymServices;
 using fpt_backend.Services.GymServices.Interfaces;
 
@@ -13,6 +14,7 @@ public static class ServiceCollectionExtensions
     {
         //Gym Services
         services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IEquipmentService, EquipmentService>();
         services.AddScoped<IExerciseService, ExerciseService>();
         services.AddScoped<IMuscleService, MuscleService>();

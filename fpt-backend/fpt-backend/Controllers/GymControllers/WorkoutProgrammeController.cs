@@ -2,12 +2,14 @@
 using fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.Data.Models.GymModels.Dto;
+using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fpt_backend.Controllers.GymControllers;
 
+[ApiController]
 [Route("api/[controller]")]
 public class WorkoutProgrammeController : Controller
 {
@@ -19,36 +21,37 @@ public class WorkoutProgrammeController : Controller
     }
 
     [HttpPost("newWorkoutProgramme")]
-    public async Task<ActionResult<WorkoutProgramme>> 
-        AddNewWorkoutProgramme([FromBody] WorkoutProgrammeCreateRequest programme)
+    public async Task<ActionResult<WorkoutProgramme>> AddNewWorkoutProgramme(
+        [FromBody] WorkoutProgrammeCreateRequest programme
+    )
     {
         Console.WriteLine(JsonSerializer.Serialize(programme));
         return Ok(await _workoutProgrammeService.AddAsync(programme));
     }
-    
+
     [HttpGet("getWorkoutProgramme")]
     [Authorize(Roles = "standardUser")]
-    public async Task<ActionResult<WorkoutProgramme>>GetById(int Id)
+    public async Task<ActionResult<WorkoutProgramme>> GetById(int Id)
     {
-        Console.WriteLine(Id);
         var programme = await _workoutProgrammeService.GetAsDtoAsync(Id);
         return Ok(programme);
     }
 
     [HttpPost("updateWorkoutProgramme")]
-    public async Task<ActionResult<WorkoutProgrammeReturnDto>>
-        Update([FromBody] WorkoutProgrammeCreateRequest programme)
+    public async Task<ActionResult<WorkoutProgrammeReturnDto>> Update(
+        [FromBody] WorkoutProgrammeCreateRequest programme
+    )
     {
         var ret = await _workoutProgrammeService.UpdateTestAsync(programme);
         return Ok(ret);
     }
 
     [HttpPost("createFiveThreeOneProgramme")]
-    public async Task<ActionResult<WorkoutProgrammeReturnDto>>
-        CreateFiveThreeOneProgramme()
+    [Authorize(Roles = "standardUser")]
+    public async Task<ActionResult<WorkoutProgrammeReturnDto>> CreateFiveThreeOneProgramme()
     {
+        var test = User.GetUserId();
         var res = await _workoutProgrammeService.CreateProgrammeFromTemplate(2);
         return Ok(res);
     }
-    
 }

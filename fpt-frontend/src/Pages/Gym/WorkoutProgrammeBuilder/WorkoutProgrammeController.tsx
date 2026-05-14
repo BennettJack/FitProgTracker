@@ -10,7 +10,7 @@ import {
 import { ExerciseSessionController } from "../../../Components/Gym Components/ExerciseSessionController";
 import axios, { AxiosResponse } from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { keycloak } from "../../../keycloak.ts";
+import { api } from "../../../api/apiClient";
 
 export function WorkoutProgrammeController({
   workoutProgrammeId,
@@ -78,7 +78,7 @@ export function WorkoutProgrammeController({
   > => {
     try {
       const res = await axios.get<WorkoutProgramme>("/api/workoutProgramme", {
-        headers: { Authorization: `Bearer ${keycloak.token}` },
+        headers: { Authorization: `Bearer ` },
       });
       return res.data;
     } catch (error) {
@@ -149,18 +149,14 @@ export function WorkoutProgrammeController({
   };
   const getWorkoutProgramme = async () => {
     try {
-      keycloak.updateToken(30);
-      await axios
-        .get(
-          "https://localhost:7206/api/WorkoutProgramme/getWorkoutProgramme?id=3",
-          {
-            headers: { Authorization: `Bearer ${keycloak.token}` },
-          },
-        )
-        .then((data) => {
-          setWorkoutProgrammeData(data.data);
-        });
-    } catch (error) {}
+      const res = await api.get("/api/WorkoutProgramme/getWorkoutProgramme", {
+        params: { id: 3 },
+      });
+
+      setWorkoutProgrammeData(res.data);
+    } catch (error) {
+      console.error("Failed to fetch workout programme:", error);
+    }
   };
   return (
     <div className={styles.wrapper}>

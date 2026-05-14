@@ -10,5 +10,5 @@ namespace fpt_backend.Services.GymServices;
 
 public class MuscleGroupService : BaseService<MuscleGroup>, IMuscleGroupService
 {
-    public MuscleGroupService(FptDbContext context) : base(context){}
+    public MuscleGroupService(FptDbContext context, ICurrentUserService currentUserService) : base(context, currentUserService){}
 }

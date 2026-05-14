@@ -32,6 +32,12 @@ function FiveThreeOneController() {
     await axios
       .post(
         "https://localhost:7206/api/WorkoutProgramme/createFiveThreeOneProgramme",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer`,
+          },
+        },
       )
       .then((res) => {
         res.status === 201 ? console.log("success") : console.log("fail");
