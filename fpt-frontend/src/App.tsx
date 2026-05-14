@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "./app.module.css";
 import { Outlet } from "react-router";
-import NavBar from "./Components/nav";
+import NavBar from "./Components/Nav";
 
 function App() {
   return (
     <div className={styles.appWrapper}>
-      <NavBar username={"test user"} userType={2} />
+      <NavBar />
       <Outlet />
     </div>
   );

@@ -7,7 +7,7 @@ import {
   Session,
   UpdateProgrammeData,
 } from "../../../Types/WorkoutTypes";
-import { ExerciseSessionController } from "../../../Components/Gym Components/ExerciseSessionController";
+import { ExerciseSessionController } from "../../../Components/gym/ExerciseSessionController";
 import axios, { AxiosResponse } from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../../api/apiClient";

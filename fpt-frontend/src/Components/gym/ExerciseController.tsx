@@ -1,6 +1,6 @@
 ﻿import React, { FormEvent, use, useEffect, useState } from "react";
-import { Select, SelectOption } from "./CustomElements/Select";
-import { Equipment, Muscle } from "../Types/ModelTypes";
+import { Select, SelectOption } from "../CustomElements/Select";
+import { Equipment, Muscle } from "../../Types/ModelTypes";
 import axios from "axios";
 
 interface formData {

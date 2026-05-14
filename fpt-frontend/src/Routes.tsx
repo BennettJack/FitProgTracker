@@ -3,9 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import AccessTests from "./Pages/Testing/AccessTests";
 import { WorkoutProgrammeController } from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
-import FiveThreeOneController from "./Components/Gym Components/fiveThreeOneController";
-import ExerciseController from "./Components/ExerciseController";
-import UserMenu from "./a/testComponent";
+import FiveThreeOneController from "./Components/gym/FiveThreeOneController";
+import ExerciseController from "./Components/gym/ExerciseController";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 export const router = createBrowserRouter([
@@ -36,14 +35,6 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ExerciseController />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "keycloakTest",
-        element: (
-          <ProtectedRoute>
-            <UserMenu />
           </ProtectedRoute>
         ),
       },
