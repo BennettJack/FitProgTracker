@@ -1,7 +1,10 @@
-﻿namespace fpt_backend.Data.Models.GymModels;
+﻿using fpt_backend.Data.Constants.GymConstants;
+
+namespace fpt_backend.Data.Models.GymModels;
 
 public class FiveThreeOneTracker : BaseModel
 {
+    public MaxTypes MaxType { get; set; }
     public int OverheadPressCycle { get; set; }
     public int BarbellSquatCycle { get; set; }
     public int BenchPressCycle { get; set; }
@@ -11,6 +14,5 @@ public class FiveThreeOneTracker : BaseModel
     public int BarbellSquatTrainingMax { get; set; }
     public int BenchPressTrainingMax { get; set; }
     public int DeadliftTrainingMax { get; set; }
-    public WorkoutProgramme WorkoutProgramme { get; set; }
-    public int WorkoutProgrammeId { get; set; }
+    public string UserId { get; set; }
 }

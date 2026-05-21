@@ -1,4 +1,6 @@
-﻿namespace fpt_backend.Data.DTO.GymDTOs.CreateRequests;
+﻿using fpt_backend.Data.Constants.GymConstants;
+
+namespace fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 
 public class ExerciseSessionCreateRequest : BaseCreateRequest
 {

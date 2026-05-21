@@ -31,6 +31,7 @@ public class FptDbContext : DbContext
     public virtual DbSet<WorkoutProgrammeTemplate> WorkoutProgrammeTemplates { get; set; }
     
     public virtual DbSet<FiveThreeOneTracker> FiveThreeOneTrackers { get; set; }
+    public virtual DbSet<ExerciseType> ExerciseTypes { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

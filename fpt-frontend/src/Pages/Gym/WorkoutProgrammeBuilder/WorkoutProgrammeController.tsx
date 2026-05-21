@@ -147,6 +147,13 @@ export function WorkoutProgrammeController({
       ),
     }));
   };
+  const getFtoTracker = async () => {
+    try {
+      const res = await api.get("/api/FiveThreeOne/get", {});
+    } catch (error) {
+      console.error("Failed to fetch workout programme:", error);
+    }
+  };
   const getWorkoutProgramme = async () => {
     try {
       const res = await api.get("/api/WorkoutProgramme/getWorkoutProgramme", {
@@ -212,6 +219,7 @@ export function WorkoutProgrammeController({
         </div>
         <button onClick={logData}>Log Data</button>
         <button onClick={submitData}>Submit</button>
+        <button onClick={getFtoTracker}>Get FTO</button>
         <button onClick={getWorkoutProgramme}>Get programme</button>
         <button disabled={waitingUpdateResponse} onClick={updateProgramme}>
           Update programme

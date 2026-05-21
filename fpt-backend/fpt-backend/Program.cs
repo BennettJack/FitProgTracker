@@ -104,10 +104,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<FptDbContext>();
-    FiveThreeOneSeeder.Seed(context);
-}
-
 app.Run();

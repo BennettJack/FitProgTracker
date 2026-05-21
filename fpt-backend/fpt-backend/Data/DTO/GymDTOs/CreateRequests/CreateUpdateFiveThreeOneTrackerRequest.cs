@@ -2,7 +2,7 @@
 
 namespace fpt_backend.Data.DTO.GymDTOs.CreateRequests;
 
-public class FiveThreeOneTrackerDto
+public class CreateUpdateFiveThreeOneTrackerRequest : BaseCreateRequest
 {
     public MaxTypes MaxType { get; set; }
     public int OverheadPressWeight { get; set; }

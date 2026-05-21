@@ -5,7 +5,8 @@ using fpt_backend.Helper_classes;
 
 namespace fpt_backend.DbRepositories.Interfaces;
 
-public interface IBaseService<T> where T : class
+public interface IBaseService<T>
+    where T : class
 {
     Task<List<T>> GetAllAsync();
     Task<T> GetByIdAsync(int id);
@@ -16,4 +17,6 @@ public interface IBaseService<T> where T : class
     Task<List<T>> AddMultipleAsync(List<T> entities);
     Task<T> FindAsync(T entity);
     public Task<List<DropdownReturnDto>> GetListAsDropdownAsync();
+    Task<T> GetByUserIdAsync(string userId);
+    Task<List<T>> GetAllByUserIdAsync(string userId);
 }

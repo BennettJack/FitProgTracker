@@ -1,5 +1,4 @@
-﻿
-using fpt_backend.Data.Models.GymModels;
+﻿using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
 using fpt_backend.DbRepositories.Interfaces;
 using fpt_backend.Services;
@@ -24,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IExerciseSetRecordService, ExerciseSetRecordService>();
         services.AddScoped<IWorkoutProgrammeService, WorkoutProgrammeService>();
         services.AddScoped<ISetBlocService, SetBlocService>();
+        services.AddScoped<IFiveThreeOneService, FiveThreeOneService>();
         return services;
     }
 }

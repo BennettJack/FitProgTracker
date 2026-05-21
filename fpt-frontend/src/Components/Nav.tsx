@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from "react";
+﻿import React from "react";
 import styles from "../Styles/nav.module.css";
 import { keycloak, logout } from "../auth/keycloak";
 

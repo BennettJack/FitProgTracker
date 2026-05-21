@@ -12,7 +12,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.DbRepositories;
 
-public class BaseService<T> : IBaseService<T> where T : BaseModel
+public class BaseService<T> : IBaseService<T>
+    where T : BaseModel
 {
     protected readonly FptDbContext Context;
     protected readonly DbSet<T> DbSet;
@@ -20,13 +21,13 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
 
     protected string CurrentUserId => CurrentUser.UserId;
 
-    public BaseService(FptDbContext context, ICurrentUserService  currentUserService)
+    public BaseService(FptDbContext context, ICurrentUserService currentUserService)
     {
         Context = context;
         DbSet = Context.Set<T>();
         CurrentUser = currentUserService;
     }
-    
+
     public virtual async Task<List<T>> GetAllAsync()
     {
         var items = await DbSet.ToListAsync();
@@ -63,7 +64,7 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
         await Context.SaveChangesAsync();
         return entityToUpdate;
     }
-    
+
     //TODO fix null
     public virtual async Task<T> DeleteAsync(T entity)
     {
@@ -72,7 +73,7 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
         {
             return null;
         }
-        
+
         DbSet.Remove(entityToDelete);
         return entity;
     }
@@ -80,6 +81,7 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
     public virtual async Task<T> AddAsync(T entity)
     {
         await Context.Set<T>().AddAsync(entity);
+        await Context.SaveChangesAsync();
         return entity;
     }
 
@@ -101,7 +103,7 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
         {
             return null;
         }
-        
+
         return entityToFind;
     }
 
@@ -113,12 +115,20 @@ public class BaseService<T> : IBaseService<T> where T : BaseModel
 
         foreach (var entity in entities)
         {
-            dropdownDtoList.Add(new()
-            {
-                Value = entity.Id,
-                Label = "",
-            });
+            dropdownDtoList.Add(new() { Value = entity.Id, Label = "" });
         }
-        return  dropdownDtoList;
+        return dropdownDtoList;
+    }
+
+    public virtual async Task<List<T>> GetAllByUserIdAsync(string userId)
+    {
+        var entities = await DbSet.Where(e => e.CreatedBy == userId).ToListAsync();
+        return entities;
+    }
+
+    public virtual async Task<T> GetByUserIdAsync(string userId)
+    {
+        var entity = await DbSet.FirstOrDefaultAsync(e => e.CreatedBy == userId);
+        return entity;
     }
 }
