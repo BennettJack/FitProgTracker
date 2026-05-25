@@ -8,7 +8,7 @@ export type SelectOption = {
 type SingleSelectProps = {
   multiple?: false;
   value?: SelectOption;
-  onChange: (value: SelectOption | undefined) => void;
+  onChange: (value: SelectOption | null) => void;
 };
 
 type MultiSelectProps = {
@@ -57,7 +57,7 @@ export function Select({
     setOptionsToDisplay(availableOptions);
   }, [availableOptions]);
   function clearOptions() {
-    multiple ? onChange([]) : onChange(undefined);
+    multiple ? onChange([]) : onChange(null);
     setAvailableOptions(options);
   }
 

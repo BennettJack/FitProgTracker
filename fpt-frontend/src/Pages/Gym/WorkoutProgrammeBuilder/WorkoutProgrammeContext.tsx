@@ -47,20 +47,20 @@ type WorkoutProgrammeContextValue = {
   ) => void;
 
   updateSession: (
-    sessionId: number | string | undefined,
+    sessionId: number | string | null,
     updater: (session: Session) => Session,
   ) => void;
 
   updateSetBloc: (
-    sessionId: number | string | undefined,
-    setBlocId: number | string | undefined,
+    sessionId: number | string | null,
+    setBlocId: number | string | null,
     updater: (setBloc: ExerciseSetBloc) => ExerciseSetBloc,
   ) => void;
 
   updateExerciseSet: (
-    sessionId: number | string | undefined,
-    setBlocId: number | string | undefined,
-    setId: number | string | undefined,
+    sessionId: number | string | null,
+    setBlocId: number | string | null,
+    setId: number | string | null,
     updater: (set: ExerciseSet) => ExerciseSet,
   ) => void;
 
@@ -69,7 +69,7 @@ type WorkoutProgrammeContextValue = {
   error: string | null;
 
   addSession: () => void;
-  removeSession: (sessionId: number | string | undefined) => void;
+  removeSession: (sessionId: number | string | null) => void;
   updateProgrammeName: (name: string) => void;
 
   createProgramme: () => Promise<void>;
@@ -87,9 +87,8 @@ const emptyProgramme: WorkoutProgramme = {
   sessions: [],
 };
 
-const WorkoutProgrammeContext = createContext<
-  WorkoutProgrammeContextValue | undefined
->(undefined);
+const WorkoutProgrammeContext =
+  createContext<WorkoutProgrammeContextValue | null>(null);
 
 function getEntityId(entity: { id?: number; tempId?: string }) {
   return entity.id ?? entity.tempId;
@@ -116,7 +115,7 @@ export function WorkoutProgrammeProvider({
 
   const routeWorkoutProgrammeId = params.workoutProgrammeId
     ? Number(params.workoutProgrammeId)
-    : undefined;
+    : null;
 
   const resolvedWorkoutProgrammeId =
     workoutProgrammeId ?? routeWorkoutProgrammeId;
@@ -160,7 +159,7 @@ export function WorkoutProgrammeProvider({
   };
 
   const updateSession = (
-    sessionId: number | string | undefined,
+    sessionId: number | string | null,
     updater: (session: Session) => Session,
   ) => {
     if (!isEditable) return;
@@ -174,8 +173,8 @@ export function WorkoutProgrammeProvider({
   };
 
   const updateSetBloc = (
-    sessionId: number | string | undefined,
-    setBlocId: number | string | undefined,
+    sessionId: number | string | null,
+    setBlocId: number | string | null,
     updater: (setBloc: ExerciseSetBloc) => ExerciseSetBloc,
   ) => {
     if (!isEditable) return;
@@ -189,9 +188,9 @@ export function WorkoutProgrammeProvider({
   };
 
   const updateExerciseSet = (
-    sessionId: number | string | undefined,
-    setBlocId: number | string | undefined,
-    exerciseSetId: number | string | undefined,
+    sessionId: number | string | null,
+    setBlocId: number | string | null,
+    exerciseSetId: number | string | null,
     updater: (exerciseSet: ExerciseSet) => ExerciseSet,
   ) => {
     if (!isEditable) return;
@@ -295,7 +294,7 @@ export function WorkoutProgrammeProvider({
     });
   };
 
-  const removeSession = (sessionId: number | string | undefined) => {
+  const removeSession = (sessionId: number | string | null) => {
     if (!isEditable) return;
 
     setWorkoutProgrammeData((prev) => ({
@@ -359,7 +358,7 @@ export function WorkoutProgrammeProvider({
 
     try {
       const response = await api.get<SelectOption[]>(
-        "/api/Exercise/ExerciseOptionData",
+        "/api/Exercise/GetExercises",
       );
       setExerciseOptions(response.data);
     } catch (error) {
