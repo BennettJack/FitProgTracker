@@ -1,13 +1,19 @@
 ﻿import React, { FormEvent, use, useEffect, useState } from "react";
 import { Select, SelectOption } from "../CustomElements/Select";
-import { Equipment, Muscle } from "../../Types/ModelTypes";
 import axios from "axios";
+import { api } from "../../api/apiClient";
 
 interface formData {
   name: string;
   description: string;
   equipmentIds: number[];
   muscleIds: number[];
+}
+
+interface EquipmentOptionData {
+  equipmentOptions: SelectOption[];
+  muscleOptions: SelectOption[];
+  exerciseTypeOptions: SelectOption[];
 }
 export default function ExerciseController({}): React.ReactElement {
   const [equipment, setEquipment] = useState<SelectOption[]>([]);
@@ -17,6 +23,7 @@ export default function ExerciseController({}): React.ReactElement {
     [],
   );
   const [selectedMuscles, setSelectedMuscles] = useState<SelectOption[]>([]);
+  useState<SelectOption>();
 
   const [formData, setFormData] = useState<formData>({
     name: "",
@@ -34,8 +41,14 @@ export default function ExerciseController({}): React.ReactElement {
     );
   };
   useEffect(() => {
-    getMuscleOptions().then((data) => setMuscles(data));
-    getEquipmentOptions().then((data) => setEquipment(data));
+    getOptionData().then((data) => {
+      if (!data) {
+        console.log("error");
+      } else {
+        setEquipment(data.equipmentOptions);
+        setMuscles(data.muscleOptions);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -52,16 +65,14 @@ export default function ExerciseController({}): React.ReactElement {
       [e.target.name]: e.target.value,
     });
   };
-  const getMuscleOptions = async (): Promise<SelectOption[]> => {
-    return axios
-      .get<SelectOption[]>("https://localhost:7206/api/Muscle/getOptionData")
-      .then((response) => response.data);
-  };
-
-  const getEquipmentOptions = async (): Promise<SelectOption[]> => {
-    return axios
-      .get<SelectOption[]>("https://localhost:7206/api/Equipment/getOptionData")
-      .then((response) => response.data);
+  const getOptionData = async () => {
+    try {
+      return await api
+        .get<EquipmentOptionData>("/api/Exercise/ExerciseOptionData")
+        .then((res) => res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

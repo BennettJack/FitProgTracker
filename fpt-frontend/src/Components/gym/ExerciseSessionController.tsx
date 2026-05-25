@@ -1,73 +1,44 @@
-﻿import {
-  Session,
-  ExerciseSessionControllerProps,
-  SetBloc,
-} from "../../Types/WorkoutTypes";
-import React from "react";
-import { ExerciseSetBlocController } from "./ExerciseSetBlocController";
+﻿import { ExerciseSetBloc, Session } from "../../Types/WorkoutTypes";
+import React, { useState } from "react";
+import { useWorkoutProgrammeContext } from "../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
+import ExerciseSetBlocController from "./ExerciseSetBlocController";
 
-export function ExerciseSessionController({
-  exerciseSession,
-  updateProgramme,
-  removeSession,
-  mode,
-}: ExerciseSessionControllerProps) {
-  const updateSession = (updater: (prev: Session) => Session) => {
-    updateProgramme?.((prevProgramme) => ({
-      ...prevProgramme,
-      sessions: prevProgramme.sessions.map((session) =>
-        (session.id ?? session.tempId) ===
-        (exerciseSession.id ?? exerciseSession.tempId)
-          ? updater(session)
-          : session,
-      ),
-    }));
-  };
+export default function ExerciseSessionController() {
+  const {
+    selectedSession,
+    updateSession,
+    isEditable,
+    exerciseTypeOptions,
+    updateSetBloc,
+  } = useWorkoutProgrammeContext();
+  const [exerciseType, setExerciseType] = useState<string>(
+    exerciseTypeOptions.find(
+      (option) => option.label === "Standard" ?? exerciseTypeOptions[0].label,
+    )?.value ?? exerciseTypeOptions[0].value,
+  );
+  const addSetBloc = () => {
+    if (!isEditable) return;
 
-  const addBloc = () => {
-    let blocCount = exerciseSession.setBlocs.length;
-    blocCount += 1;
-
-    const newBloc: SetBloc = {
+    const newSetBloc: ExerciseSetBloc = {
       tempId: uuidv4(),
-      name: "Exercise" + blocCount,
+      name: `Exercise ${(selectedSession?.setBlocs.length ?? 0) + 1}`,
       sets: [],
+      type: exerciseType,
     };
 
-    updateSession((prev) => ({
+    updateSession(selectedSession?.id ?? selectedSession?.tempId, (prev) => ({
       ...prev,
-      setBlocs: [...prev.setBlocs, newBloc],
+      setBlocs: [...prev.setBlocs, newSetBloc],
     }));
   };
-
-  const handleUpdateSession = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
-
-    updateSession((prev) => ({
-      ...prev,
-      name,
-    }));
-  };
-
   return (
     <>
-      <label htmlFor={"sessionName"}>Session Name</label>
-      <input
-        name={"sessionName"}
-        type={"text"}
-        onChange={handleUpdateSession}
-        value={exerciseSession.name}
-      />
-      <p>Exercises:</p>
-      {exerciseSession.setBlocs.map((bloc, index) => (
-        <ExerciseSetBlocController
-          mode={mode}
-          updateSession={updateSession}
-          exerciseSetBloc={bloc}
-        />
+      <p>{selectedSession?.tempId ?? "No session selected"}</p>
+      {selectedSession?.setBlocs.map((setBloc) => (
+        <ExerciseSetBlocController setBloc={setBloc} />
       ))}
-      {mode === "create" && <button onClick={addBloc}>Add an exercise</button>}
+      <button onClick={() => addSetBloc()}>Add Exercise</button>
     </>
   );
 }

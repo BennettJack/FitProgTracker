@@ -21,13 +21,28 @@ public class ExerciseController : Controller
     [HttpPost("AddExercise")]
     public async Task<IActionResult> AddExercise([FromBody] AddExerciseRequestDto exerciseDto)
     {
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        
+
         var res = await _exerciseService.AddAsync(exerciseDto, "System");
 
         return Ok();
+    }
+
+    [HttpGet("ExerciseOptionData")]
+    public async Task<IActionResult> GetOptionData()
+    {
+        var res = await _exerciseService.GetExerciseOptionsAsync();
+
+        return Ok(res);
+    }
+
+    [HttpGet("GetExercises")]
+    public async Task<IActionResult> GetExercises()
+    {
+        var res = await _exerciseService.GetListAsDropdownAsync();
+        return Ok(res);
     }
 }

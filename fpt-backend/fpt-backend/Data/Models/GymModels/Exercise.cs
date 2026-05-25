@@ -8,7 +8,6 @@ public class Exercise : BaseModel
     public string ExerciseName { get; set; }
     public string? ExerciseDescription { get; set; }
     public bool GloballyVisible { get; set; }
-    public ExerciseType ExerciseType { get; set; }
     public List<Equipment> Equipment { get; set; } = new();
     public List<Muscle> Muscles { get; set; } = new();
     public List<SetTemplate> SetTemplates { get; set; } = new();

@@ -10,6 +10,9 @@ public class SetBloc : BaseModel
     public int ExerciseId { get; set; }
     public Exercise Exercise { get; set; }
 
+    public int ExerciseTypeId { get; set; }
+    public ExerciseType ExerciseType { get; set; }
+
     public int? SetBlocTemplateId { get; set; }
     public SetBlocTemplate? SetBlocTemplate { get; set; }
 

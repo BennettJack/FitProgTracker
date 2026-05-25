@@ -2,10 +2,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import AccessTests from "./Pages/Testing/AccessTests";
-import { WorkoutProgrammeController } from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
 import FiveThreeOneController from "./Components/gym/FiveThreeOneController";
 import ExerciseController from "./Components/gym/ExerciseController";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import { WorkoutProgrammeProvider } from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
+import WorkoutProgrammeController from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
 
 export const router = createBrowserRouter([
   {
@@ -42,7 +43,9 @@ export const router = createBrowserRouter([
         path: "newWorkoutProgramme",
         element: (
           <ProtectedRoute>
-            <WorkoutProgrammeController mode={"input"} />
+            <WorkoutProgrammeProvider mode="create">
+              <WorkoutProgrammeController />
+            </WorkoutProgrammeProvider>
           </ProtectedRoute>
         ),
       },

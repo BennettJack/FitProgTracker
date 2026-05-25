@@ -8,17 +8,18 @@ export type Session = {
   id?: number;
   tempId?: string;
   name: string;
-  setBlocs: SetBloc[];
+  setBlocs: ExerciseSetBloc[];
 };
 
-export type SetBloc = {
+export type ExerciseSetBloc = {
   id?: number;
   tempId?: string;
   name: string;
-  sets: Set[];
+  sets: ExerciseSet[];
+  type: string;
 };
 
-export type Set = {
+export type ExerciseSet = {
   id?: number;
   tempId?: string;
   name: string;
@@ -33,38 +34,6 @@ export type SetRecord = {
   weight: number;
 };
 
-export type ControllerMode = "create" | "edit" | "input";
-
-export type WorkoutProgrammeControllerProps = {
-  workoutProgrammeId?: number;
-  workoutProgrammeName?: string;
-  mode: ControllerMode;
-};
-
-export type ExerciseSessionControllerProps = {
-  exerciseSession: Session;
-  mode: ControllerMode;
-  updateProgramme?: (
-    updater: (prev: WorkoutProgramme) => WorkoutProgramme,
-  ) => void;
-  removeSession: () => void;
-};
-
-export type ExerciseSetBlocControllerProps = {
-  exerciseSetBloc: SetBloc;
-  mode: ControllerMode;
-  updateSession?: (updater: (prev: Session) => Session) => void;
-};
-
-export type ExerciseSetControllerProps = {
-  exerciseSet: Set;
-  mode: ControllerMode;
-  updateExerciseSetBloc: (updater: (prev: SetBloc) => SetBloc) => void;
-  removeExerciseSet: () => void;
-};
-
-export type UpdateProgrammeData = (
-  updater: (prev: WorkoutProgramme) => WorkoutProgramme,
-) => void;
+export type ControllerMode = "create" | "edit" | "view";
 
 export type UnitOfWeight = "kg" | "lbs";

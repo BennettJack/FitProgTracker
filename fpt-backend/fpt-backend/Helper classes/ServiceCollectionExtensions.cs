@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IWorkoutProgrammeService, WorkoutProgrammeService>();
         services.AddScoped<ISetBlocService, SetBlocService>();
         services.AddScoped<IFiveThreeOneService, FiveThreeOneService>();
+        services.AddScoped<IExerciseTypeService, ExerciseTypeService>();
         return services;
     }
 }
