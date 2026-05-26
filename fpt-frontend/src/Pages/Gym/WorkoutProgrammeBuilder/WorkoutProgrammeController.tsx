@@ -40,7 +40,7 @@ export default function WorkoutProgrammeController() {
                 setSelectedSessionId(session.id ?? session.tempId ?? null)
               }
             >
-              {session.tempId} {session.name}
+              {session.name}
             </div>
           ))}
           <button onClick={addSession}>Add Session</button>

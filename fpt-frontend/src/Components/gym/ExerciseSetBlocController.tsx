@@ -1,5 +1,7 @@
-﻿import { ExerciseSetBloc } from "../../Types/WorkoutTypes";
+﻿import { ExerciseSet, ExerciseSetBloc } from "../../Types/WorkoutTypes";
 import { useWorkoutProgrammeContext } from "../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
+import { v4 as uuidv4 } from "uuid";
+import ExerciseSetController from "./ExerciseSetController";
 
 type ExerciseSetBlocControllerProps = {
   setBloc: ExerciseSetBloc;
@@ -13,11 +15,30 @@ export default function ExerciseSetBlocController({
     exerciseOptions,
     exerciseTypeOptions,
     selectedSessionId,
+    isEditable,
   } = useWorkoutProgrammeContext();
+  const setBlocId = setBloc.id ?? setBloc.tempId;
+  const addExerciseSet = () => {
+    if (selectedSessionId === null) return;
+    if (!setBlocId) return;
+
+    const newExerciseSet: ExerciseSet = {
+      description: "",
+      tempId: uuidv4(),
+      name: `Exercise ${(setBloc.sets.length ?? 0) + 1}`,
+      repCeiling: "0",
+      repFloor: "0",
+    };
+
+    updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
+      ...prev,
+      sets: [...prev.sets, newExerciseSet],
+    }));
+  };
 
   const setType = (type: number) => {
     if (selectedSessionId === null) return;
-    const setBlocId = setBloc.id ?? setBloc.tempId;
+
     if (!setBlocId) return;
 
     switch (type) {
@@ -81,10 +102,18 @@ export default function ExerciseSetBlocController({
           </option>
         ))}
       </select>
-      <button disabled={setBloc.type !== 1} hidden={setBloc.type !== 1}>
-        {" "}
-        Add Set{" "}
+      <button
+        disabled={setBloc.type !== 1}
+        hidden={setBloc.type !== 1}
+        onClick={() => {
+          addExerciseSet();
+        }}
+      >
+        Add Set
       </button>
+
+      {setBloc.sets.length > 0 &&
+        setBloc.sets.map((set) => <ExerciseSetController exerciseSet={set} />)}
     </>
   );
 }
