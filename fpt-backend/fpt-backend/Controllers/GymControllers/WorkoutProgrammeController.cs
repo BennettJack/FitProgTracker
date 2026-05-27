@@ -54,4 +54,11 @@ public class WorkoutProgrammeController : Controller
         var res = await _workoutProgrammeService.CreateProgrammeFromTemplate(2);
         return Ok(res);
     }
+
+    [HttpGet("getAll")]
+    public async Task<ActionResult<List<WorkoutProgrammeReturnDto>>> GetAllById()
+    {
+        var res = await _workoutProgrammeService.GetAllByUserIdAsync(User.GetUserId());
+        return Ok(res);
+    }
 }

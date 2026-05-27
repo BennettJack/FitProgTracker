@@ -56,6 +56,8 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                             Id = sb.Id,
                             DisplayOrder = sb.DisplayOrder,
                             Name = sb.Name,
+                            ExerciseId = sb.ExerciseId,
+                            ExerciseTypeId = sb.ExerciseType.Id,
                             Sets = sb
                                 .Sets.Select(set => new SetReturnDto
                                 {
@@ -407,11 +409,17 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         return WorkoutProgrammeToDto(programme);
     }
 
-    /*public async Task<IActionResult> AssignFiveThreeOneTracker(
-        int programmeId,
-        FiveThreeOneTrackerDto fiveThreeOneTracker
-    ) => fiveThreeOneTracker.MaxType switch
+    public async Task<List<WorkoutProgrammeReturnDto>> GetAllByUserIdAsync(string userId)
     {
-        MaxTypes.OneRepMax => await FiveThreeOneCalculations.FromOneRepMax(fiveThreeOneTracker)
-    }*/
+        var workoutProgrammes = await Context
+            .WorkoutProgrammes.Include(x => x.Sessions)
+                .ThenInclude(x => x.SetBlocs)
+                    .ThenInclude(x => x.Sets)
+            .Include(x => x.Sessions)
+                .ThenInclude(x => x.SetBlocs)
+                    .ThenInclude(x => x.ExerciseType)
+            .Where(x => x.CreatedBy == userId)
+            .ToListAsync();
+        return workoutProgrammes.Select(WorkoutProgrammeToDto).ToList();
+    }
 }

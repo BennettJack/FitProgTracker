@@ -120,12 +120,6 @@ public class BaseService<T> : IBaseService<T>
         return dropdownDtoList;
     }
 
-    public virtual async Task<List<T>> GetAllByUserIdAsync(string userId)
-    {
-        var entities = await DbSet.Where(e => e.CreatedBy == userId).ToListAsync();
-        return entities;
-    }
-
     public virtual async Task<T> GetByUserIdAsync(string userId)
     {
         var entity = await DbSet.FirstOrDefaultAsync(e => e.CreatedBy == userId);

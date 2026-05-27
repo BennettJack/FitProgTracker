@@ -5,12 +5,13 @@ using fpt_backend.DbRepositories.Interfaces;
 
 namespace fpt_backend.Services.GymServices.Interfaces;
 
-public interface IWorkoutProgrammeService  : IBaseService<WorkoutProgramme>
+public interface IWorkoutProgrammeService : IBaseService<WorkoutProgramme>
 {
     Task<WorkoutProgrammeReturnDto?> AddAsync(WorkoutProgrammeCreateRequest req);
 
     Task<WorkoutProgrammeReturnDto?> GetAsDtoAsync(int id);
-    
+
     Task<WorkoutProgrammeReturnDto?> UpdateTestAsync(WorkoutProgrammeCreateRequest dto);
     Task<WorkoutProgrammeReturnDto?> CreateProgrammeFromTemplate(int templateId);
+    Task<List<WorkoutProgrammeReturnDto>> GetAllByUserIdAsync(string userId);
 }

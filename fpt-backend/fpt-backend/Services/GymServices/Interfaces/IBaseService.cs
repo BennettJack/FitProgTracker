@@ -18,5 +18,4 @@ public interface IBaseService<T>
     Task<T> FindAsync(T entity);
     public Task<List<DropdownReturnDto>> GetListAsDropdownAsync();
     Task<T> GetByUserIdAsync(string userId);
-    Task<List<T>> GetAllByUserIdAsync(string userId);
 }

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import styles from "./WorkoutProgrammeController.module.css";
 import ExerciseSessionController from "../../../Components/gym/ExerciseSessionController";
 import { api } from "../../../api/apiClient";
+import { WorkoutProgramme } from "../../../Types/WorkoutTypes";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -12,6 +13,7 @@ export default function WorkoutProgrammeController() {
     updateProgrammeField,
     selectedSession,
     setSelectedSessionId,
+    setWorkoutProgrammeData,
   } = useWorkoutProgrammeContext();
 
   useEffect(() => {
@@ -24,6 +26,18 @@ export default function WorkoutProgrammeController() {
         "https://localhost:7206/api/WorkoutProgramme/newWorkoutProgramme",
         workoutProgrammeData,
       );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getWorkoutProgramme = async () => {
+    try {
+      await api
+        .get<
+          WorkoutProgramme[]
+        >("https://localhost:7206/api/WorkoutProgramme/getAll")
+        .then((res) => setWorkoutProgrammeData(res.data[0]));
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +81,7 @@ export default function WorkoutProgrammeController() {
       >
         Save
       </button>
+      <button onClick={() => getWorkoutProgramme()}>Get</button>
     </div>
   );
 }
