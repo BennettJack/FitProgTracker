@@ -45,20 +45,20 @@ export default function ExerciseSetBlocController({
       case 1:
         updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
           ...prev,
-          type: type,
+          exerciseTypeId: type,
         }));
         break;
       case 2:
         updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
           ...prev,
-          type: type,
+          exerciseTypeId: type,
           sets: [],
         }));
         break;
       case 3:
         updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
           ...prev,
-          type: type,
+          exerciseTypeId: type,
           sets: [],
         }));
         break;
@@ -93,7 +93,7 @@ export default function ExerciseSetBlocController({
         ))}
       </select>
       <select
-        value={setBloc.type}
+        value={setBloc.exerciseTypeId}
         onChange={(event) => setType(Number(event.target.value))}
       >
         {exerciseTypeOptions.map((option) => (
@@ -102,15 +102,18 @@ export default function ExerciseSetBlocController({
           </option>
         ))}
       </select>
-      <button
-        disabled={setBloc.type !== 1}
-        hidden={setBloc.type !== 1}
-        onClick={() => {
-          addExerciseSet();
-        }}
-      >
-        Add Set
-      </button>
+      {setBloc.exerciseTypeId === 3 && (
+        <button>Check your 5/3/1 settings</button>
+      )}
+      {setBloc.exerciseTypeId === 1 && (
+        <button
+          onClick={() => {
+            addExerciseSet();
+          }}
+        >
+          Add Set
+        </button>
+      )}
 
       {setBloc.sets.length > 0 &&
         setBloc.sets.map((set) => <ExerciseSetController exerciseSet={set} />)}

@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import styles from "./WorkoutProgrammeController.module.css";
 import ExerciseSessionController from "../../../Components/gym/ExerciseSessionController";
+import { api } from "../../../api/apiClient";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -17,6 +18,16 @@ export default function WorkoutProgrammeController() {
     console.log(workoutProgrammeData);
   }, [workoutProgrammeData]);
 
+  const submitWorkout = async () => {
+    try {
+      const res = api.post(
+        "https://localhost:7206/api/WorkoutProgramme/newWorkoutProgramme",
+        workoutProgrammeData,
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className={styles.wrapper}>
       <div className={styles.programmeContainer}>
@@ -49,6 +60,13 @@ export default function WorkoutProgrammeController() {
           {selectedSession && <ExerciseSessionController />}
         </div>
       </div>
+      <button
+        onClick={() => {
+          submitWorkout();
+        }}
+      >
+        Save
+      </button>
     </div>
   );
 }

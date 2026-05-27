@@ -16,7 +16,7 @@ export type ExerciseSetBloc = {
   tempId?: string;
   name: string;
   sets: ExerciseSet[];
-  type: number;
+  exerciseTypeId: number;
   exerciseId?: number;
 };
 

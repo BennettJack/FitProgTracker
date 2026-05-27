@@ -135,7 +135,7 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             var blocsToAdd = new List<SetBloc>();
             foreach (var bloc in session.SetBlocs)
             {
-                var blocToAdd = AddBloc(bloc, sessionToAdd);
+                var blocToAdd = await AddBloc(bloc, sessionToAdd);
                 var setsToAdd = bloc.Sets.Select(set => AddSet(set, blocToAdd)).ToList();
                 blocToAdd.Sets = setsToAdd;
                 blocsToAdd.Add(blocToAdd);
@@ -240,7 +240,7 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                     //if setBloc does not exist
                     else
                     {
-                        var blocToAdd = AddBloc(setBloc, sessionRecord);
+                        var blocToAdd = await AddBloc(setBloc, sessionRecord);
                         var setsToAdd = setBloc.Sets.Select(set => AddSet(set, blocToAdd)).ToList();
                         blocToAdd.Sets = setsToAdd;
                         sessionRecord.SetBlocs.Add(blocToAdd);
@@ -255,7 +255,7 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
 
                 foreach (var setBloc in session.SetBlocs)
                 {
-                    var blocToAdd = AddBloc(setBloc, sessionToAdd);
+                    var blocToAdd = await AddBloc(setBloc, sessionToAdd);
                     createdSetBlocsIdMap[blocToAdd] = setBloc.TempId;
 
                     foreach (var set in setBloc.Sets)
@@ -318,13 +318,15 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         return session;
     }
 
-    private SetBloc AddBloc(ExerciseSetBlocCreateRequest blocReq, Session session)
+    private async Task<SetBloc> AddBloc(ExerciseSetBlocCreateRequest blocReq, Session session)
     {
         var blocToAdd = new SetBloc()
         {
             Name = blocReq.Name,
             Session = session,
             SessionId = session.Id,
+            Exercise = await Context.Exercises.FindAsync(blocReq.ExerciseId),
+            ExerciseType = await Context.ExerciseTypes.FindAsync(blocReq.ExerciseTypeId),
             DisplayOrder = blocReq.DisplayOrder,
             Created = DateTime.Now,
             CreatedBy = CurrentUserId,
