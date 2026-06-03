@@ -7,6 +7,7 @@ import ExerciseController from "./Components/gym/ExerciseController";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { WorkoutProgrammeProvider } from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import WorkoutProgrammeController from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
+import WorkoutProgrammeList from "./Components/gym/WorkoutProgrammeList";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,14 @@ export const router = createBrowserRouter([
             <WorkoutProgrammeProvider mode="create">
               <WorkoutProgrammeController />
             </WorkoutProgrammeProvider>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "myWorkoutProgrammes",
+        element: (
+          <ProtectedRoute>
+            <WorkoutProgrammeList />
           </ProtectedRoute>
         ),
       },

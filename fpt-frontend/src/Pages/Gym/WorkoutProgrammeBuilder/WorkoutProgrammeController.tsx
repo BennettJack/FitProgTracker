@@ -37,7 +37,7 @@ export default function WorkoutProgrammeController() {
         .get<
           WorkoutProgramme[]
         >("https://localhost:7206/api/WorkoutProgramme/getAll")
-        .then((res) => setWorkoutProgrammeData(res.data[0]));
+        .then((res) => setWorkoutProgrammeData(res.data[1]));
     } catch (error) {
       console.log(error);
     }

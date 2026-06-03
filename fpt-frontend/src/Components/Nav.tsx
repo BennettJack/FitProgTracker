@@ -9,7 +9,7 @@ const userNavItems = () => {
         <a href={"/newWorkoutProgramme"}>Create Programme</a>
       </li>
       <li>
-        <a href={"/myProgrammes"}>My Programmes</a>
+        <a href={"/myWorkoutProgrammes"}>My Programmes</a>
       </li>
     </ul>
   );

@@ -116,7 +116,9 @@ export default function ExerciseSetBlocController({
       )}
 
       {setBloc.sets.length > 0 &&
-        setBloc.sets.map((set) => <ExerciseSetController exerciseSet={set} />)}
+        setBloc.sets.map((set) => (
+          <ExerciseSetController exerciseSet={set} exerciseSetBloc={setBloc} />
+        ))}
     </>
   );
 }

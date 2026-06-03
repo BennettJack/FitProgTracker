@@ -128,7 +128,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             {
                 Name = session.Name,
                 WorkoutProgramme = programme,
-                WorkoutProgrammeId = programme.Id,
                 DisplayOrder = 9,
                 Created = DateTime.Now,
                 CreatedBy = CurrentUserId,
@@ -312,7 +311,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         {
             Name = sessionReq.Name,
             WorkoutProgramme = programme,
-            WorkoutProgrammeId = programme.Id,
             DisplayOrder = sessionReq.DisplayOrder,
             Created = DateTime.Now,
             CreatedBy = CurrentUserId,
@@ -326,7 +324,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         {
             Name = blocReq.Name,
             Session = session,
-            SessionId = session.Id,
             Exercise = await Context.Exercises.FindAsync(blocReq.ExerciseId),
             ExerciseType = await Context.ExerciseTypes.FindAsync(blocReq.ExerciseTypeId),
             DisplayOrder = blocReq.DisplayOrder,
@@ -342,7 +339,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         return new Set
         {
             SetBloc = setBloc,
-            SetBlocId = setBloc.Id,
             Description = setReq.Description,
             RepFloor = setReq.RepFloor,
             RepCeiling = setReq.RepCeiling,
