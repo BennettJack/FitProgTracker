@@ -1,0 +1,31 @@
+﻿.cardWrapper {
+    width: 100%;
+    box-sizing: border-box;
+
+    border: 1px var(--colour-default-border) solid;
+    border-radius: 10px;
+
+
+    min-height: 100px;
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+.arrow {
+
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    width: 100%;
+}
+
+.content{
+    padding-left: 2rem;
+    align-self: center;
+}

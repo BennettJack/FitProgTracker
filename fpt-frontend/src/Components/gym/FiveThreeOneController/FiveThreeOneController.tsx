@@ -1,6 +1,6 @@
 ﻿import { FormEvent, useEffect, useState } from "react";
-import { UnitOfWeight } from "../../Types/WorkoutTypes";
-import styles from "../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController.module.css";
+import { UnitOfWeight } from "../../../Types/WorkoutTypes";
+import styles from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController.module.css";
 import React from "react";
 import axios from "axios";
 

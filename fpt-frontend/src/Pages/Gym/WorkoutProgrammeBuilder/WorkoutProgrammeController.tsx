@@ -1,9 +1,11 @@
 ﻿import { useWorkoutProgrammeContext } from "./WorkoutProgrammeContext";
 import { useEffect } from "react";
 import styles from "./WorkoutProgrammeController.module.css";
-import ExerciseSessionController from "../../../Components/gym/ExerciseSessionController";
+import ExerciseSessionController from "../../../Components/gym/ExerciseSessionController/ExerciseSessionController";
 import { api } from "../../../api/apiClient";
 import { WorkoutProgramme } from "../../../Types/WorkoutTypes";
+import { Button, ThemeProvider } from "@mui/material";
+import aminoTheme from "../../../Global styles/mui/aminoTheme";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -43,45 +45,49 @@ export default function WorkoutProgrammeController() {
     }
   };
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.programmeContainer}>
-        <div className={styles.header}>
-          {isEditable ? (
-            <input
-              type="text"
-              value={workoutProgrammeData.name}
-              onChange={(e) => updateProgrammeField("name", e.target.value)}
-            />
-          ) : (
-            <p>{workoutProgrammeData.name}</p>
-          )}
+    <ThemeProvider theme={aminoTheme}>
+      <div className={styles.wrapper}>
+        <div className={styles.programmeContainer}>
+          <div className={styles.header}>
+            {isEditable ? (
+              <input
+                type="text"
+                value={workoutProgrammeData.name}
+                onChange={(e) => updateProgrammeField("name", e.target.value)}
+              />
+            ) : (
+              <p>{workoutProgrammeData.name}</p>
+            )}
+          </div>
+          <div>
+            {workoutProgrammeData.sessions.map((session) => (
+              <div
+                className={styles.sessionSidebar}
+                key={session.id ?? session.tempId}
+                onClick={() =>
+                  setSelectedSessionId(session.id ?? session.tempId ?? null)
+                }
+              >
+                {session.name}
+              </div>
+            ))}
+            <Button variant="contained" onClick={addSession}>
+              Add Session
+            </Button>
+          </div>
+          <div className={styles.content}>
+            {selectedSession && <ExerciseSessionController />}
+          </div>
         </div>
-        <div>
-          {workoutProgrammeData.sessions.map((session) => (
-            <div
-              className={styles.sessionSidebar}
-              key={session.id ?? session.tempId}
-              onClick={() =>
-                setSelectedSessionId(session.id ?? session.tempId ?? null)
-              }
-            >
-              {session.name}
-            </div>
-          ))}
-          <button onClick={addSession}>Add Session</button>
-        </div>
-        <div className={styles.content}>
-          {selectedSession && <ExerciseSessionController />}
-        </div>
+        <button
+          onClick={() => {
+            submitWorkout();
+          }}
+        >
+          Save
+        </button>
+        <button onClick={() => getWorkoutProgramme()}>Get</button>
       </div>
-      <button
-        onClick={() => {
-          submitWorkout();
-        }}
-      >
-        Save
-      </button>
-      <button onClick={() => getWorkoutProgramme()}>Get</button>
-    </div>
+    </ThemeProvider>
   );
 }

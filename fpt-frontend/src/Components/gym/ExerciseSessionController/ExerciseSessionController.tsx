@@ -1,8 +1,8 @@
-﻿import { ExerciseSetBloc, Session } from "../../Types/WorkoutTypes";
+﻿import { ExerciseSetBloc, Session } from "../../../Types/WorkoutTypes";
 import React, { useState } from "react";
-import { useWorkoutProgrammeContext } from "../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
+import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
-import ExerciseSetBlocController from "./ExerciseSetBlocController";
+import ExerciseSetBlocController from "../ExerciseSetBlocController/ExerciseSetBlocController";
 
 export default function ExerciseSessionController() {
   const {

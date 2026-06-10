@@ -1,5 +1,5 @@
-﻿import { ExerciseSet, ExerciseSetBloc } from "../../Types/WorkoutTypes";
-import { useWorkoutProgrammeContext } from "../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
+﻿import { ExerciseSet, ExerciseSetBloc } from "../../../Types/WorkoutTypes";
+import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 
 type ExerciseSetProps = {
   exerciseSet: ExerciseSet;

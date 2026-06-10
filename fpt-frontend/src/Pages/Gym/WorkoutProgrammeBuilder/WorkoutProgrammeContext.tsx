@@ -16,7 +16,7 @@ import {
   WorkoutProgramme,
 } from "../../../Types/WorkoutTypes";
 import { api } from "../../../api/apiClient";
-import { SelectOption } from "../../../Components/CustomElements/Select";
+import { SelectOption } from "../../../Components/CustomElements/MultiSelect/Select";
 
 type WorkoutProgrammeControllerProps = {
   children: ReactNode;

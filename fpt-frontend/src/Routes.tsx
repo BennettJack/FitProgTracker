@@ -2,12 +2,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import AccessTests from "./Pages/Testing/AccessTests";
-import FiveThreeOneController from "./Components/gym/FiveThreeOneController";
-import ExerciseController from "./Components/gym/ExerciseController";
+import FiveThreeOneController from "./Components/gym/FiveThreeOneController/FiveThreeOneController";
+import ExerciseController from "./Components/gym/ExerciseController/ExerciseController";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { WorkoutProgrammeProvider } from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import WorkoutProgrammeController from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
-import WorkoutProgrammeList from "./Components/gym/WorkoutProgrammeList";
+import WorkoutProgrammeList from "./Components/gym/WorkoutProgrammeList/WorkoutProgrammeList";
 
 export const router = createBrowserRouter([
   {

@@ -1,0 +1,23 @@
+﻿.listWrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 600px);
+    gap: 1rem;
+
+    width: min(100%, 1200px);
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
+
+    justify-content: center;
+    align-content: center;
+}
+
+.listWrapper > * {
+    width: 100%;
+}
+
+@media (min-width: 1200px) {
+    .listWrapper {
+        grid-template-columns: repeat(3, minmax(0, 320px));
+    }
+}

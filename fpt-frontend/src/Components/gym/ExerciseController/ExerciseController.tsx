@@ -1,7 +1,7 @@
 ﻿import React, { FormEvent, use, useEffect, useState } from "react";
-import { Select, SelectOption } from "../CustomElements/Select";
+import { Select, SelectOption } from "../../CustomElements/MultiSelect/Select";
 import axios from "axios";
-import { api } from "../../api/apiClient";
+import { api } from "../../../api/apiClient";
 
 interface formData {
   name: string;

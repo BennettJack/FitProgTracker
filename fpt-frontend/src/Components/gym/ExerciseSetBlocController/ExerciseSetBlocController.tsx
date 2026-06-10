@@ -1,7 +1,7 @@
-﻿import { ExerciseSet, ExerciseSetBloc } from "../../Types/WorkoutTypes";
-import { useWorkoutProgrammeContext } from "../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
+﻿import { ExerciseSet, ExerciseSetBloc } from "../../../Types/WorkoutTypes";
+import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
-import ExerciseSetController from "./ExerciseSetController";
+import ExerciseSetController from "../ExerciseSetController/ExerciseSetController";
 
 type ExerciseSetBlocControllerProps = {
   setBloc: ExerciseSetBloc;
