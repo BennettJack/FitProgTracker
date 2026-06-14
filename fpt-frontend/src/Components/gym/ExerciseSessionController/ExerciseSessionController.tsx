@@ -12,12 +12,7 @@ export default function ExerciseSessionController() {
     exerciseTypeOptions,
     updateSetBloc,
   } = useWorkoutProgrammeContext();
-  const [exerciseType, setExerciseType] = useState<number>(
-    Number(
-      exerciseTypeOptions.find((option) => option.label === "Standard")
-        ?.value ?? exerciseTypeOptions[0].value,
-    ),
-  );
+
   const addSetBloc = () => {
     if (!isEditable) return;
     if (selectedSession === null) return;
@@ -26,7 +21,7 @@ export default function ExerciseSessionController() {
       tempId: uuidv4(),
       name: `Exercise ${(selectedSession.setBlocs.length ?? 0) + 1}`,
       sets: [],
-      exerciseTypeId: exerciseType,
+      exerciseTypeId: 0,
     };
 
     const sessionId = selectedSession.id ?? selectedSession.tempId;
@@ -43,9 +38,12 @@ export default function ExerciseSessionController() {
     <>
       <p>{selectedSession?.tempId ?? "No session selected"}</p>
       {selectedSession?.setBlocs.map((setBloc) => (
-        <ExerciseSetBlocController setBloc={setBloc} />
+        <ExerciseSetBlocController
+          key={setBloc.id ?? setBloc.tempId}
+          setBloc={setBloc}
+        />
       ))}
-      <button onClick={() => addSetBloc()}>Add Exercise</button>
+      {isEditable && <button onClick={() => addSetBloc()}>Add Exercise</button>}
     </>
   );
 }

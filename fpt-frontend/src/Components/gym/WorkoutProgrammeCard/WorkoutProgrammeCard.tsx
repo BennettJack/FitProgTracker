@@ -2,6 +2,8 @@
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
 import styles from "./WorkoutProgrammeCard.module.css";
 import { RightArrowIconButton } from "../../../Global styles/mui/RightArrowIconButton";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface WorkoutProgrammeCardProps {
   programmeId: number;
@@ -9,6 +11,7 @@ interface WorkoutProgrammeCardProps {
 }
 
 export const WorkoutProgrammeCard = (props: WorkoutProgrammeCardProps) => {
+  const navigate = useNavigate();
   return (
     <ThemeProvider theme={aminoTheme}>
       <div className={styles.cardWrapper}>
@@ -27,7 +30,7 @@ export const WorkoutProgrammeCard = (props: WorkoutProgrammeCardProps) => {
               },
             })}
             onClick={() => {
-              console.log("clicked");
+              navigate(`/workoutProgramme/${props.programmeId}`);
             }}
           />
         </div>

@@ -95,6 +95,8 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                                 Id = sb.Id,
                                 DisplayOrder = sb.DisplayOrder,
                                 Name = sb.Name,
+                                ExerciseId = sb.ExerciseId,
+                                ExerciseTypeId = sb.ExerciseType.Id,
                                 Sets = sb
                                     .Sets.Select(set => new SetReturnDto
                                     {
@@ -158,6 +160,10 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             .WorkoutProgrammes.Include(x => x.Sessions)
                 .ThenInclude(x => x.SetBlocs)
                     .ThenInclude(x => x.Sets)
+            .Include(x => x.Sessions)
+                .ThenInclude(x => x.SetBlocs)
+                    .ThenInclude(x => x.ExerciseType)
+            .Where(x => x.CreatedBy == CurrentUserId)
             .FirstAsync(x => x.Id == req.Id);
 
         programme.Name = req.Name;
@@ -208,6 +214,7 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                         setBlocRecord!.DisplayOrder = setBloc.DisplayOrder;
                         setBlocRecord.Name = setBloc.Name;
                         setBlocRecord.Modified = DateTime.Now;
+                        setBlocRecord.ExerciseId = setBloc.ExerciseId;
                         //handle set removals
                         var setsToRemove = ComparisonHelper<Set>.GetRemoved(
                             setBlocRecord.Sets,

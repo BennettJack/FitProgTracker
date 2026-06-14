@@ -1,11 +1,12 @@
 ﻿import { useWorkoutProgrammeContext } from "./WorkoutProgrammeContext";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import styles from "./WorkoutProgrammeController.module.css";
 import ExerciseSessionController from "../../../Components/gym/ExerciseSessionController/ExerciseSessionController";
 import { api } from "../../../api/apiClient";
 import { WorkoutProgramme } from "../../../Types/WorkoutTypes";
 import { Button, ThemeProvider } from "@mui/material";
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
+import { useParams } from "react-router-dom";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -15,12 +16,10 @@ export default function WorkoutProgrammeController() {
     updateProgrammeField,
     selectedSession,
     setSelectedSessionId,
-    setWorkoutProgrammeData,
+    updateProgramme,
+    mode,
+    setMode,
   } = useWorkoutProgrammeContext();
-
-  useEffect(() => {
-    console.log(workoutProgrammeData);
-  }, [workoutProgrammeData]);
 
   const submitWorkout = async () => {
     try {
@@ -33,15 +32,23 @@ export default function WorkoutProgrammeController() {
     }
   };
 
-  const getWorkoutProgramme = async () => {
-    try {
-      await api
-        .get<
-          WorkoutProgramme[]
-        >("https://localhost:7206/api/WorkoutProgramme/getAll")
-        .then((res) => setWorkoutProgrammeData(res.data[1]));
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    console.log(mode);
+  }, [mode]);
+  const renderButtons = () => {
+    console.log(mode);
+    switch (mode) {
+      case "edit":
+        return (
+          <div>
+            <Button onClick={updateProgramme}>Update</Button>
+            <Button onClick={() => setMode("view")}>Cancel</Button>
+          </div>
+        );
+      case "view":
+        return <Button onClick={() => setMode("edit")}>Edit</Button>;
+      case "create":
+        return <Button onClick={submitWorkout}>Submit</Button>;
     }
   };
   return (
@@ -71,22 +78,24 @@ export default function WorkoutProgrammeController() {
                 {session.name}
               </div>
             ))}
-            <Button variant="contained" onClick={addSession}>
-              Add Session
-            </Button>
+            {isEditable && (
+              <Button variant="contained" onClick={addSession}>
+                Add Session
+              </Button>
+            )}
           </div>
           <div className={styles.content}>
             {selectedSession && <ExerciseSessionController />}
           </div>
         </div>
-        <button
+        <Button
           onClick={() => {
             submitWorkout();
           }}
         >
-          Save
-        </button>
-        <button onClick={() => getWorkoutProgramme()}>Get</button>
+          Submit
+        </Button>
+        {renderButtons()}
       </div>
     </ThemeProvider>
   );

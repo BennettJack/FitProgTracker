@@ -2,6 +2,8 @@
 import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
 import ExerciseSetController from "../ExerciseSetController/ExerciseSetController";
+import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
+import { useEffect } from "react";
 
 type ExerciseSetBlocControllerProps = {
   setBloc: ExerciseSetBloc;
@@ -76,36 +78,84 @@ export default function ExerciseSetBlocController({
       exerciseId: exerciseId,
     }));
   };
+
+  const renderExerciseSelect = () => {
+    if (isEditable) {
+      return (
+        <select
+          value={setBloc.exerciseId}
+          onChange={(e) => {
+            setExercise(Number(e.target.value));
+          }}
+          disabled={!isEditable}
+        >
+          <option value="">Select Exercise</option>
+          {exerciseOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      );
+    } else {
+      if (setBloc.exerciseId) {
+        return (
+          <p>
+            {
+              exerciseOptions.find((o) => {
+                return Number(o.value) === setBloc.exerciseId;
+              })?.label
+            }
+          </p>
+        );
+      } else {
+        return <p>No exercise has been set for this! oops...</p>;
+      }
+    }
+  };
+
+  const renderExerciseTypeSelect = () => {
+    if (isEditable) {
+      return (
+        <select
+          value={setBloc.exerciseTypeId}
+          onChange={(event) => setType(Number(event.target.value))}
+          disabled={!isEditable}
+        >
+          {exerciseTypeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      );
+    } else {
+      if (setBloc.exerciseTypeId) {
+        return (
+          <p>
+            {
+              exerciseTypeOptions.find((o) => {
+                return Number(o.value) === setBloc.exerciseTypeId;
+              })?.label
+            }
+          </p>
+        );
+      } else {
+        return <p>No exercise type has been set for this! oops...</p>;
+      }
+    }
+  };
   return (
     <>
       <div>{setBloc.name}</div>
-      <select
-        value={setBloc.exerciseId}
-        onChange={(e) => {
-          setExercise(Number(e.target.value));
-        }}
-      >
-        <option value="">Select Exercise</option>
-        {exerciseOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <select
-        value={setBloc.exerciseTypeId}
-        onChange={(event) => setType(Number(event.target.value))}
-      >
-        {exerciseTypeOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      {renderExerciseSelect()}
+      {renderExerciseTypeSelect()}
+
       {setBloc.exerciseTypeId === 3 && (
         <button>Check your 5/3/1 settings</button>
       )}
-      {setBloc.exerciseTypeId === 1 && (
+      {isEditable && setBloc.exerciseTypeId === 1 && <p>this is editable!</p>}
+      {isEditable && setBloc.exerciseTypeId === 1 && (
         <button
           onClick={() => {
             addExerciseSet();
@@ -114,11 +164,17 @@ export default function ExerciseSetBlocController({
           Add Set
         </button>
       )}
-
       {setBloc.sets.length > 0 &&
-        setBloc.sets.map((set) => (
-          <ExerciseSetController exerciseSet={set} exerciseSetBloc={setBloc} />
-        ))}
+        setBloc.sets.map((set) =>
+          isEditable ? (
+            <ExerciseSetController
+              exerciseSet={set}
+              exerciseSetBloc={setBloc}
+            />
+          ) : (
+            <ExerciseSetRecordController />
+          ),
+        )}
     </>
   );
 }

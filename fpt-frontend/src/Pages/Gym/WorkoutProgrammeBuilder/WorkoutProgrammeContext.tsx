@@ -26,6 +26,7 @@ type WorkoutProgrammeControllerProps = {
 
 type WorkoutProgrammeContextValue = {
   mode: ControllerMode;
+  setMode: React.Dispatch<React.SetStateAction<ControllerMode>>;
   isCreateMode: boolean;
   isEditMode: boolean;
   isViewMode: boolean;
@@ -113,6 +114,12 @@ export function WorkoutProgrammeProvider({
 }: WorkoutProgrammeControllerProps): React.ReactElement {
   const params = useParams();
 
+  const [currentMode, setCurrentMode] = useState<ControllerMode>(mode);
+
+  useEffect(() => {
+    setCurrentMode(mode);
+  }, [mode]);
+
   const routeWorkoutProgrammeId = params.workoutProgrammeId
     ? Number(params.workoutProgrammeId)
     : null;
@@ -131,9 +138,9 @@ export function WorkoutProgrammeProvider({
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isCreateMode = mode === "create";
-  const isEditMode = mode === "edit";
-  const isViewMode = mode === "view";
+  const isCreateMode = currentMode === "create";
+  const isEditMode = currentMode === "edit";
+  const isViewMode = currentMode === "view";
   const isEditable = isCreateMode || isEditMode;
 
   const [exerciseOptions, setExerciseOptions] = useState<SelectOption[]>([]);
@@ -263,6 +270,8 @@ export function WorkoutProgrammeProvider({
       }
     };
 
+    getExerciseOptions();
+    getExerciseTypeOptions();
     initialiseProgramme();
   }, [isCreateMode, resolvedWorkoutProgrammeId]);
 
@@ -354,8 +363,6 @@ export function WorkoutProgrammeProvider({
   };
 
   const getExerciseOptions = async () => {
-    if (!isEditable) return;
-
     try {
       const response = await api.get<SelectOption[]>(
         "/api/Exercise/GetExercises",
@@ -367,8 +374,6 @@ export function WorkoutProgrammeProvider({
   };
 
   const getExerciseTypeOptions = async () => {
-    if (!isEditable) return;
-
     try {
       const response = await api.get<SelectOption[]>(
         "/api/ExerciseType/GetExerciseTypes",
@@ -379,16 +384,10 @@ export function WorkoutProgrammeProvider({
     }
   };
 
-  useEffect(() => {
-    if (!isEditable) return;
-
-    getExerciseOptions();
-    getExerciseTypeOptions();
-  }, [isEditable]);
-
   const value = useMemo<WorkoutProgrammeContextValue>(
     () => ({
-      mode,
+      mode: currentMode,
+      setMode: setCurrentMode,
       isCreateMode,
       isEditMode,
       isViewMode,
@@ -424,7 +423,7 @@ export function WorkoutProgrammeProvider({
       reloadProgramme,
     }),
     [
-      mode,
+      currentMode,
       isCreateMode,
       isEditMode,
       isViewMode,
