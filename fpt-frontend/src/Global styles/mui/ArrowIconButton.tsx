@@ -1,8 +1,16 @@
 ﻿import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Theme } from "@mui/material/styles";
 import { IconButton, IconButtonProps } from "@mui/material";
+import {
+  ArrowBackIos,
+  KeyboardArrowDown,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  KeyboardArrowUp,
+} from "@mui/icons-material";
 
 type IconButtonColour = "primary" | "secondary" | "success" | "cancel";
+type IconDirection = "up" | "down" | "left" | "right";
 
 type IconButtonColourSet = {
   default: string;
@@ -45,16 +53,31 @@ const getIconButtonColours = (
   }
 };
 
-interface RightArrowIconButtonProps extends IconButtonProps {
+interface DirectionalIconButtonProps extends IconButtonProps {
   colour?: IconButtonColour;
+  direction: IconDirection;
   label: string;
 }
 
-export const RightArrowIconButton = ({
+export const ArrowIconButton = ({
   colour = "primary",
+  direction,
   sx,
   ...props
-}: RightArrowIconButtonProps) => {
+}: DirectionalIconButtonProps) => {
+  const getArrowIcon = () => {
+    switch (direction) {
+      case "up":
+        return <KeyboardArrowUp />;
+      case "down":
+        return <KeyboardArrowDown />;
+      case "left":
+        return <KeyboardArrowLeft />;
+      case "right":
+        return <KeyboardArrowRight />;
+    }
+  };
+
   return (
     <IconButton
       aria-label={props.label}
@@ -78,7 +101,7 @@ export const RightArrowIconButton = ({
         ...(sx ? (Array.isArray(sx) ? sx : [sx]) : []),
       ]}
     >
-      <ArrowForwardIosIcon />
+      {getArrowIcon()}
     </IconButton>
   );
 };

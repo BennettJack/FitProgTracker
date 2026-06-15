@@ -275,6 +275,15 @@ export function WorkoutProgrammeProvider({
     initialiseProgramme();
   }, [isCreateMode, resolvedWorkoutProgrammeId]);
 
+  useEffect(() => {
+    if (
+      selectedSessionId === null &&
+      workoutProgrammeData.sessions.length > 0
+    ) {
+      setSelectedSessionId(workoutProgrammeData.sessions[0].id ?? null);
+    }
+  }, [workoutProgrammeData.sessions]);
+
   const updateProgrammeName = (name: string) => {
     if (!isEditable) return;
 

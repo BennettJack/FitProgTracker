@@ -36,7 +36,6 @@ export default function ExerciseSessionController() {
 
   return (
     <>
-      <p>{selectedSession?.tempId ?? "No session selected"}</p>
       {selectedSession?.setBlocs.map((setBloc) => (
         <ExerciseSetBlocController
           key={setBloc.id ?? setBloc.tempId}

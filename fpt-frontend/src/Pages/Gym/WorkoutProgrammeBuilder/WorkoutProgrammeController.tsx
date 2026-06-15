@@ -7,6 +7,7 @@ import { WorkoutProgramme } from "../../../Types/WorkoutTypes";
 import { Button, ThemeProvider } from "@mui/material";
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
 import { useParams } from "react-router-dom";
+import ExerciseSessionList from "../../../Components/gym/ExerciseSessionList/ExerciseSessionList";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -69,7 +70,7 @@ export default function WorkoutProgrammeController() {
           <div>
             {workoutProgrammeData.sessions.map((session) => (
               <div
-                className={styles.sessionSidebar}
+                className={styles.sessionSelector}
                 key={session.id ?? session.tempId}
                 onClick={() =>
                   setSelectedSessionId(session.id ?? session.tempId ?? null)
@@ -96,6 +97,7 @@ export default function WorkoutProgrammeController() {
           Submit
         </Button>
         {renderButtons()}
+        <ExerciseSessionList />
       </div>
     </ThemeProvider>
   );

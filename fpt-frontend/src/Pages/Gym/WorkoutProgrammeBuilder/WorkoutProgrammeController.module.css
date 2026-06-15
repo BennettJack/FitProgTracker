@@ -37,7 +37,7 @@
   align-self: start;
 }
 
-.sessionSidebar:hover {
+.sessionSelector:hover {
   background-color: var(--colour-primary-accent);
 }
 

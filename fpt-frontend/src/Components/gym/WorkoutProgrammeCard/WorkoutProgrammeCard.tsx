@@ -1,7 +1,7 @@
 ﻿import { ThemeProvider } from "@mui/material";
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
 import styles from "./WorkoutProgrammeCard.module.css";
-import { RightArrowIconButton } from "../../../Global styles/mui/RightArrowIconButton";
+import { ArrowIconButton } from "../../../Global styles/mui/ArrowIconButton";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router";
 
@@ -17,8 +17,9 @@ export const WorkoutProgrammeCard = (props: WorkoutProgrammeCardProps) => {
       <div className={styles.cardWrapper}>
         <h2 className={styles.content}>{props.programmeName}</h2>
         <div className={styles.arrow}>
-          <RightArrowIconButton
+          <ArrowIconButton
             label={"View Programme"}
+            direction={"right"}
             sx={(theme) => ({
               width: "100%",
               height: "100%",
