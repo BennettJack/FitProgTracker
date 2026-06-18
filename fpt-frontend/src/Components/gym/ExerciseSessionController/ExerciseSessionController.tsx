@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
 import ExerciseSetBlocController from "../ExerciseSetBlocController/ExerciseSetBlocController";
+import { Button } from "@mui/material";
 
 export default function ExerciseSessionController() {
   const {
@@ -42,7 +43,11 @@ export default function ExerciseSessionController() {
           setBloc={setBloc}
         />
       ))}
-      {isEditable && <button onClick={() => addSetBloc()}>Add Exercise</button>}
+      {isEditable && (
+        <Button variant={"contained"} onClick={() => addSetBloc()}>
+          Add Exercise
+        </Button>
+      )}
     </>
   );
 }

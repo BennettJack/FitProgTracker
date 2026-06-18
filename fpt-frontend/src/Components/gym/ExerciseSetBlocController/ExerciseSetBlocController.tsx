@@ -4,11 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 import ExerciseSetController from "../ExerciseSetController/ExerciseSetController";
 import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 type ExerciseSetBlocControllerProps = {
   setBloc: ExerciseSetBloc;
 };
-
+type ExerciseSetBlocFormData = {
+  name: string;
+};
 export default function ExerciseSetBlocController({
   setBloc,
 }: ExerciseSetBlocControllerProps) {
@@ -19,6 +22,15 @@ export default function ExerciseSetBlocController({
     selectedSessionId,
     isEditable,
   } = useWorkoutProgrammeContext();
+
+  const { register, watch, reset } = useForm<ExerciseSetBlocFormData>({
+    defaultValues: {
+      name: setBloc.name,
+    },
+  });
+
+  const name = watch("name");
+
   const setBlocId = setBloc.id ?? setBloc.tempId;
   const addExerciseSet = () => {
     if (selectedSessionId === null) return;
@@ -27,7 +39,6 @@ export default function ExerciseSetBlocController({
     const newExerciseSet: ExerciseSet = {
       description: "",
       tempId: uuidv4(),
-      name: `Exercise ${(setBloc.sets.length ?? 0) + 1}`,
       repCeiling: "0",
       repFloor: "0",
     };
@@ -145,9 +156,26 @@ export default function ExerciseSetBlocController({
       }
     }
   };
+
+  useEffect(() => {
+    if (selectedSessionId === null || !setBlocId) return;
+
+    updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
+      ...prev,
+      name,
+    }));
+  }, [name]);
+
+  // Reset form when setBloc changes
+  useEffect(() => {
+    reset({
+      name: setBloc.name,
+    });
+  }, [setBloc.id || setBloc.tempId]);
+
   return (
     <>
-      <div>{setBloc.name}</div>
+      <input type="text" {...register("name")} disabled={!isEditable} />
       {renderExerciseSelect()}
       {renderExerciseTypeSelect()}
 

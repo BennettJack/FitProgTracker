@@ -33,9 +33,6 @@ export default function WorkoutProgrammeController() {
     }
   };
 
-  useEffect(() => {
-    console.log(mode);
-  }, [mode]);
   const renderButtons = () => {
     console.log(mode);
     switch (mode) {
@@ -67,24 +64,7 @@ export default function WorkoutProgrammeController() {
               <p>{workoutProgrammeData.name}</p>
             )}
           </div>
-          <div>
-            {workoutProgrammeData.sessions.map((session) => (
-              <div
-                className={styles.sessionSelector}
-                key={session.id ?? session.tempId}
-                onClick={() =>
-                  setSelectedSessionId(session.id ?? session.tempId ?? null)
-                }
-              >
-                {session.name}
-              </div>
-            ))}
-            {isEditable && (
-              <Button variant="contained" onClick={addSession}>
-                Add Session
-              </Button>
-            )}
-          </div>
+
           <div className={styles.content}>
             {selectedSession && <ExerciseSessionController />}
           </div>
@@ -97,7 +77,9 @@ export default function WorkoutProgrammeController() {
           Submit
         </Button>
         {renderButtons()}
-        <ExerciseSessionList />
+        <div className={styles.exerciseSessionList}>
+          <ExerciseSessionList />
+        </div>
       </div>
     </ThemeProvider>
   );

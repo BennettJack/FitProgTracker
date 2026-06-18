@@ -23,7 +23,6 @@ export type ExerciseSetBloc = {
 export type ExerciseSet = {
   id?: number;
   tempId?: string;
-  name: string;
   description: string;
   repCeiling: string;
   repFloor: string;

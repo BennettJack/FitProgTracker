@@ -1,4 +1,52 @@
-﻿.iconButton {
-    background-color: white;
-    border-radius: 0 50% 50% 0;
+﻿
+.wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.container {
+    height: calc(100% - 62px);
+    width: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 62px;
+    left: 0;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: width 0.5s;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--colour-primary-background);
+}
+
+.container.open {
+    width: 75%;
+}
+
+.sessionList {
+    flex: 1;
+    overflow-y: auto;
+    min-width: 200px;
+    padding: 1rem;
+}
+
+.iconButtonContainer {
+    position: fixed;
+    left: 0;
+
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+    transition: left 0.5s;
+}
+.container.open {
+
+    border-radius: 0 5% 5% 0;
+    border-top: solid 1px var(--colour-primary-accent);
+    border-right: solid 1px var(--colour-primary-accent);
+    border-bottom: solid 1px var(--colour-primary-accent);
+}
+.container.open ~ .iconButtonContainer {
+    left: calc(75%);
 }

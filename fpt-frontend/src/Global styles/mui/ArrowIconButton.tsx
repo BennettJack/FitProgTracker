@@ -57,12 +57,14 @@ interface DirectionalIconButtonProps extends IconButtonProps {
   colour?: IconButtonColour;
   direction: IconDirection;
   label: string;
+  className?: string;
 }
 
 export const ArrowIconButton = ({
   colour = "primary",
   direction,
   sx,
+  className,
   ...props
 }: DirectionalIconButtonProps) => {
   const getArrowIcon = () => {
@@ -81,6 +83,7 @@ export const ArrowIconButton = ({
   return (
     <IconButton
       aria-label={props.label}
+      className={className}
       {...props}
       sx={[
         (theme) => {
