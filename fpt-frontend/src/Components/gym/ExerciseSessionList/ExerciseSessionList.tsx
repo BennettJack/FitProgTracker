@@ -17,9 +17,10 @@ export default function ExerciseSessionList() {
             <div
               className={styles.sessionSelector}
               key={session.id ?? session.tempId}
-              onClick={() =>
-                setSelectedSessionId(session.id ?? session.tempId ?? null)
-              }
+              onClick={() => {
+                setSelectedSessionId(session.id ?? session.tempId ?? null);
+                setHidden(true);
+              }}
             >
               {session.name}
             </div>

@@ -1,5 +1,5 @@
 ﻿import { ExerciseSetBloc, Session } from "../../../Types/WorkoutTypes";
-import React, { useState } from "react";
+import styles from "./ExerciseSessionController.module.css";
 import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
 import ExerciseSetBlocController from "../ExerciseSetBlocController/ExerciseSetBlocController";
@@ -36,7 +36,7 @@ export default function ExerciseSessionController() {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       {selectedSession?.setBlocs.map((setBloc) => (
         <ExerciseSetBlocController
           key={setBloc.id ?? setBloc.tempId}
@@ -48,6 +48,6 @@ export default function ExerciseSessionController() {
           Add Exercise
         </Button>
       )}
-    </>
+    </div>
   );
 }

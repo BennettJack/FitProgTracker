@@ -51,35 +51,27 @@ export default function WorkoutProgrammeController() {
   };
   return (
     <ThemeProvider theme={aminoTheme}>
-      <div className={styles.wrapper}>
-        <div className={styles.programmeContainer}>
-          <div className={styles.header}>
-            {isEditable ? (
-              <input
-                type="text"
-                value={workoutProgrammeData.name}
-                onChange={(e) => updateProgrammeField("name", e.target.value)}
-              />
-            ) : (
-              <p>{workoutProgrammeData.name}</p>
-            )}
-          </div>
+      <div className={styles.programmeContainer}>
+        <div className={styles.header}>
+          {isEditable ? (
+            <input
+              type="text"
+              value={workoutProgrammeData.name}
+              onChange={(e) => updateProgrammeField("name", e.target.value)}
+            />
+          ) : (
+            <h1>{workoutProgrammeData.name}</h1>
+          )}
+        </div>
 
-          <div className={styles.content}>
-            {selectedSession && <ExerciseSessionController />}
-          </div>
+        <div className={styles.content}>
+          {selectedSession && <ExerciseSessionController />}
         </div>
-        <Button
-          onClick={() => {
-            submitWorkout();
-          }}
-        >
-          Submit
-        </Button>
+
         {renderButtons()}
-        <div className={styles.exerciseSessionList}>
-          <ExerciseSessionList />
-        </div>
+      </div>
+      <div className={styles.exerciseSessionList}>
+        <ExerciseSessionList />
       </div>
     </ThemeProvider>
   );

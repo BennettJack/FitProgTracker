@@ -5,6 +5,7 @@ import ExerciseSetController from "../ExerciseSetController/ExerciseSetControlle
 import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import styles from "./ExerciseSetBlocController.module.css";
 
 type ExerciseSetBlocControllerProps = {
   setBloc: ExerciseSetBloc;
@@ -174,11 +175,16 @@ export default function ExerciseSetBlocController({
   }, [setBloc.id || setBloc.tempId]);
 
   return (
-    <>
-      <input type="text" {...register("name")} disabled={!isEditable} />
-      {renderExerciseSelect()}
-      {renderExerciseTypeSelect()}
-
+    <div className={styles.container} key={setBloc.id ?? setBloc.tempId}>
+      {!isEditable ? (
+        <h2>{setBloc.name}</h2>
+      ) : (
+        <input type="text" {...register("name")} />
+      )}
+      <div className={styles.header}>
+        {renderExerciseSelect()}
+        {renderExerciseTypeSelect()}
+      </div>
       {setBloc.exerciseTypeId === 3 && (
         <button>Check your 5/3/1 settings</button>
       )}
@@ -200,9 +206,9 @@ export default function ExerciseSetBlocController({
               exerciseSetBloc={setBloc}
             />
           ) : (
-            <ExerciseSetRecordController />
+            <ExerciseSetRecordController exerciseSet={set} />
           ),
         )}
-    </>
+    </div>
   );
 }
