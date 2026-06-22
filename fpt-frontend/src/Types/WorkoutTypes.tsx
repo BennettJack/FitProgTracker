@@ -16,8 +16,6 @@ export type ExerciseSetBloc = {
   tempId?: string;
   name: string;
   sets: ExerciseSet[];
-  exerciseTypeId: number;
-  exerciseId?: number;
 };
 
 export type ExerciseSet = {
@@ -26,6 +24,8 @@ export type ExerciseSet = {
   description: string;
   repCeiling: string;
   repFloor: string;
+  exerciseTypeId: number;
+  exerciseId?: number;
 };
 
 export type SetRecord = {
