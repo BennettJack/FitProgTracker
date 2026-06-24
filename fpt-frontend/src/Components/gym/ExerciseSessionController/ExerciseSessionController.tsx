@@ -22,7 +22,6 @@ export default function ExerciseSessionController() {
       tempId: uuidv4(),
       name: `Exercise ${(selectedSession.setBlocs.length ?? 0) + 1}`,
       sets: [],
-      exerciseTypeId: 0,
     };
 
     const sessionId = selectedSession.id ?? selectedSession.tempId;

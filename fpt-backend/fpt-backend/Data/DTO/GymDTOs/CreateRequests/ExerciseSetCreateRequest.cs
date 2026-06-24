@@ -6,4 +6,6 @@ public class ExerciseSetCreateRequest : BaseCreateRequest
     public int DisplayOrder { get; set; }
     public int RepCeiling { get; set; }
     public int RepFloor { get; set; }
+    public int ExerciseTypeId { get; set; }
+    public int ExerciseId { get; set; }
 }

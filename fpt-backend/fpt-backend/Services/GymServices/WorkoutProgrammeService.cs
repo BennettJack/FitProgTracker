@@ -56,8 +56,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                             Id = sb.Id,
                             DisplayOrder = sb.DisplayOrder,
                             Name = sb.Name,
-                            ExerciseId = sb.ExerciseId,
-                            ExerciseTypeId = sb.ExerciseType.Id,
                             Sets = sb
                                 .Sets.Select(set => new SetReturnDto
                                 {
@@ -66,6 +64,8 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                                     RepCeiling = set.RepCeiling,
                                     RepFloor = set.RepFloor,
                                     DisplayOrder = set.DisplayOrder,
+                                    ExerciseId = set.ExerciseId,
+                                    ExerciseTypeId = set.ExerciseTypeId,
                                 })
                                 .ToList(),
                         })
@@ -95,8 +95,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                                 Id = sb.Id,
                                 DisplayOrder = sb.DisplayOrder,
                                 Name = sb.Name,
-                                ExerciseId = sb.ExerciseId,
-                                ExerciseTypeId = sb.ExerciseType.Id,
                                 Sets = sb
                                     .Sets.Select(set => new SetReturnDto
                                     {
@@ -105,6 +103,8 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                                         RepCeiling = set.RepCeiling,
                                         RepFloor = set.RepFloor,
                                         DisplayOrder = set.DisplayOrder,
+                                        ExerciseId = set.ExerciseId,
+                                        ExerciseTypeId = set.ExerciseTypeId,
                                     })
                                     .ToList(),
                             })
@@ -160,9 +160,9 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             .WorkoutProgrammes.Include(x => x.Sessions)
                 .ThenInclude(x => x.SetBlocs)
                     .ThenInclude(x => x.Sets)
+                        .ThenInclude(x => x.ExerciseType)
             .Include(x => x.Sessions)
                 .ThenInclude(x => x.SetBlocs)
-                    .ThenInclude(x => x.ExerciseType)
             .Where(x => x.CreatedBy == CurrentUserId)
             .FirstAsync(x => x.Id == req.Id);
 
@@ -214,7 +214,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                         setBlocRecord!.DisplayOrder = setBloc.DisplayOrder;
                         setBlocRecord.Name = setBloc.Name;
                         setBlocRecord.Modified = DateTime.Now;
-                        setBlocRecord.ExerciseId = setBloc.ExerciseId;
                         //handle set removals
                         var setsToRemove = ComparisonHelper<Set>.GetRemoved(
                             setBlocRecord.Sets,
@@ -236,6 +235,8 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                                 setRecord.Modified = DateTime.Now;
                                 setRecord.RepFloor = set.RepFloor;
                                 setRecord.RepCeiling = set.RepCeiling;
+                                setRecord.ExerciseId = set.ExerciseId;
+                                setRecord.ExerciseTypeId = set.ExerciseTypeId;
                             }
                             else
                             {
@@ -331,8 +332,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
         {
             Name = blocReq.Name,
             Session = session,
-            Exercise = await Context.Exercises.FindAsync(blocReq.ExerciseId),
-            ExerciseType = await Context.ExerciseTypes.FindAsync(blocReq.ExerciseTypeId),
             DisplayOrder = blocReq.DisplayOrder,
             Created = DateTime.Now,
             CreatedBy = CurrentUserId,
@@ -352,6 +351,8 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             DisplayOrder = setReq.DisplayOrder,
             Created = DateTime.Now,
             CreatedBy = CurrentUserId,
+            ExerciseId = setReq.ExerciseId,
+            ExerciseTypeId = setReq.ExerciseTypeId,
         };
     }
 
@@ -389,7 +390,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                         {
                             Name = sb.Name,
                             DisplayOrder = sb.DisplayOrder,
-                            ExerciseId = sb.Exercise.Id,
                             SetBlocTemplateId = sb.Id,
                             Sets = sb
                                 .SetTemplates.Select(set => new Set
@@ -418,9 +418,9 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
             .WorkoutProgrammes.Include(x => x.Sessions)
                 .ThenInclude(x => x.SetBlocs)
                     .ThenInclude(x => x.Sets)
+                        .ThenInclude(x => x.ExerciseType)
             .Include(x => x.Sessions)
                 .ThenInclude(x => x.SetBlocs)
-                    .ThenInclude(x => x.ExerciseType)
             .Where(x => x.CreatedBy == userId)
             .ToListAsync();
         return workoutProgrammes.Select(WorkoutProgrammeToDto).ToList();

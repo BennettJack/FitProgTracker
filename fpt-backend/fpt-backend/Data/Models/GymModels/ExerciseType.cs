@@ -3,7 +3,5 @@
 public class ExerciseType : BaseModel
 {
     public string ExerciseTypeName { get; set; }
-
-    public List<int> SetBlocId { get; set; } = new();
-    public List<SetBloc> SetBlocs { get; set; } = new();
+    public List<Set> Sets { get; set; } = new();
 }

@@ -78,9 +78,9 @@ public class FptDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder
-            .Entity<SetBloc>()
+            .Entity<Set>()
             .HasOne(sb => sb.Exercise)
-            .WithMany()
+            .WithMany(e => e.Sets)
             .HasForeignKey(sb => sb.ExerciseId)
             .OnDelete(DeleteBehavior.Restrict);
 

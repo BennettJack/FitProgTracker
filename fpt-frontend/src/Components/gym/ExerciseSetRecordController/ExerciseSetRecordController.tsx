@@ -1,32 +1,40 @@
 ﻿import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { ExerciseSet } from "../../../Types/WorkoutTypes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NumberSpinner from "../../../Global styles/mui/NumberSpinner";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { api } from "../../../api/apiClient";
 interface ExerciseSetRecordControllerProps {
   exerciseSet: ExerciseSet;
 }
 
 type ExerciseSetRecord = {
-  reps: number;
+  repsCompleted: number;
   weight: number;
   exerciseId: number;
-  sessionId: number;
+  exerciseTypeId: number;
 };
 export default function ({ exerciseSet }: ExerciseSetRecordControllerProps) {
-  const { selectedSessionId } = useWorkoutProgrammeContext();
-  const { control, watch, reset, handleSubmit } = useForm<ExerciseSetRecord>({
+  const { selectedSessionId, exerciseTypeOptions, exerciseOptions } =
+    useWorkoutProgrammeContext();
+  const { control, reset, handleSubmit } = useForm<ExerciseSetRecord>({
     defaultValues: {
-      reps: 0,
+      repsCompleted: 0,
       weight: 0,
+      exerciseId: exerciseSet.exerciseId,
+      exerciseTypeId: exerciseSet.exerciseTypeId,
     },
   });
 
-  const reps = watch("reps");
-  const weight = watch("weight");
-
-  const onSubmit: SubmitHandler<ExerciseSetRecord> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<ExerciseSetRecord> = async (data) => {
+    try {
+      const res = await api.post<ExerciseSetRecord>(
+        "api/SetRecord/AddSetRecord",
+        data,
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -38,16 +46,23 @@ export default function ({ exerciseSet }: ExerciseSetRecordControllerProps) {
     }
   });
 
-  useEffect(() => {}, []);
   return (
     <div>
+      <p>
+        {exerciseTypeOptions.find((o) => o.value === exerciseSet.exerciseTypeId)
+          ?.label ?? ""}
+      </p>
+      <p>
+        {exerciseOptions.find((o) => o.value === exerciseSet.exerciseId)
+          ?.label ?? ""}
+      </p>
       <p>
         Target reps: {exerciseSet.repFloor ?? "oops"} -{" "}
         {exerciseSet.repCeiling ?? "oops"}
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumberSpinner
-          name={"reps"}
+          name={"repsCompleted"}
           control={control}
           min={0}
           max={99}

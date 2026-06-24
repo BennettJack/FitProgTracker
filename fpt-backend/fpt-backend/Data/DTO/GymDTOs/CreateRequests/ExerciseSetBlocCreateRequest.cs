@@ -6,7 +6,5 @@ public class ExerciseSetBlocCreateRequest : BaseCreateRequest
     public int DisplayOrder { get; set; }
     public string Name { get; set; }
 
-    public int ExerciseTypeId { get; set; }
-    public int ExerciseId { get; set; }
     public List<ExerciseSetCreateRequest>? Sets { get; set; }
 }
