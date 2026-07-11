@@ -21,4 +21,11 @@ public class SetRecordController : Controller
         var res = await _exerciseSetRecordService.AddAsync(request);
         return Ok(res);
     }
+
+    [HttpGet("GetTodayRecords")]
+    public async Task<IActionResult> GetTodayRecords([FromQuery] int sessionId)
+    {
+        var res = await _exerciseSetRecordService.GetTodayRecordAsync(sessionId);
+        return Ok(res);
+    }
 }

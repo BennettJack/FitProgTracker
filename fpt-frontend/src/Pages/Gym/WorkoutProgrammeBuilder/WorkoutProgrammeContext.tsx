@@ -12,6 +12,7 @@ import {
   ControllerMode,
   ExerciseSet,
   ExerciseSetBloc,
+  ExerciseSetRecord,
   Session,
   WorkoutProgramme,
 } from "../../../Types/WorkoutTypes";
@@ -37,6 +38,7 @@ type WorkoutProgrammeContextValue = {
     React.SetStateAction<WorkoutProgramme>
   >;
 
+  todayRecords: Record<number, ExerciseSetRecord>;
   selectedSessionId: number | string | null;
   setSelectedSessionId: React.Dispatch<
     React.SetStateAction<number | string | null>
@@ -152,6 +154,9 @@ export function WorkoutProgrammeProvider({
     workoutProgrammeData.sessions.find(
       (session) => getEntityId(session) === selectedSessionId,
     ) ?? null;
+  const [todayRecords, setTodayRecords] = useState<
+    Record<number, ExerciseSetRecord>
+  >({});
 
   const updateProgrammeField = <K extends keyof WorkoutProgramme>(
     field: K,
@@ -284,6 +289,11 @@ export function WorkoutProgrammeProvider({
     }
   }, [workoutProgrammeData.sessions]);
 
+  useEffect(() => {
+    if (selectedSessionId === null) return;
+    fetchTodayRecords(selectedSessionId).then((res) => setTodayRecords(res));
+  }, [selectedSessionId]);
+
   const updateProgrammeName = (name: string) => {
     if (!isEditable) return;
 
@@ -330,7 +340,19 @@ export function WorkoutProgrammeProvider({
       return currentSessionId;
     });
   };
-
+  const fetchTodayRecords = async (sessionId: number | string) => {
+    try {
+      const response = await api.get(`api/SetRecord/GetTodayRecords/`, {
+        params: {
+          sessionId: sessionId,
+        },
+      });
+      return response.data; // Map<exerciseSetId, SetRecord>
+    } catch (error) {
+      console.error("Failed to fetch today's records", error);
+      return {};
+    }
+  };
   const createProgramme = async () => {
     if (!isCreateMode) return;
 
@@ -406,6 +428,7 @@ export function WorkoutProgrammeProvider({
       exerciseOptions,
       getExerciseOptions,
       getExerciseTypeOptions,
+      todayRecords,
 
       workoutProgrammeData,
       setWorkoutProgrammeData,
@@ -436,6 +459,7 @@ export function WorkoutProgrammeProvider({
       isCreateMode,
       isEditMode,
       isViewMode,
+      todayRecords,
       isEditable,
       exerciseOptions,
       exerciseTypeOptions,

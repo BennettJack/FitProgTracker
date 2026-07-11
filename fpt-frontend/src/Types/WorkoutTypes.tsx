@@ -26,12 +26,15 @@ export type ExerciseSet = {
   repFloor: string;
   exerciseTypeId: number;
   exerciseId?: number;
+  todayRecord?: ExerciseSetRecord;
 };
 
-export type SetRecord = {
-  exerciseSetId: number;
+export type ExerciseSetRecord = {
   repsCompleted: number;
   weight: number;
+  exerciseId: number;
+  exerciseTypeId: number;
+  exerciseSetId?: number | null;
 };
 
 export type ControllerMode = "create" | "edit" | "view";

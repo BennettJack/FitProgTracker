@@ -6,4 +6,6 @@ public class ExerciseSetRecordCreateRequest
     public int ExerciseTypeId { get; set; }
     public int Weight { get; set; }
     public int RepsCompleted { get; set; }
+
+    public int? ExerciseSetId { get; set; }
 }

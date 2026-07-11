@@ -19,4 +19,6 @@ public class Set : BaseModel
 
     public int? SetTemplateId { get; set; }
     public SetTemplate? SetTemplate { get; set; }
+
+    public List<ExerciseSetRecord>? ExerciseSetRecords { get; set; }
 }

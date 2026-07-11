@@ -1,13 +1,13 @@
 ﻿import { useWorkoutProgrammeContext } from "./WorkoutProgrammeContext";
-import { use, useEffect } from "react";
 import styles from "./WorkoutProgrammeController.module.css";
 import ExerciseSessionController from "../../../Components/gym/ExerciseSessionController/ExerciseSessionController";
 import { api } from "../../../api/apiClient";
-import { WorkoutProgramme } from "../../../Types/WorkoutTypes";
 import { Button, ThemeProvider } from "@mui/material";
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
-import { useParams } from "react-router-dom";
 import ExerciseSessionList from "../../../Components/gym/ExerciseSessionList/ExerciseSessionList";
+import { TextField } from "../../../Global styles/mui/ControlledFields/TextField";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import * as z from "zod";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -54,11 +54,23 @@ export default function WorkoutProgrammeController() {
       <div className={styles.programmeContainer}>
         <div className={styles.header}>
           {isEditable ? (
-            <input
-              type="text"
-              value={workoutProgrammeData.name}
-              onChange={(e) => updateProgrammeField("name", e.target.value)}
-            />
+            <div>
+              <TextField
+                label="Name"
+                value={workoutProgrammeData.name}
+                variant="outlined"
+                helperText={
+                  workoutProgrammeData.name.length === 0
+                    ? "Name is required"
+                    : ""
+                }
+                onChange={(e) => updateProgrammeField("name", e.target.value)}
+                tooltip={{
+                  title: "Enter a name for your workout programme",
+                  children: <InfoOutlinedIcon fontSize="small" />,
+                }}
+              ></TextField>
+            </div>
           ) : (
             <h1>{workoutProgrammeData.name}</h1>
           )}
