@@ -3,14 +3,21 @@ import { ArrowIconButton } from "../../../Global styles/mui/ArrowIconButton";
 import styles from "./ExerciseSessionList.module.css";
 import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { Button } from "@mui/material";
-import { useFormContext } from "react-hook-form";
-import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import {
+  createEmptySession,
+  WorkoutProgramme,
+} from "../../../schemas/workoutProgrammeSchema";
 
 export default function ExerciseSessionList() {
   const [hidden, setHidden] = useState(true);
   const { isEditable, setSelectedSessionId } = useWorkoutProgrammeContext();
 
-  const { watch } = useFormContext<WorkoutProgramme>();
+  const { watch, control } = useFormContext<WorkoutProgramme>();
+  const { append } = useFieldArray({
+    control,
+    name: "sessions",
+  });
 
   return (
     <div className={styles.wrapper}>
@@ -31,7 +38,7 @@ export default function ExerciseSessionList() {
           {isEditable && (
             <Button
               variant="contained"
-              onClick={() => console.log("add session")}
+              onClick={() => append(createEmptySession())}
             >
               Add Session
             </Button>

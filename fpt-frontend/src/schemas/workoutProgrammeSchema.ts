@@ -43,8 +43,28 @@ export const WorkoutProgrammeSchema = z.object({
 
 export const createEmptyWorkoutProgramme = (): WorkoutProgramme => ({
   tempId: uuidv4(),
-  name: "",
+  name: "New workout programme",
   sessions: [],
+});
+
+export const createEmptySession = (): Session => ({
+  tempId: uuidv4(),
+  name: "New session",
+  setBlocs: [],
+});
+
+export const createEmptyExerciseSetBloc = (): ExerciseSetBloc => ({
+  tempId: uuidv4(),
+  name: "New set bloc",
+  sets: [],
+});
+
+export const createEmptyExerciseSet = (): ExerciseSet => ({
+  tempId: uuidv4(),
+  description: "",
+  repCeiling: "0",
+  repFloor: "0",
+  exerciseTypeId: 1,
 });
 export type WorkoutProgramme = z.infer<typeof WorkoutProgrammeSchema>;
 export type Session = z.infer<typeof SessionSchema>;

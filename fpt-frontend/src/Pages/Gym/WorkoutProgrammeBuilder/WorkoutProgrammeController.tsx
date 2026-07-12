@@ -8,13 +8,14 @@ import ExerciseSessionList from "../../../Components/gym/ExerciseSessionList/Exe
 import {
   RhfTextField,
   TextField,
-} from "../../../Global styles/mui/ControlledFields/TextField";
+} from "../../../Global styles/mui/ControlledComponents/TextField";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import * as z from "zod";
-import type { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { ControllerMode } from "../../../Types/WorkoutTypes";
 import { useFormContext } from "react-hook-form";
 import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
+import { useFormState } from "react-dom";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -27,7 +28,11 @@ export default function WorkoutProgrammeController() {
     createProgramme,
   } = useWorkoutProgrammeContext();
 
-  const { watch } = useFormContext<WorkoutProgramme>();
+  const { watch, getValues } = useFormContext<WorkoutProgramme>();
+
+  useEffect(() => {
+    console.log(getValues());
+  }, [watch("name")]);
   const renderButtons = () => {
     console.log(mode);
     switch (mode) {
