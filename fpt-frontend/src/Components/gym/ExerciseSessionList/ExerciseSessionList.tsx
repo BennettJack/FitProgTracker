@@ -3,17 +3,20 @@ import { ArrowIconButton } from "../../../Global styles/mui/ArrowIconButton";
 import styles from "./ExerciseSessionList.module.css";
 import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { Button } from "@mui/material";
+import { useFormContext } from "react-hook-form";
+import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
 
 export default function ExerciseSessionList() {
   const [hidden, setHidden] = useState(true);
-  const { workoutProgrammeData, isEditable, setSelectedSessionId, addSession } =
-    useWorkoutProgrammeContext();
+  const { isEditable, setSelectedSessionId } = useWorkoutProgrammeContext();
+
+  const { watch } = useFormContext<WorkoutProgramme>();
 
   return (
     <div className={styles.wrapper}>
       <div className={`${styles.container} ${!hidden ? styles.open : ""}`}>
         <div className={styles.sessionList}>
-          {workoutProgrammeData.sessions.map((session) => (
+          {watch("sessions").map((session) => (
             <div
               className={styles.sessionSelector}
               key={session.id ?? session.tempId}
@@ -26,7 +29,10 @@ export default function ExerciseSessionList() {
             </div>
           ))}
           {isEditable && (
-            <Button variant="contained" onClick={addSession}>
+            <Button
+              variant="contained"
+              onClick={() => console.log("add session")}
+            >
               Add Session
             </Button>
           )}

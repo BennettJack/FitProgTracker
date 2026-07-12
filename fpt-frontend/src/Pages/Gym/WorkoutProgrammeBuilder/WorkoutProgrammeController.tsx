@@ -5,34 +5,29 @@ import { api } from "../../../api/apiClient";
 import { Button, ThemeProvider } from "@mui/material";
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
 import ExerciseSessionList from "../../../Components/gym/ExerciseSessionList/ExerciseSessionList";
-import { TextField } from "../../../Global styles/mui/ControlledFields/TextField";
+import {
+  RhfTextField,
+  TextField,
+} from "../../../Global styles/mui/ControlledFields/TextField";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import * as z from "zod";
+import type { ReactNode } from "react";
+import { ControllerMode } from "../../../Types/WorkoutTypes";
+import { useFormContext } from "react-hook-form";
+import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
 
 export default function WorkoutProgrammeController() {
   const {
-    workoutProgrammeData,
-    addSession,
     isEditable,
-    updateProgrammeField,
     selectedSession,
     setSelectedSessionId,
     updateProgramme,
     mode,
     setMode,
+    createProgramme,
   } = useWorkoutProgrammeContext();
 
-  const submitWorkout = async () => {
-    try {
-      const res = api.post(
-        "https://localhost:7206/api/WorkoutProgramme/newWorkoutProgramme",
-        workoutProgrammeData,
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  const { watch } = useFormContext<WorkoutProgramme>();
   const renderButtons = () => {
     console.log(mode);
     switch (mode) {
@@ -46,7 +41,7 @@ export default function WorkoutProgrammeController() {
       case "view":
         return <Button onClick={() => setMode("edit")}>Edit</Button>;
       case "create":
-        return <Button onClick={submitWorkout}>Submit</Button>;
+        return <Button onClick={createProgramme}>Submit</Button>;
     }
   };
   return (
@@ -55,24 +50,18 @@ export default function WorkoutProgrammeController() {
         <div className={styles.header}>
           {isEditable ? (
             <div>
-              <TextField
-                label="Name"
-                value={workoutProgrammeData.name}
+              <RhfTextField
+                name="name"
                 variant="outlined"
-                helperText={
-                  workoutProgrammeData.name.length === 0
-                    ? "Name is required"
-                    : ""
-                }
-                onChange={(e) => updateProgrammeField("name", e.target.value)}
+                label="Name"
                 tooltip={{
                   title: "Enter a name for your workout programme",
                   children: <InfoOutlinedIcon fontSize="small" />,
                 }}
-              ></TextField>
+              ></RhfTextField>
             </div>
           ) : (
-            <h1>{workoutProgrammeData.name}</h1>
+            <h1>{watch("name")}</h1>
           )}
         </div>
 

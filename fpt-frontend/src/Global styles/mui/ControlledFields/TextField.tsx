@@ -11,6 +11,7 @@ import {
   FieldPath,
   FieldValues,
   useController,
+  useFormContext,
 } from "react-hook-form";
 
 type TextFieldProps = MuiTextFieldProps & {
@@ -18,7 +19,7 @@ type TextFieldProps = MuiTextFieldProps & {
 };
 
 type RHFTextFieldProps<T extends FieldValues> = TextFieldProps & {
-  control: Control<T>;
+  control?: Control<T>;
   name: FieldPath<T>;
 };
 
@@ -59,8 +60,9 @@ export const RhfTextField = <T extends FieldValues>({
   name,
   ...rest
 }: RHFTextFieldProps<T>) => {
+  const methods = useFormContext<T>();
   const { field, fieldState } = useController({
-    control,
+    control: control ?? methods.control,
     name,
   });
 
