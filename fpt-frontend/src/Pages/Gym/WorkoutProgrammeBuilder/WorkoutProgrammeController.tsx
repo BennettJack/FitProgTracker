@@ -21,7 +21,7 @@ export default function WorkoutProgrammeController() {
   const {
     isEditable,
     selectedSession,
-    setSelectedSessionId,
+
     updateProgramme,
     mode,
     setMode,
@@ -71,7 +71,12 @@ export default function WorkoutProgrammeController() {
         </div>
 
         <div className={styles.content}>
-          {selectedSession && <ExerciseSessionController />}
+          {selectedSession && (
+            <ExerciseSessionController
+              sessionIndex={selectedSession.index}
+              session={selectedSession.session}
+            />
+          )}
         </div>
 
         {renderButtons()}

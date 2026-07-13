@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { ArrowIconButton } from "../../../Global styles/mui/ArrowIconButton";
 import styles from "./ExerciseSessionList.module.css";
 import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
@@ -11,7 +11,8 @@ import {
 
 export default function ExerciseSessionList() {
   const [hidden, setHidden] = useState(true);
-  const { isEditable, setSelectedSessionId } = useWorkoutProgrammeContext();
+  const { isEditable, setSelectedSession, selectedSession } =
+    useWorkoutProgrammeContext();
 
   const { watch, control } = useFormContext<WorkoutProgramme>();
   const { append } = useFieldArray({
@@ -19,16 +20,20 @@ export default function ExerciseSessionList() {
     name: "sessions",
   });
 
+  useEffect(() => {
+    console.log(selectedSession);
+  }, [selectedSession]);
+
   return (
     <div className={styles.wrapper}>
       <div className={`${styles.container} ${!hidden ? styles.open : ""}`}>
         <div className={styles.sessionList}>
-          {watch("sessions").map((session) => (
+          {watch("sessions").map((session, index) => (
             <div
               className={styles.sessionSelector}
               key={session.id ?? session.tempId}
               onClick={() => {
-                setSelectedSessionId(session.id ?? session.tempId ?? null);
+                setSelectedSession({ index: index, session: session });
                 setHidden(true);
               }}
             >

@@ -1,110 +1,48 @@
-﻿import { ExerciseSet, ExerciseSetBloc } from "../../../Types/WorkoutTypes";
-import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
+﻿import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
 import ExerciseSetController from "../ExerciseSetController/ExerciseSetController";
 import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import styles from "./ExerciseSetBlocController.module.css";
 import { Button, Select } from "@mui/material";
+import {
+  ExerciseSetBloc,
+  WorkoutProgramme,
+} from "../../../schemas/workoutProgrammeSchema";
+import { RhfTextField } from "../../../Global styles/mui/ControlledComponents/TextField";
 
 type ExerciseSetBlocControllerProps = {
+  setBlocIndex: number;
+  sessionIndex: number;
   setBloc: ExerciseSetBloc;
 };
-type ExerciseSetBlocFormData = {
-  name: string;
-};
+
 export default function ExerciseSetBlocController({
   setBloc,
+  setBlocIndex,
+  sessionIndex,
 }: ExerciseSetBlocControllerProps) {
-  const {
-    updateSetBloc,
-    exerciseOptions,
-    exerciseTypeOptions,
-    selectedSessionId,
-    isEditable,
-  } = useWorkoutProgrammeContext();
+  const { isEditable, selectedSession } = useWorkoutProgrammeContext();
 
-  const { register, watch, reset } = useForm<ExerciseSetBlocFormData>({
-    defaultValues: {
-      name: setBloc.name,
-    },
+  const { control, watch } = useFormContext<WorkoutProgramme>();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: `sessions.${sessionIndex}.setBlocs.${setBlocIndex}.sets`,
   });
-
-  const name = watch("name");
-
-  const setBlocId = setBloc.id ?? setBloc.tempId;
-  const addExerciseSet = () => {
-    if (selectedSessionId === null) return;
-    if (!setBlocId) return;
-
-    const newExerciseSet: ExerciseSet = {
-      description: "",
-      tempId: uuidv4(),
-      repCeiling: "0",
-      repFloor: "0",
-      exerciseTypeId: 1,
-    };
-
-    updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
-      ...prev,
-      sets: [...prev.sets, newExerciseSet],
-    }));
-  };
-
-  const setType = (type: number) => {
-    if (selectedSessionId === null) return;
-
-    if (!setBlocId) return;
-
-    switch (type) {
-      case 1:
-        updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
-          ...prev,
-          exerciseTypeId: type,
-        }));
-        break;
-      case 2:
-        updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
-          ...prev,
-          exerciseTypeId: type,
-          sets: [],
-        }));
-        break;
-      case 3:
-        updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
-          ...prev,
-          exerciseTypeId: type,
-          sets: [],
-        }));
-        break;
-      default:
-        break;
-    }
-  };
-
-  useEffect(() => {
-    if (selectedSessionId === null || !setBlocId) return;
-
-    updateSetBloc(selectedSessionId, setBlocId, (prev) => ({
-      ...prev,
-      name,
-    }));
-  }, [name]);
-
-  // Reset form when setBloc changes
-  useEffect(() => {
-    reset({
-      name: setBloc.name,
-    });
-  }, [setBloc.id || setBloc.tempId]);
 
   return (
     <div className={styles.container} key={setBloc.id ?? setBloc.tempId}>
       {!isEditable ? (
         <h2>{setBloc.name}</h2>
       ) : (
-        <input type="text" {...register("name")} />
+        <RhfTextField
+          name={`sessions.${sessionIndex}.setBlocs.${setBlocIndex}.name`}
+          variant="outlined"
+          label="Name"
+          defaultValue={setBloc.name}
+        />
       )}
       {setBloc.sets.length > 0 &&
         setBloc.sets.map((set) =>
@@ -120,20 +58,8 @@ export default function ExerciseSetBlocController({
 
       {isEditable && (
         <div>
-          <Button
-            onClick={() => {
-              addExerciseSet();
-            }}
-          >
-            Add Set
-          </Button>
-          <Button
-            onClick={() => {
-              addExerciseSet();
-            }}
-          >
-            Duplicate
-          </Button>
+          <Button onClick={() => console.log()}>Add Set</Button>
+          <Button onClick={() => console.log()}>Duplicate</Button>
         </div>
       )}
     </div>

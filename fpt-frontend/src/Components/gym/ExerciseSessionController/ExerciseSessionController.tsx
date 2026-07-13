@@ -1,49 +1,47 @@
-﻿import { ExerciseSetBloc, Session } from "../../../Types/WorkoutTypes";
-import styles from "./ExerciseSessionController.module.css";
+﻿import styles from "./ExerciseSessionController.module.css";
 import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
 import { v4 as uuidv4 } from "uuid";
 import ExerciseSetBlocController from "../ExerciseSetBlocController/ExerciseSetBlocController";
 import { Button } from "@mui/material";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import {
+  createEmptyExerciseSetBloc,
+  Session,
+  WorkoutProgramme,
+} from "../../../schemas/workoutProgrammeSchema";
 
-export default function ExerciseSessionController() {
-  const {
-    selectedSession,
-    updateSession,
-    isEditable,
-    exerciseTypeOptions,
-    updateSetBloc,
-  } = useWorkoutProgrammeContext();
+type Props = {
+  sessionIndex: number;
+  session: Session;
+};
+export default function ExerciseSessionController({
+  sessionIndex,
+  session,
+}: Props) {
+  const { selectedSession, isEditable, exerciseTypeOptions } =
+    useWorkoutProgrammeContext();
 
-  const addSetBloc = () => {
-    if (!isEditable) return;
-    if (selectedSession === null) return;
-
-    const newSetBloc: ExerciseSetBloc = {
-      tempId: uuidv4(),
-      name: `Exercise ${(selectedSession.setBlocs.length ?? 0) + 1}`,
-      sets: [],
-    };
-
-    const sessionId = selectedSession.id ?? selectedSession.tempId;
-
-    if (!sessionId) return;
-
-    updateSession(sessionId, (prev) => ({
-      ...prev,
-      setBlocs: [...prev.setBlocs, newSetBloc],
-    }));
-  };
+  const { control, watch } = useFormContext<WorkoutProgramme>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: `sessions.${sessionIndex}.setBlocs`,
+  });
 
   return (
     <div className={styles.container}>
-      {selectedSession?.setBlocs.map((setBloc) => (
+      {session?.setBlocs.map((setBloc, index) => (
         <ExerciseSetBlocController
           key={setBloc.id ?? setBloc.tempId}
+          sessionIndex={sessionIndex}
+          setBlocIndex={index}
           setBloc={setBloc}
         />
       ))}
       {isEditable && (
-        <Button variant={"contained"} onClick={() => addSetBloc()}>
+        <Button
+          variant={"contained"}
+          onClick={() => append(createEmptyExerciseSetBloc())}
+        >
           Add Exercise
         </Button>
       )}

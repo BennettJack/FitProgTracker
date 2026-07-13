@@ -28,6 +28,10 @@ type WorkoutProgrammeControllerProps = {
   mode: ControllerMode;
   workoutProgrammeId?: number;
 };
+type SelectedSession = {
+  index: number
+  session: Session
+}
 
 type WorkoutProgrammeContextValue = {
   //State management
@@ -35,11 +39,10 @@ type WorkoutProgrammeContextValue = {
   setMode: React.Dispatch<React.SetStateAction<ControllerMode>>;
   isEditable: boolean;
 
-  selectedSessionId: number | string | null;
-  setSelectedSessionId: React.Dispatch<
-    React.SetStateAction<number | string | null>
+  setSelectedSession: React.Dispatch<
+    React.SetStateAction<SelectedSession | null>
   >;
-  selectedSession: Session | null;
+  selectedSession: SelectedSession | null;
 
   loading: boolean;
   saving: boolean;
@@ -83,15 +86,12 @@ export function WorkoutProgrammeProvider({
   const isEditable = currentMode === "edit" || currentMode === "create";
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [selectedSession, setSelectedSession] = useState<SelectedSession | null>(null);
   //Data
   const [exerciseTypeOptions, setExerciseTypeOptions] = useState<
     SelectOption[]
   >([]);
   const [exerciseOptions, setExerciseOptions] = useState<SelectOption[]>([]);
-
-  const [selectedSessionId, setSelectedSessionId] = useState<
-    number | string | null
-  >(null);
 
   const isCreateMode = currentMode === "create";
   const isEditMode = currentMode === "edit";
@@ -162,11 +162,6 @@ export function WorkoutProgrammeProvider({
     setSaving(false);
   });
 
-  const sessions = watch("sessions");
-  const selectedSession =
-    sessions?.find(
-      (session) => (session.id ?? session.tempId) === selectedSessionId,
-    ) ?? null;
 
   const value = useMemo<WorkoutProgrammeContextValue>(
     () => ({
@@ -177,8 +172,7 @@ export function WorkoutProgrammeProvider({
       exerciseTypeOptions,
       exerciseOptions,
 
-      selectedSessionId,
-      setSelectedSessionId,
+      setSelectedSession,
       selectedSession,
 
       loading,
@@ -195,7 +189,7 @@ export function WorkoutProgrammeProvider({
       isEditable,
       exerciseOptions,
       exerciseTypeOptions,
-      selectedSessionId,
+      setSelectedSession,
       selectedSession,
       loading,
       saving,

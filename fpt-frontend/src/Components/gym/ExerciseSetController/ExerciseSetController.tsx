@@ -1,79 +1,39 @@
-﻿import { ExerciseSet, ExerciseSetBloc } from "../../../Types/WorkoutTypes";
-import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
-import { Controller, useForm } from "react-hook-form";
+﻿import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
 import { useEffect } from "react";
 import { Button, Input, Select, TextField } from "@mui/material";
 import { NumberField } from "@base-ui/react";
 import NumberSpinner from "../../../Global styles/mui/NumberSpinner";
 import styles from "../ExerciseSetBlocController/ExerciseSetBlocController.module.css";
 import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
+import {
+  ExerciseSet,
+  WorkoutProgramme,
+} from "../../../schemas/workoutProgrammeSchema";
 
 type ExerciseSetProps = {
   exerciseSet: ExerciseSet;
-  exerciseSetBloc: ExerciseSetBloc;
-};
-
-type ExerciseSetFormData = {
-  repCeiling: string;
-  repFloor: string;
-  description: string;
-  exerciseId: number;
-  exerciseTypeId: number;
+  exerciseSetIndex: number;
+  setBlocIndex: number;
+  sessionIndex: number;
 };
 
 export default function ExerciseSetController({
   exerciseSet,
-  exerciseSetBloc,
+  exerciseSetIndex,
+  setBlocIndex,
+  sessionIndex,
 }: ExerciseSetProps) {
-  const {
-    updateExerciseSet,
-    selectedSessionId,
-    isEditable,
-    exerciseTypeOptions,
-    exerciseOptions,
-  } = useWorkoutProgrammeContext();
+  const { isEditable, exerciseTypeOptions, exerciseOptions } =
+    useWorkoutProgrammeContext();
 
-  const { control, register, watch, reset } = useForm<ExerciseSetFormData>({
-    defaultValues: {
-      repCeiling: exerciseSet.repCeiling,
-      repFloor: exerciseSet.repFloor,
-      description: exerciseSet.description,
-    },
-  });
+  const { control, watch } = useFormContext<WorkoutProgramme>();
 
-  const repCeiling = watch("repCeiling");
-  const repFloor = watch("repFloor");
-  const description = watch("description");
-  const exerciseId = watch("exerciseId");
-  const exerciseTypeId = watch("exerciseTypeId");
-
-  useEffect(() => {
-    const setBlocId = exerciseSetBloc.id ?? exerciseSetBloc.tempId;
-    const exerciseSetId = exerciseSet.id ?? exerciseSet.tempId;
-
-    if (exerciseSetId === undefined || setBlocId === undefined) return;
-    console.log(repCeiling);
-    updateExerciseSet(selectedSessionId, setBlocId, exerciseSetId, (prev) => ({
-      ...prev,
-      repCeiling,
-      repFloor,
-      description,
-      exerciseId,
-      exerciseTypeId,
-    }));
-  }, [repCeiling, repFloor, description, exerciseId, exerciseTypeId]);
-
-  useEffect(() => {
-    reset({
-      repCeiling: exerciseSet.repCeiling,
-      repFloor: exerciseSet.repFloor,
-      description: exerciseSet.description,
-    });
-  }, [exerciseSet.tempId || exerciseSet.id]);
-
-  useEffect(() => {
-    console.log(exerciseSet);
-  }, [exerciseId, exerciseTypeId]);
   const renderExerciseSelect = () => {
     if (isEditable) {
       return (
