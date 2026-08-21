@@ -32,14 +32,15 @@ export default function ExerciseSetController({
   const { isEditable, exerciseTypeOptions, exerciseOptions } =
     useWorkoutProgrammeContext();
 
-  const { control, watch } = useFormContext<WorkoutProgramme>();
 
+  const { control, register, watch } = useFormContext<WorkoutProgramme>();
+  const temp = `sessions.${sessionIndex}.setBlocs.${setBlocIndex}.sets.${exerciseSetIndex}`
   const renderExerciseSelect = () => {
     if (isEditable) {
       return (
         <select
           value={exerciseSet.exerciseId}
-          {...register("exerciseId")}
+          {...register("temp.")}
           disabled={!isEditable}
         >
           <option value="">Select Exercise</option>

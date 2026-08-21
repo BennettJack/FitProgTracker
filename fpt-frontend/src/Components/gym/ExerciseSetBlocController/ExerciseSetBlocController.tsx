@@ -1,12 +1,11 @@
 ﻿import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
-import { v4 as uuidv4 } from "uuid";
 import ExerciseSetController from "../ExerciseSetController/ExerciseSetController";
 import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
-import { useEffect } from "react";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import styles from "./ExerciseSetBlocController.module.css";
 import { Button, Select } from "@mui/material";
 import {
+  createEmptyExerciseSet,
   ExerciseSetBloc,
   WorkoutProgramme,
 } from "../../../schemas/workoutProgrammeSchema";
@@ -24,7 +23,7 @@ export default function ExerciseSetBlocController({
   sessionIndex,
 }: ExerciseSetBlocControllerProps) {
   const { isEditable, selectedSession } = useWorkoutProgrammeContext();
-
+  const prefix = `sessions.${sessionIndex}.setBlocs.${setBlocIndex}`;
   const { control, watch } = useFormContext<WorkoutProgramme>();
 
   const { fields, append, remove } = useFieldArray({
@@ -38,18 +37,20 @@ export default function ExerciseSetBlocController({
         <h2>{setBloc.name}</h2>
       ) : (
         <RhfTextField
-          name={`sessions.${sessionIndex}.setBlocs.${setBlocIndex}.name`}
+          name={`${prefix}.name`}
           variant="outlined"
           label="Name"
           defaultValue={setBloc.name}
         />
       )}
       {setBloc.sets.length > 0 &&
-        setBloc.sets.map((set) =>
+        setBloc.sets.map((set, index) =>
           isEditable ? (
             <ExerciseSetController
               exerciseSet={set}
-              exerciseSetBloc={setBloc}
+              setBlocIndex={setBlocIndex}
+              exerciseSetIndex={index}
+              sessionIndex={sessionIndex}
             />
           ) : (
             <ExerciseSetRecordController exerciseSet={set} />
@@ -58,7 +59,9 @@ export default function ExerciseSetBlocController({
 
       {isEditable && (
         <div>
-          <Button onClick={() => console.log()}>Add Set</Button>
+          <Button onClick={() => append(createEmptyExerciseSet())}>
+            Add Set
+          </Button>
           <Button onClick={() => console.log()}>Duplicate</Button>
         </div>
       )}

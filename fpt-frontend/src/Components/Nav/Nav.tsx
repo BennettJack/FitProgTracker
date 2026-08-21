@@ -11,6 +11,9 @@ const userNavItems = () => {
       <li>
         <a href={"/myWorkoutProgrammes"}>My Programmes</a>
       </li>
+      <li>
+        <a href={"/componentPlayground"}>Component Playground</a>
+      </li>
     </ul>
   );
 };

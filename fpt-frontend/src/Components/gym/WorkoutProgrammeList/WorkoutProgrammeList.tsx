@@ -24,7 +24,7 @@ export default function WorkoutProgrammeList() {
     console.log(workoutProgrammes);
   }, [workoutProgrammes]);
   return (
-    <ThemeProvider theme={aminoTheme}>
+    <>
       <div className={styles.listWrapper}>
         {workoutProgrammes.length > 0 ? (
           workoutProgrammes.map((programme) => (
@@ -39,6 +39,6 @@ export default function WorkoutProgrammeList() {
         )}
       </div>
       <Button>New programme</Button>
-    </ThemeProvider>
+    </>
   );
 }

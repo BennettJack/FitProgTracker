@@ -9,6 +9,7 @@ import { WorkoutProgrammeProvider } from "./Pages/Gym/WorkoutProgrammeBuilder/Wo
 import WorkoutProgrammeController from "./Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeController";
 import WorkoutProgrammeList from "./Components/gym/WorkoutProgrammeList/WorkoutProgrammeList";
 import { ControllerMode } from "./Types/WorkoutTypes";
+import ComponentPlayground from "./Components/ComponentPlayground/ComponentPlayground";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -65,6 +66,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <WorkoutProgrammeList />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "componentPlayground",
+        element: (
+          <ProtectedRoute>
+            <ComponentPlayground />
           </ProtectedRoute>
         ),
       },

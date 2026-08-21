@@ -14,7 +14,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-type TextFieldProps = MuiTextFieldProps & {
+export type TextFieldProps = MuiTextFieldProps & {
   tooltip?: TooltipProps;
 };
 
