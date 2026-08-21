@@ -24,6 +24,7 @@ type RHFTextFieldProps<T extends FieldValues> = TextFieldProps & {
 };
 
 export const TextField = ({
+  ref,
   tooltip,
   slotProps,
   select,
@@ -47,6 +48,7 @@ export const TextField = ({
 
   return (
     <MuiTextField
+      ref={ref}
       fullWidth
       select={select}
       slotProps={mergedSlotProps}

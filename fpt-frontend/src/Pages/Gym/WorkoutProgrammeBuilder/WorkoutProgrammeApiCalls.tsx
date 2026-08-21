@@ -1,8 +1,6 @@
 ﻿import { api } from "../../../api/apiClient";
 import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
 import { SelectOption } from "../../../Components/CustomElements/MultiSelect/Select";
-import { Exercise } from "../../../Types/ModelTypes";
-import { Select } from "@base-ui/react";
 
 export const fetchTodayRecords = async (sessionId: number | string) => {
   try {

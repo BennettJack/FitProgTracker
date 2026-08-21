@@ -5,10 +5,7 @@ import { api } from "../../../api/apiClient";
 import { Button, ThemeProvider } from "@mui/material";
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
 import ExerciseSessionList from "../../../Components/gym/ExerciseSessionList/ExerciseSessionList";
-import {
-  RhfTextField,
-  TextField,
-} from "../../../Global styles/mui/ControlledComponents/TextField";
+import { RhfTextField, TextField } from "../../../Components/Inputs/TextField";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import * as z from "zod";
 import { ReactNode, useEffect } from "react";

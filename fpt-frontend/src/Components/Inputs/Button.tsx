@@ -24,12 +24,7 @@ export const Button = ({
     : {};
 
   return (
-    <MuiButton
-      variant={variant}
-      color={color}
-      sx={{ ...sx, ...disabledSx }}
-      {...rest}
-    >
+    <MuiButton variant={variant} color={color} {...rest}>
       {children}
     </MuiButton>
   );

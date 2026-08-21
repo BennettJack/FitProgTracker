@@ -9,7 +9,7 @@ import {
   ExerciseSetBloc,
   WorkoutProgramme,
 } from "../../../schemas/workoutProgrammeSchema";
-import { RhfTextField } from "../../../Global styles/mui/ControlledComponents/TextField";
+import { RhfTextField } from "../../Inputs/TextField";
 
 type ExerciseSetBlocControllerProps = {
   setBlocIndex: number;

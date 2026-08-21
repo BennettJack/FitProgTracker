@@ -1,14 +1,18 @@
 ﻿import { z } from "zod";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { TextField, ThemeProvider } from "@mui/material";
-import { RhfTextField } from "../../Global styles/mui/ControlledComponents/TextField";
+import { RhfTextField } from "../Inputs/TextField";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RhfRadioGroup } from "../../Global styles/mui/ControlledComponents/RadioGroup";
+import { RhfRadioGroup } from "../Inputs/RadioGroup";
+import { SelectOption } from "../CustomElements/MultiSelect/Select";
+import { RhfSelect } from "../Inputs/Select";
+import { RhfSwitch } from "../Inputs/Switch";
 
 const schema = z.object({
   name: z.string().min(3, "should be more than 3"),
   optional: z.string().min(1, "please select an option"),
+  selectElement: z.string().min(1, "please select an option"),
+  switchReq: z.boolean().refine((val) => val, { message: "required" }),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -18,6 +22,8 @@ export default function ComponentPlayground() {
     defaultValues: {
       name: "",
       optional: "",
+      selectElement: "",
+      switchReq: false,
     },
   });
   return (
@@ -33,12 +39,29 @@ function ThisHasToBeHere() {
   const [data, setData] = useState<FormValues>({
     name: "",
     optional: "",
+    selectElement: "",
+    switchReq: false,
   });
 
   const options = [
     { label: "Option 1", value: "1" },
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
+  ];
+
+  const selectOptions: SelectOption[] = [
+    {
+      label: "Option 1",
+      value: "1",
+    },
+    {
+      label: "Option 2",
+      value: "2",
+    },
+    {
+      label: "Option 3",
+      value: "3",
+    },
   ];
   return (
     <>
@@ -52,12 +75,22 @@ function ThisHasToBeHere() {
           label={"Name"}
         />
         <RhfRadioGroup options={options} control={control} name={"optional"} />
+        <RhfSelect
+          variant={"outlined"}
+          options={selectOptions}
+          control={control}
+          name={"selectElement"}
+          value={data.selectElement}
+        />
+        <RhfSwitch control={control} name={"switchReq"} label={"Switch"} />
         <input type={"submit"} />
       </form>
 
       <h2> values</h2>
       <p>Name: {data.name}</p>
       <p>Optional: {data.optional}</p>
+      <p>Select Element: {data.selectElement}</p>
+      <p>Switch on: {data.switchReq.toString()}</p>
     </>
   );
 }

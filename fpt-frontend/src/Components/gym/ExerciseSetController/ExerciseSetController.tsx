@@ -4,6 +4,7 @@ import {
   useFieldArray,
   useForm,
   useFormContext,
+  useWatch,
 } from "react-hook-form";
 import { useEffect } from "react";
 import { Button, Input, Select, TextField } from "@mui/material";
@@ -15,6 +16,7 @@ import {
   ExerciseSet,
   WorkoutProgramme,
 } from "../../../schemas/workoutProgrammeSchema";
+import { RhfSelect } from "../../Inputs/Select";
 
 type ExerciseSetProps = {
   exerciseSet: ExerciseSet;
@@ -32,24 +34,18 @@ export default function ExerciseSetController({
   const { isEditable, exerciseTypeOptions, exerciseOptions } =
     useWorkoutProgrammeContext();
 
-
   const { control, register, watch } = useFormContext<WorkoutProgramme>();
-  const temp = `sessions.${sessionIndex}.setBlocs.${setBlocIndex}.sets.${exerciseSetIndex}`
+  const temp = `sessions.${sessionIndex}.setBlocs.${setBlocIndex}.sets.${exerciseSetIndex}`;
   const renderExerciseSelect = () => {
     if (isEditable) {
       return (
-        <select
+        <RhfSelect
+          variant={"outlined"}
+          options={exerciseOptions}
+          name={`${temp}.exerciseId`}
           value={exerciseSet.exerciseId}
-          {...register("temp.")}
-          disabled={!isEditable}
-        >
-          <option value="">Select Exercise</option>
-          {exerciseOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          onValueChange={(e) => console.log(`changed to ${e}`)}
+        />
       );
     } else {
       if (exerciseSet.exerciseId) {
@@ -57,7 +53,7 @@ export default function ExerciseSetController({
           <p>
             {
               exerciseOptions.find((o) => {
-                return Number(o.value) === exerciseSet.exerciseId;
+                return o.value === exerciseSet.exerciseId;
               })?.label
             }
           </p>
@@ -71,17 +67,12 @@ export default function ExerciseSetController({
   const renderExerciseTypeSelect = () => {
     if (isEditable) {
       return (
-        <select
+        <RhfSelect
+          variant={"outlined"}
+          options={exerciseTypeOptions}
+          name={`${temp}.exerciseTypeId`}
           value={exerciseSet.exerciseTypeId}
-          {...register("exerciseTypeId")}
-          disabled={!isEditable}
-        >
-          {exerciseTypeOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        />
       );
     } else {
       if (exerciseSet.exerciseTypeId) {
@@ -89,7 +80,7 @@ export default function ExerciseSetController({
           <p>
             {
               exerciseTypeOptions.find((o) => {
-                return Number(o.value) === exerciseSet.exerciseTypeId;
+                return o.value === exerciseSet.exerciseTypeId;
               })?.label
             }
           </p>

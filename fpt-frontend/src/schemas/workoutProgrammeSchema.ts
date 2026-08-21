@@ -15,8 +15,8 @@ export const ExerciseSetSchema = z.object({
   description: z.string(),
   repCeiling: z.string(),
   repFloor: z.string(),
-  exerciseTypeId: z.number(),
-  exerciseId: z.number().optional(),
+  exerciseTypeId: z.string().min(1, "Please select an exercise type"),
+  exerciseId: z.string().min(1, "Please select an exercise"),
   todayRecord: ExerciseSetRecordSchema.optional(),
 });
 
@@ -64,7 +64,8 @@ export const createEmptyExerciseSet = (): ExerciseSet => ({
   description: "",
   repCeiling: "0",
   repFloor: "0",
-  exerciseTypeId: 1,
+  exerciseTypeId: "",
+  exerciseId: "",
 });
 export type WorkoutProgramme = z.infer<typeof WorkoutProgrammeSchema>;
 export type Session = z.infer<typeof SessionSchema>;
