@@ -17,6 +17,7 @@ import {
   WorkoutProgramme,
 } from "../../../schemas/workoutProgrammeSchema";
 import { RhfSelect } from "../../Inputs/Select";
+import { RhfTextField } from "../../Inputs/TextField";
 
 type ExerciseSetProps = {
   exerciseSet: ExerciseSet;
@@ -33,8 +34,6 @@ export default function ExerciseSetController({
 }: ExerciseSetProps) {
   const { isEditable, exerciseTypeOptions, exerciseOptions } =
     useWorkoutProgrammeContext();
-
-  const { control, register, watch } = useFormContext<WorkoutProgramme>();
   const temp = `sessions.${sessionIndex}.setBlocs.${setBlocIndex}.sets.${exerciseSetIndex}`;
   const renderExerciseSelect = () => {
     if (isEditable) {
@@ -43,8 +42,8 @@ export default function ExerciseSetController({
           variant={"outlined"}
           options={exerciseOptions}
           name={`${temp}.exerciseId`}
-          value={exerciseSet.exerciseId}
-          onValueChange={(e) => console.log(`changed to ${e}`)}
+          value={String(exerciseSet.exerciseId)}
+          label={"Exercise"}
         />
       );
     } else {
@@ -72,6 +71,7 @@ export default function ExerciseSetController({
           options={exerciseTypeOptions}
           name={`${temp}.exerciseTypeId`}
           value={exerciseSet.exerciseTypeId}
+          label={"Exercise type"}
         />
       );
     } else {
@@ -97,34 +97,22 @@ export default function ExerciseSetController({
         {renderExerciseSelect()}
         {renderExerciseTypeSelect()}
       </div>
-      {exerciseSet.exerciseTypeId === 3 && (
+      {Number(exerciseSet.exerciseTypeId) === 3 && (
         <button>Check your 5/3/1 settings</button>
       )}
-      <NumberSpinner<ExerciseSetFormData>
-        name={"repCeiling"}
-        control={control}
-        label={"Rep Ceiling"}
-        id={"repCeilingInput"}
-        min={0}
-        max={99}
+      <RhfTextField
+        variant={"outlined"}
+        name={`${temp}.repCeiling`}
+        value={exerciseSet.repCeiling}
+        type={"number"}
+        label={"Rep ceiling"}
       />
-
-      <NumberSpinner<ExerciseSetFormData>
-        name={"repFloor"}
-        control={control}
-        label={"Rep Floor"}
-        id={"repCeilingInput"}
-        min={0}
-        max={99}
-      />
-
-      <TextField
-        label="Description"
-        variant={"standard"}
-        id={"descriptionInput"}
-        type={"text"}
-        value={exerciseSet.description}
-        {...register("description")}
+      <RhfTextField
+        variant={"outlined"}
+        name={`${temp}.repFloor`}
+        value={exerciseSet.repFloor}
+        type={"number"}
+        label={"Rep floor"}
       />
     </>
   );

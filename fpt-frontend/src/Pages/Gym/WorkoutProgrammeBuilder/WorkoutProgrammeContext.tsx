@@ -29,9 +29,9 @@ type WorkoutProgrammeControllerProps = {
   workoutProgrammeId?: number;
 };
 type SelectedSession = {
-  index: number
-  session: Session
-}
+  index: number;
+  session: Session;
+};
 
 type WorkoutProgrammeContextValue = {
   //State management
@@ -86,7 +86,8 @@ export function WorkoutProgrammeProvider({
   const isEditable = currentMode === "edit" || currentMode === "create";
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [selectedSession, setSelectedSession] = useState<SelectedSession | null>(null);
+  const [selectedSession, setSelectedSession] =
+    useState<SelectedSession | null>(null);
   //Data
   const [exerciseTypeOptions, setExerciseTypeOptions] = useState<
     SelectOption[]
@@ -109,8 +110,8 @@ export function WorkoutProgrammeProvider({
       //get and set dropdown data
       try {
         const [exerciseTypeOptions, exerciseOptions] = await Promise.all([
-          await apiCalls.getExercises(),
           await apiCalls.getExerciseTypeOptions(),
+          await apiCalls.getExercises(),
         ]);
         setExerciseTypeOptions(exerciseTypeOptions ?? []);
         setExerciseOptions(exerciseOptions ?? []);
@@ -161,7 +162,6 @@ export function WorkoutProgrammeProvider({
     }
     setSaving(false);
   });
-
 
   const value = useMemo<WorkoutProgrammeContextValue>(
     () => ({
