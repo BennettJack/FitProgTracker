@@ -4,7 +4,7 @@ import ExerciseSessionController from "../../../Components/gym/ExerciseSessionCo
 import { api } from "../../../api/apiClient";
 import { Button, ThemeProvider } from "@mui/material";
 import aminoTheme from "../../../Global styles/mui/aminoTheme";
-import ExerciseSessionList from "../../../Components/gym/ExerciseSessionList/ExerciseSessionList";
+import ExerciseSessionSidebar from "../../../Components/gym/ExerciseSessionList/ExerciseSessionSidebar";
 import { RhfTextField, TextField } from "../../../Components/Inputs/TextField";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import * as z from "zod";
@@ -14,6 +14,7 @@ import { useFormContext } from "react-hook-form";
 import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
 import { useFormState } from "react-dom";
 import WorkoutProgrammeList from "../../../Components/gym/WorkoutProgrammeList/WorkoutProgrammeList";
+import ExerciseSessionList from "../../../Components/gym/ExerciseSessionList/ExerciseSessionList";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -99,7 +100,7 @@ export default function WorkoutProgrammeController() {
         {renderButtons()}
       </div>
       <div className={styles.exerciseSessionList}>
-        <ExerciseSessionList />
+        <ExerciseSessionSidebar />
       </div>
     </ThemeProvider>
   );

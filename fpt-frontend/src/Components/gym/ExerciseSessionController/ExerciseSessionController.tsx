@@ -9,6 +9,7 @@ import {
   Session,
   WorkoutProgramme,
 } from "../../../schemas/workoutProgrammeSchema";
+import { RhfTextField } from "../../Inputs/TextField";
 
 type Props = {
   sessionIndex: number;
@@ -29,6 +30,16 @@ export default function ExerciseSessionController({
 
   return (
     <div className={styles.container}>
+      {isEditable ? (
+        <RhfTextField
+          variant={"outlined"}
+          value={session.name}
+          name={`sessions.${sessionIndex}.name`}
+          label={"Session name"}
+        />
+      ) : (
+        <h2>{session.name}</h2>
+      )}
       {session?.setBlocs.map((setBloc, index) => (
         <ExerciseSetBlocController
           key={setBloc.id ?? setBloc.tempId}

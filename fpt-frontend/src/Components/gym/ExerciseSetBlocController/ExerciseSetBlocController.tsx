@@ -39,23 +39,26 @@ export default function ExerciseSetBlocController({
         <RhfTextField
           name={`${prefix}.name`}
           variant="outlined"
-          label="Name"
+          label="Set bloc name"
           defaultValue={setBloc.name}
         />
       )}
       {setBloc.sets.length > 0 &&
-        setBloc.sets.map((set, index) =>
-          isEditable ? (
-            <ExerciseSetController
-              exerciseSet={set}
-              setBlocIndex={setBlocIndex}
-              exerciseSetIndex={index}
-              sessionIndex={sessionIndex}
-            />
-          ) : (
-            <ExerciseSetRecordController exerciseSet={set} />
-          ),
-        )}
+        setBloc.sets.map((set, index) => (
+          <div>
+            <h3>Set {index + 1}</h3>
+            {isEditable ? (
+              <ExerciseSetController
+                exerciseSet={set}
+                setBlocIndex={setBlocIndex}
+                exerciseSetIndex={index}
+                sessionIndex={sessionIndex}
+              />
+            ) : (
+              <ExerciseSetRecordController exerciseSet={set} />
+            )}
+          </div>
+        ))}
 
       {isEditable && (
         <div>

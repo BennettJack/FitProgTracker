@@ -13,6 +13,7 @@ import {
   useController,
   useFormContext,
 } from "react-hook-form";
+import styles from "./muiRootStyles.module.css";
 
 export type TextFieldProps = MuiTextFieldProps & {
   tooltip?: TooltipProps;
@@ -48,6 +49,7 @@ export const TextField = ({
 
   return (
     <MuiTextField
+      className={styles.rootField}
       ref={ref}
       fullWidth
       select={select}

@@ -1,10 +1,10 @@
 ﻿import styles from "./WorkoutProgrammeList.module.css";
 import { useEffect, useState } from "react";
-import { WorkoutProgramme } from "../../../Types/WorkoutTypes";
 import { api } from "../../../api/apiClient";
-import aminoTheme from "../../../Global styles/mui/aminoTheme";
-import { Button, ThemeProvider } from "@mui/material";
+
+import { Button } from "@mui/material";
 import { WorkoutProgrammeCard } from "../WorkoutProgrammeCard/WorkoutProgrammeCard";
+import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
 
 export default function WorkoutProgrammeList() {
   const [workoutProgrammes, setWorkoutProgrammes] = useState<

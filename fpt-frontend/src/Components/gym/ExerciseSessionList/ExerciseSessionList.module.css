@@ -52,3 +52,12 @@
 .container.open ~ .iconButtonContainer {
     left: calc(75%);
 }
+.sessionSelector {
+    padding: 0.5rem;
+    text-align: center;
+}
+.sessionSelector:hover {
+    cursor: pointer;
+    background-color: var(--colour-primary-accent);
+}
+.activeSession {background-color: var(--colour-primary-accent); cursor: pointer;}
