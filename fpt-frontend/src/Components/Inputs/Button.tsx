@@ -1,10 +1,5 @@
 ﻿import { ButtonProps as MuiButtonProps } from "@mui/material";
-import { FieldValues, Control, useFormContext } from "react-hook-form";
 import MuiButton from "@mui/material/Button";
-
-type RHFButtonProps<T extends FieldValues> = MuiButtonProps & {
-  control?: Control<T>;
-};
 
 export const Button = ({
   variant,
@@ -28,4 +23,8 @@ export const Button = ({
       {children}
     </MuiButton>
   );
+};
+
+export const NumberedButton = ({ value, onClick, ...rest }: MuiButtonProps) => {
+  return <Button {...rest}>{value}</Button>;
 };

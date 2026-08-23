@@ -8,6 +8,7 @@ public class ExerciseSetRecord : BaseModel
     public ExerciseType ExerciseType { get; set; } = null!;
     public required decimal RepsCompleted { get; set; }
     public required decimal Weight { get; set; }
+    public int? PerceivedEffort { get; set; }
 
     public int? SetId { get; set; }
     public Set? Set { get; set; }
