@@ -13,6 +13,7 @@ import { ControllerMode } from "../../../Types/WorkoutTypes";
 import { useFormContext } from "react-hook-form";
 import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
 import { useFormState } from "react-dom";
+import WorkoutProgrammeList from "../../../Components/gym/WorkoutProgrammeList/WorkoutProgrammeList";
 
 export default function WorkoutProgrammeController() {
   const {
@@ -23,6 +24,7 @@ export default function WorkoutProgrammeController() {
     mode,
     setMode,
     createProgramme,
+    reset,
   } = useWorkoutProgrammeContext();
 
   const { watch, getValues } = useFormContext<WorkoutProgramme>();
@@ -30,6 +32,11 @@ export default function WorkoutProgrammeController() {
   useEffect(() => {
     console.log(getValues());
   }, [watch("name")]);
+
+  const onCancel = () => {
+    setMode("view");
+    reset();
+  };
   const renderButtons = () => {
     console.log(mode);
     switch (mode) {
@@ -37,11 +44,19 @@ export default function WorkoutProgrammeController() {
         return (
           <div>
             <Button onClick={updateProgramme}>Update</Button>
-            <Button onClick={() => setMode("view")}>Cancel</Button>
+            <Button onClick={() => onCancel()}>Cancel</Button>
           </div>
         );
       case "view":
-        return <Button onClick={() => setMode("edit")}>Edit</Button>;
+        return (
+          <Button
+            onClick={() => {
+              setMode("edit");
+            }}
+          >
+            Edit
+          </Button>
+        );
       case "create":
         return <Button onClick={createProgramme}>Submit</Button>;
     }
@@ -68,11 +83,16 @@ export default function WorkoutProgrammeController() {
         </div>
 
         <div className={styles.content}>
-          {selectedSession && (
+          {selectedSession ? (
             <ExerciseSessionController
               sessionIndex={selectedSession.index}
               session={selectedSession.session}
             />
+          ) : (
+            <div>
+              <p>Select a session</p>
+              <ExerciseSessionList />
+            </div>
           )}
         </div>
 

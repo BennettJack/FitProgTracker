@@ -53,6 +53,8 @@ type WorkoutProgrammeContextValue = {
   //Data from API
   exerciseTypeOptions: SelectOption[];
   exerciseOptions: SelectOption[];
+
+  reset: () => void;
 };
 
 const WorkoutProgrammeContext =
@@ -170,6 +172,17 @@ export function WorkoutProgrammeProvider({
     setSaving(false);
   });
 
+  const resetForm = async () => {
+    setSelectedSession(null);
+    await apiCalls
+      .getWorkoutProgramme(
+        Number(params.workoutProgrammeId) ?? workoutProgrammeId,
+      )
+      .then((res) => {
+        reset(res);
+      });
+  };
+
   const value = useMemo<WorkoutProgrammeContextValue>(
     () => ({
       mode: currentMode,
@@ -187,6 +200,8 @@ export function WorkoutProgrammeProvider({
 
       createProgramme,
       updateProgramme,
+
+      reset: resetForm,
     }),
     [
       currentMode,
@@ -202,6 +217,7 @@ export function WorkoutProgrammeProvider({
       saving,
       createProgramme,
       updateProgramme,
+      reset,
     ],
   );
 
