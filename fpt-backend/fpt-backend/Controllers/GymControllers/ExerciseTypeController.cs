@@ -19,4 +19,11 @@ public class ExerciseTypeController : Controller
         var res = await _exerciseTypeService.GetListAsDropdownAsync();
         return Ok(res);
     }
+
+    [HttpGet("GetExerciseTypesByExercise/{exerciseId:int}")]
+    public async Task<IActionResult> GetExerciseTypesByExercise(int exerciseId)
+    {
+        var res = await _exerciseTypeService.GetExerciseTypesByExerciseAsync(exerciseId);
+        return Ok(res);
+    }
 }

@@ -6,7 +6,7 @@ import {
   useFormContext,
   useWatch,
 } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input, Select, TextField } from "@mui/material";
 import { NumberField } from "@base-ui/react";
 import NumberSpinner from "../../../Global styles/mui/NumberSpinner";
@@ -18,6 +18,8 @@ import {
 } from "../../../schemas/workoutProgrammeSchema";
 import { RhfSelect } from "../../Inputs/Select";
 import { RhfTextField } from "../../Inputs/TextField";
+import { SelectOption } from "../../CustomElements/MultiSelect/Select";
+import { getExerciseTypesByExerciseId } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeApiCalls";
 
 type ExerciseSetProps = {
   exerciseSet: ExerciseSet;
@@ -32,6 +34,13 @@ export default function ExerciseSetController({
   setBlocIndex,
   sessionIndex,
 }: ExerciseSetProps) {
+  const [exerciseTypeList, setExerciseTypeList] = useState<SelectOption[]>([]);
+  useEffect(() => {
+    if (exerciseSet.exerciseId)
+      getExerciseTypesByExerciseId(Number(exerciseSet.exerciseId)).then((res) =>
+        setExerciseTypeList(res ?? []),
+      );
+  }, [exerciseSet.exerciseId]);
   const { isEditable, exerciseTypeOptions, exerciseOptions } =
     useWorkoutProgrammeContext();
   const temp = `sessions.${sessionIndex}.setBlocs.${setBlocIndex}.sets.${exerciseSetIndex}`;
@@ -42,7 +51,7 @@ export default function ExerciseSetController({
           variant={"outlined"}
           options={exerciseOptions}
           name={`${temp}.exerciseId`}
-          value={String(exerciseSet.exerciseId)}
+          value={exerciseSet.exerciseId}
           label={"Exercise"}
         />
       );
@@ -68,7 +77,7 @@ export default function ExerciseSetController({
       return (
         <RhfSelect
           variant={"outlined"}
-          options={exerciseTypeOptions}
+          options={exerciseTypeList}
           name={`${temp}.exerciseTypeId`}
           value={exerciseSet.exerciseTypeId}
           label={"Exercise type"}

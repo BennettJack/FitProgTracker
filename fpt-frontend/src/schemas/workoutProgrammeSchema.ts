@@ -15,8 +15,8 @@ export const ExerciseSetSchema = z.object({
   description: z.string().optional(),
   repCeiling: z.coerce.number().min(1, "Rep ceiling cannot be less than 1"),
   repFloor: z.coerce.number().min(1, "Rep floor cannot be less than 1"),
-  exerciseTypeId: z.coerce.number().min(1, "Please select an exercise type"),
-  exerciseId: z.coerce.number().min(1, "Please select an exercise"),
+  exerciseTypeId: z.coerce.string().min(1, "Please select an exercise type"),
+  exerciseId: z.coerce.string().min(1, "Please select an exercise"),
   todayRecord: ExerciseSetRecordSchema.optional(),
 });
 
@@ -64,8 +64,8 @@ export const createEmptyExerciseSet = (): ExerciseSet => ({
   description: "",
   repCeiling: 0,
   repFloor: 0,
-  exerciseTypeId: 0,
-  exerciseId: 0,
+  exerciseTypeId: "",
+  exerciseId: "",
 });
 export type WorkoutProgramme = z.infer<typeof WorkoutProgrammeSchema>;
 export type Session = z.infer<typeof SessionSchema>;

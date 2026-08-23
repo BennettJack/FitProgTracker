@@ -13,4 +13,5 @@ public class Exercise : BaseModel
     public List<Muscle> Muscles { get; set; } = new();
     public List<SetTemplate> SetTemplates { get; set; } = new();
     public List<Set> Sets { get; set; } = new();
+    public List<ExerciseType> ExerciseTypes { get; set; } = new();
 }

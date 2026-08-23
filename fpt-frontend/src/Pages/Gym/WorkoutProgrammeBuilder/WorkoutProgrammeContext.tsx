@@ -79,7 +79,7 @@ export function WorkoutProgrammeProvider({
   mode,
   workoutProgrammeId,
 }: WorkoutProgrammeControllerProps): React.ReactElement {
-  const params = useParams();
+  const params = useParams<{ workoutProgrammeId: string }>();
 
   // state management
   const [currentMode, setCurrentMode] = useState<ControllerMode>(mode);
@@ -116,11 +116,18 @@ export function WorkoutProgrammeProvider({
         setExerciseTypeOptions(exerciseTypeOptions ?? []);
         setExerciseOptions(exerciseOptions ?? []);
 
+        console.log(
+          `this should be getting the with id ${params.workoutProgrammeId}`,
+        );
         //Fetch workout programme data
-        if (workoutProgrammeId) {
-          await apiCalls.getWorkoutProgramme(workoutProgrammeId).then((res) => {
-            reset(res);
-          });
+        if (workoutProgrammeId || params.workoutProgrammeId) {
+          await apiCalls
+            .getWorkoutProgramme(
+              Number(params.workoutProgrammeId) ?? workoutProgrammeId,
+            )
+            .then((res) => {
+              reset(res);
+            });
         }
       } finally {
         setLoading(false);

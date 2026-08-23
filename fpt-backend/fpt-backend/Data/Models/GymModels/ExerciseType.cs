@@ -4,4 +4,5 @@ public class ExerciseType : BaseModel
 {
     public string ExerciseTypeName { get; set; }
     public List<Set> Sets { get; set; } = new();
+    public List<Exercise> Exercises { get; set; } = new();
 }

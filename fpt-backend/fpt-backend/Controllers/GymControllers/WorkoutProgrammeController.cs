@@ -29,7 +29,7 @@ public class WorkoutProgrammeController : Controller
         return Ok(await _workoutProgrammeService.AddAsync(programme));
     }
 
-    [HttpGet("getWorkoutProgramme")]
+    [HttpGet("getWorkoutProgramme/{Id:int}")]
     [Authorize(Roles = "standardUser")]
     public async Task<ActionResult<WorkoutProgramme>> GetById(int Id)
     {

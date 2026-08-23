@@ -39,6 +39,7 @@ export const getExercises = async () => {
 };
 
 export const getWorkoutProgramme = async (programmeId: number) => {
+  console.log("getting programme");
   try {
     const response = await api.get<WorkoutProgramme>(
       `/api/WorkoutProgramme/GetWorkoutProgramme/${programmeId}`,
@@ -47,4 +48,13 @@ export const getWorkoutProgramme = async (programmeId: number) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getExerciseTypesByExerciseId = async (exerciseId: number) => {
+  try {
+    const response = await api.get<SelectOption[]>(
+      `/api/ExerciseType/GetExerciseTypesByExercise/${exerciseId}`,
+    );
+    return response.data;
+  } catch (error) {}
 };

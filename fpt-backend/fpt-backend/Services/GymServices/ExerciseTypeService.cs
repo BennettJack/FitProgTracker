@@ -25,4 +25,15 @@ public class ExerciseTypeService : BaseService<ExerciseType>, IExerciseTypeServi
         }
         return dropdownDtoList;
     }
+
+    public async Task<List<DropdownReturnDto>> GetExerciseTypesByExerciseAsync(int exerciseId)
+    {
+        var exerciseTypes = await Context
+            .ExerciseTypes.Where(et => et.Exercises.Any(e => e.Id == exerciseId))
+            .ToListAsync();
+
+        return exerciseTypes
+            .Select(et => new DropdownReturnDto { Value = et.Id, Label = et.ExerciseTypeName })
+            .ToList();
+    }
 }
