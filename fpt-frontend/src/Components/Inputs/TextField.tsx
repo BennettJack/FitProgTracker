@@ -17,6 +17,8 @@ import styles from "./muiRootStyles.module.css";
 
 export type TextFieldProps = MuiTextFieldProps & {
   tooltip?: TooltipProps;
+  min?: number;
+  max?: number;
 };
 
 type RHFTextFieldProps<T extends FieldValues> = TextFieldProps & {
@@ -29,12 +31,16 @@ export const TextField = ({
   tooltip,
   slotProps,
   select,
+  min,
+  max,
   ...rest
 }: TextFieldProps) => {
   const mergedSlotProps = {
     ...slotProps,
     input: {
       ...slotProps?.input,
+      ...(min !== undefined && { min }),
+      ...(max !== undefined && { max }),
       ...(tooltip && {
         endAdornment: (
           <InputAdornment position="end" sx={select ? { mr: 2 } : undefined}>

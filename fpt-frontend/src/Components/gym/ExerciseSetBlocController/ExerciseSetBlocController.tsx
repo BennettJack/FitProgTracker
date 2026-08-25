@@ -47,16 +47,12 @@ export default function ExerciseSetBlocController({
         setBloc.sets.map((set, index) => (
           <div>
             <h3>Set {index + 1}</h3>
-            {isEditable ? (
-              <ExerciseSetController
-                exerciseSet={set}
-                setBlocIndex={setBlocIndex}
-                exerciseSetIndex={index}
-                sessionIndex={sessionIndex}
-              />
-            ) : (
-              <ExerciseSetRecordController exerciseSet={set} />
-            )}
+            <ExerciseSetController
+              exerciseSet={set}
+              setBlocIndex={setBlocIndex}
+              exerciseSetIndex={index}
+              sessionIndex={sessionIndex}
+            />
           </div>
         ))}
 

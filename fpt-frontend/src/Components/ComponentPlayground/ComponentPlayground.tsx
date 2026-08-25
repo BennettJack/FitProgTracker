@@ -7,12 +7,18 @@ import { RhfRadioGroup } from "../Inputs/RadioGroup";
 import { SelectOption } from "../CustomElements/MultiSelect/Select";
 import { RhfSelect } from "../Inputs/Select";
 import { RhfSwitch } from "../Inputs/Switch";
+import { NumberedButton } from "../Inputs/Button";
+import { NumberField, RhfNumberField } from "../Inputs/NumberField";
 
 const schema = z.object({
   name: z.string().min(3, "should be more than 3"),
   optional: z.string().min(1, "please select an option"),
   selectElement: z.string().min(1, "please select an option"),
   switchReq: z.boolean().refine((val) => val, { message: "required" }),
+  numberField: z
+    .number()
+    .min(-50, "Value must be greater than -50")
+    .max(50, "Value must be less than 50"),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -24,6 +30,7 @@ export default function ComponentPlayground() {
       optional: "",
       selectElement: "",
       switchReq: false,
+      numberField: 0,
     },
   });
   return (
@@ -41,6 +48,7 @@ function ThisHasToBeHere() {
     optional: "",
     selectElement: "",
     switchReq: false,
+    numberField: 0,
   });
 
   const options = [
@@ -83,6 +91,42 @@ function ThisHasToBeHere() {
           value={data.selectElement}
         />
         <RhfSwitch control={control} name={"switchReq"} label={"Switch"} />
+        <RhfNumberField
+          control={control}
+          name={"numberField"}
+          label={"Number Field"}
+          min={-10}
+          max={10}
+          size={"small"}
+        />
+        <NumberedButton
+          control={control}
+          name={"numberField"}
+          value={1}
+          min={-10}
+          max={10}
+        />
+        <NumberedButton
+          control={control}
+          name={"numberField"}
+          value={5}
+          min={-10}
+          max={10}
+        />
+        <NumberedButton
+          control={control}
+          name={"numberField"}
+          value={-1}
+          min={-10}
+          max={10}
+        />
+        <NumberedButton
+          control={control}
+          name={"numberField"}
+          value={-5}
+          min={-10}
+          max={10}
+        />
         <input type={"submit"} />
       </form>
 

@@ -2,12 +2,14 @@
 import { v4 as uuidv4 } from "uuid";
 
 export const ExerciseSetRecordSchema = z.object({
-  id: z.number().optional(),
-  repsCompleted: z.number(),
-  weight: z.number(),
-  exerciseId: z.number(),
+  repsCompleted: z.number().min(0).max(99),
+  weight: z
+    .number()
+    .min(0, { message: "Weight cannot be less than 0" })
+    .max(999, { message: "Weight must be less than 999" }),
+  exerciseId: z.number({ message: "Please select an exercise" }),
   exerciseTypeId: z.number(),
-  exerciseSetId: z.number().optional(),
+  exerciseSetId: z.string().optional(),
 });
 export const ExerciseSetSchema = z.object({
   id: z.number().optional(),
@@ -67,6 +69,28 @@ export const createEmptyExerciseSet = (): ExerciseSet => ({
   exerciseTypeId: "",
   exerciseId: "",
 });
+
+export type ExerciseSetRecordInitialiser = {
+  repsCompleted?: number;
+  weight?: number;
+  exerciseId?: number;
+  exerciseTypeId?: number;
+  exerciseSetId?: string;
+};
+export const createExerciseSetRecord = ({
+  exerciseTypeId,
+  exerciseId,
+  weight,
+  repsCompleted,
+  exerciseSetId,
+}: ExerciseSetRecordInitialiser): ExerciseSetRecord => ({
+  repsCompleted: repsCompleted ?? 0,
+  weight: weight ?? 0,
+  exerciseId: exerciseId ?? 0,
+  exerciseTypeId: exerciseTypeId ?? 0,
+  exerciseSetId: exerciseSetId ?? "",
+});
+
 export type WorkoutProgramme = z.infer<typeof WorkoutProgrammeSchema>;
 export type Session = z.infer<typeof SessionSchema>;
 export type ExerciseSetBloc = z.infer<typeof ExerciseSetBlocSchema>;

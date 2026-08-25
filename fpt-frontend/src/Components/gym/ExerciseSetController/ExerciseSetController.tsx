@@ -1,25 +1,20 @@
 ﻿import { useWorkoutProgrammeContext } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeContext";
-import {
-  Controller,
-  useFieldArray,
-  useForm,
-  useFormContext,
-  useWatch,
-} from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Button, Input, Select, TextField } from "@mui/material";
-import { NumberField } from "@base-ui/react";
-import NumberSpinner from "../../../Global styles/mui/NumberSpinner";
+
 import styles from "../ExerciseSetBlocController/ExerciseSetBlocController.module.css";
 import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
 import {
+  createExerciseSetRecord,
   ExerciseSet,
-  WorkoutProgramme,
+  ExerciseSetRecord,
+  ExerciseSetRecordSchema,
 } from "../../../schemas/workoutProgrammeSchema";
 import { RhfSelect } from "../../Inputs/Select";
 import { RhfTextField } from "../../Inputs/TextField";
 import { SelectOption } from "../../CustomElements/MultiSelect/Select";
 import { getExerciseTypesByExerciseId } from "../../../Pages/Gym/WorkoutProgrammeBuilder/WorkoutProgrammeApiCalls";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type ExerciseSetProps = {
   exerciseSet: ExerciseSet;
@@ -41,7 +36,7 @@ export default function ExerciseSetController({
         setExerciseTypeList(res ?? []),
       );
   }, [exerciseSet.exerciseId]);
-  const { isEditable, exerciseTypeOptions, exerciseOptions } =
+  const { mode, isEditable, exerciseTypeOptions, exerciseOptions } =
     useWorkoutProgrammeContext();
   const temp = `sessions.${sessionIndex}.setBlocs.${setBlocIndex}.sets.${exerciseSetIndex}`;
   const renderExerciseSelect = () => {
@@ -100,6 +95,43 @@ export default function ExerciseSetController({
     }
   };
 
+  const renderReps = () => {
+    if (isEditable) {
+      return (
+        <div>
+          <RhfTextField
+            variant={"outlined"}
+            name={`${temp}.repCeiling`}
+            value={exerciseSet.repCeiling}
+            type={"number"}
+            label={"Rep ceiling"}
+          />
+          <RhfTextField
+            variant={"outlined"}
+            name={`${temp}.repFloor`}
+            value={exerciseSet.repFloor}
+            type={"number"}
+            label={"Rep floor"}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h4>Rep range</h4>
+          <p>{`${exerciseSet.repFloor} - ${exerciseSet.repCeiling}`}</p>
+        </div>
+      );
+    }
+  };
+  const methods = useForm<ExerciseSetRecord>({
+    resolver: zodResolver(ExerciseSetRecordSchema),
+    defaultValues: createExerciseSetRecord({
+      exerciseId: Number(exerciseSet.exerciseId),
+      exerciseTypeId: Number(exerciseSet.exerciseTypeId),
+      exerciseSetId: String(exerciseSet.id) ?? exerciseSet.tempId,
+    }),
+  });
   return (
     <>
       <div className={styles.header}>
@@ -109,20 +141,12 @@ export default function ExerciseSetController({
       {Number(exerciseSet.exerciseTypeId) === 3 && (
         <button>Check your 5/3/1 settings</button>
       )}
-      <RhfTextField
-        variant={"outlined"}
-        name={`${temp}.repCeiling`}
-        value={exerciseSet.repCeiling}
-        type={"number"}
-        label={"Rep ceiling"}
-      />
-      <RhfTextField
-        variant={"outlined"}
-        name={`${temp}.repFloor`}
-        value={exerciseSet.repFloor}
-        type={"number"}
-        label={"Rep floor"}
-      />
+      {renderReps()}
+      {mode === "view" && (
+        <FormProvider {...methods}>
+          <ExerciseSetRecordController exerciseSet={exerciseSet} />
+        </FormProvider>
+      )}
     </>
   );
 }
