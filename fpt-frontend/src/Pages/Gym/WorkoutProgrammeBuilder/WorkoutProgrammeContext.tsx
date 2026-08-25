@@ -156,21 +156,26 @@ export function WorkoutProgrammeProvider({
     setSaving(false);
   });
 
-  const updateProgramme = methods.handleSubmit(async (data) => {
-    setSaving(true);
-    try {
-      const response = await api.put<WorkoutProgramme>(
-        `/api/WorkoutProgramme/updateWorkoutProgramme/${data.id}`,
-        data,
-      );
-
-      reset(response.data);
-    } catch (error) {
-      console.error("Failed to update workout programme", error);
-      return null;
-    }
-    setSaving(false);
-  });
+  const updateProgramme = methods.handleSubmit(
+    async (data) => {
+      setSaving(true);
+      try {
+        const response = await api.put<WorkoutProgramme>(
+          `/api/WorkoutProgramme/updateWorkoutProgramme/${data.id}`,
+          data,
+        );
+        reset(response.data);
+      } catch (error) {
+        console.error("Failed to update workout programme", error);
+        return null;
+      } finally {
+        setSaving(false);
+      }
+    },
+    (errors) => {
+      console.error("Validation errors:", errors);
+    },
+  );
 
   const resetForm = async () => {
     setSelectedSession(null);
@@ -182,6 +187,11 @@ export function WorkoutProgrammeProvider({
         reset(res);
       });
   };
+
+  //the debugging useEffect
+  useEffect(() => {
+    console.log(watch());
+  }, [watch()]);
 
   const value = useMemo<WorkoutProgrammeContextValue>(
     () => ({

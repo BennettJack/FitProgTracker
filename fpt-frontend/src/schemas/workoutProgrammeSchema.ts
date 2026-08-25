@@ -12,8 +12,8 @@ export const ExerciseSetRecordSchema = z.object({
   exerciseSetId: z.string().optional(),
 });
 export const ExerciseSetSchema = z.object({
-  id: z.number().optional(),
-  tempId: z.string().optional(),
+  id: z.number().nullable().optional(),
+  tempId: z.string().nullable().optional(),
   description: z.string().optional(),
   repCeiling: z.coerce.number().min(1, "Rep ceiling cannot be less than 1"),
   repFloor: z.coerce.number().min(1, "Rep floor cannot be less than 1"),
@@ -23,22 +23,22 @@ export const ExerciseSetSchema = z.object({
 });
 
 export const ExerciseSetBlocSchema = z.object({
-  id: z.number().optional(),
-  tempId: z.string().optional(),
+  id: z.number().nullable().optional(),
+  tempId: z.string().nullable().optional(),
   name: z.string(),
   sets: z.array(ExerciseSetSchema),
 });
 
 export const SessionSchema = z.object({
-  id: z.number().optional(),
-  tempId: z.string().optional(),
+  id: z.number().nullable().optional(),
+  tempId: z.string().nullable().optional(),
   name: z.string(),
   setBlocs: z.array(ExerciseSetBlocSchema),
 });
 
 export const WorkoutProgrammeSchema = z.object({
-  tempId: z.string().optional(),
-  id: z.number().optional(),
+  tempId: z.string().nullable().optional(),
+  id: z.number().nullable().optional(),
   name: z.string().min(10, { message: "Name must be at least 10 characters" }),
   sessions: z.array(SessionSchema),
 });
@@ -64,8 +64,8 @@ export const createEmptyExerciseSetBloc = (): ExerciseSetBloc => ({
 export const createEmptyExerciseSet = (): ExerciseSet => ({
   tempId: uuidv4(),
   description: "",
-  repCeiling: 0,
-  repFloor: 0,
+  repCeiling: 1,
+  repFloor: 1,
   exerciseTypeId: "",
   exerciseId: "",
 });
