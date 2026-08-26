@@ -161,8 +161,6 @@ public class WorkoutProgrammeService : BaseService<WorkoutProgramme>, IWorkoutPr
                 .ThenInclude(x => x.SetBlocs)
                     .ThenInclude(x => x.Sets)
                         .ThenInclude(x => x.ExerciseType)
-            .Include(x => x.Sessions)
-                .ThenInclude(x => x.SetBlocs)
             .Where(x => x.CreatedBy == CurrentUserId)
             .FirstAsync(x => x.Id == req.Id);
 

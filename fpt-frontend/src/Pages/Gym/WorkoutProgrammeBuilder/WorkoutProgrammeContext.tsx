@@ -54,6 +54,9 @@ type WorkoutProgrammeContextValue = {
   exerciseTypeOptions: SelectOption[];
   exerciseOptions: SelectOption[];
 
+  //records
+  todayRecords: ExerciseSetRecord[];
+
   reset: () => void;
 };
 
@@ -95,6 +98,7 @@ export function WorkoutProgrammeProvider({
     SelectOption[]
   >([]);
   const [exerciseOptions, setExerciseOptions] = useState<SelectOption[]>([]);
+  const [todayRecords, setTodayRecords] = useState<ExerciseSetRecord[]>([]);
 
   const isCreateMode = currentMode === "create";
   const isEditMode = currentMode === "edit";
@@ -193,6 +197,8 @@ export function WorkoutProgrammeProvider({
     console.log(watch());
   }, [watch()]);
 
+  useEffect(() => {}, [selectedSession]);
+
   const value = useMemo<WorkoutProgrammeContextValue>(
     () => ({
       mode: currentMode,
@@ -204,6 +210,8 @@ export function WorkoutProgrammeProvider({
 
       setSelectedSession,
       selectedSession,
+
+      todayRecords,
 
       loading,
       saving,

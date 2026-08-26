@@ -1,5 +1,5 @@
 ﻿import { api } from "../../../api/apiClient";
-import { WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
+import { ExerciseSetRecord, WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
 import { SelectOption } from "../../../Components/CustomElements/MultiSelect/Select";
 
 export const fetchTodayRecords = async (sessionId: number | string) => {
@@ -58,3 +58,13 @@ export const getExerciseTypesByExerciseId = async (exerciseId: number) => {
     return response.data;
   } catch (error) {}
 };
+
+
+export const getTodaysRecords = async (sessionId: number) => {
+  try {
+    const response = await api.get<ExerciseSetRecord[]>(
+      `/api/SetRecord/GetTodaysRecords/${sessionId}`,
+    );
+    return response.data;
+  }
+}
