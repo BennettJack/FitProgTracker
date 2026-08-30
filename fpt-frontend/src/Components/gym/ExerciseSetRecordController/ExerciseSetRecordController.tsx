@@ -27,6 +27,8 @@ export default function ExerciseSetRecordController({
     exerciseTypeId: z.number(),
     exerciseSetId: z.number().nullable(),
   });
+  const { todaySessionRecords } = useWorkoutProgrammeContext();
+  const [todaySetRecord, setTodaySetRecord] = useState<ExerciseSetRecord>();
   const onSubmit: SubmitHandler<ExerciseSetRecord> = async (data) => {
     try {
       const res = await api.post<ExerciseSetRecord>(
@@ -37,6 +39,13 @@ export default function ExerciseSetRecordController({
       console.log(e);
     }
   };
+  useEffect(() => {
+    console.log("todaySessionRecords:", todaySessionRecords);
+    console.log("exerciseSet.id:", exerciseSet.id);
+    if (exerciseSet.id !== undefined && exerciseSet.id !== null) {
+      setTodaySetRecord(todaySessionRecords[exerciseSet.id]);
+    }
+  }, [todaySessionRecords, exerciseSet.id]);
 
   return (
     <div>
@@ -63,6 +72,15 @@ export default function ExerciseSetRecordController({
         </div>
         <input type="submit" value="Save" />
       </form>
+      <div>
+        {exerciseSet.id && (
+          <p>Record for this set: {todaySetRecord?.repsCompleted}</p>
+        )}
+      </div>
+      <div>
+        <p> {todaySetRecord?.weight ?? "0 kg"}</p>
+        <p> {exerciseSet.id}</p>
+      </div>
     </div>
   );
 }

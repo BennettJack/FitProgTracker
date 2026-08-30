@@ -55,7 +55,7 @@ type WorkoutProgrammeContextValue = {
   exerciseOptions: SelectOption[];
 
   //records
-  todayRecords: ExerciseSetRecord[];
+  todaySessionRecords: Record<number, ExerciseSetRecord>;
 
   reset: () => void;
 };
@@ -98,7 +98,9 @@ export function WorkoutProgrammeProvider({
     SelectOption[]
   >([]);
   const [exerciseOptions, setExerciseOptions] = useState<SelectOption[]>([]);
-  const [todayRecords, setTodayRecords] = useState<ExerciseSetRecord[]>([]);
+  const [todaySessionRecords, setTodaySessionRecords] = useState<
+    Record<number, ExerciseSetRecord>
+  >({});
 
   const isCreateMode = currentMode === "create";
   const isEditMode = currentMode === "edit";
@@ -197,7 +199,16 @@ export function WorkoutProgrammeProvider({
     console.log(watch());
   }, [watch()]);
 
-  useEffect(() => {}, [selectedSession]);
+  useEffect(() => {
+    if (selectedSession?.session.id && mode === "view") {
+      console.log("fetching records");
+      apiCalls
+        .getTodaysRecordsBySession(selectedSession.session.id)
+        .then((res) => {
+          setTodaySessionRecords(res);
+        });
+    }
+  }, [selectedSession]);
 
   const value = useMemo<WorkoutProgrammeContextValue>(
     () => ({
@@ -211,7 +222,7 @@ export function WorkoutProgrammeProvider({
       setSelectedSession,
       selectedSession,
 
-      todayRecords,
+      todaySessionRecords: todaySessionRecords,
 
       loading,
       saving,

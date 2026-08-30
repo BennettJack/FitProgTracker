@@ -64,22 +64,6 @@ public class ExerciseSetRecordService : BaseService<ExerciseSetRecord>, IExercis
             })
             .ToDictionaryAsync(x => x.SetId, x => x.Record);
 
-        var wildcardSets = await Context
-            .ExerciseSetRecord.Where(r =>
-                r.SetId == null
-                && r.CreatedBy == CurrentUserId
-                && r.Created >= today
-                && r.Created < tomorrow
-            )
-            .GroupBy(r => new { r.ExerciseId, r.ExerciseTypeId })
-            .Select(g => new WildcardSetReturnDto
-            {
-                ExerciseId = g.Key.ExerciseId,
-                ExerciseTypeId = g.Key.ExerciseTypeId,
-                Records = g.OrderBy(r => r.Created).ToList(),
-            })
-            .ToListAsync();
-
-        return new TodayRecordsReturnDto { RecordsBySetId = bySetId, WildcardSets = wildcardSets };
+        return new TodayRecordsReturnDto { RecordsBySetId = bySetId };
     }
 }

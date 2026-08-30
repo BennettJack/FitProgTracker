@@ -1,5 +1,8 @@
 ﻿import { api } from "../../../api/apiClient";
-import { ExerciseSetRecord, WorkoutProgramme } from "../../../schemas/workoutProgrammeSchema";
+import {
+  ExerciseSetRecord,
+  WorkoutProgramme,
+} from "../../../schemas/workoutProgrammeSchema";
 import { SelectOption } from "../../../Components/CustomElements/MultiSelect/Select";
 
 export const fetchTodayRecords = async (sessionId: number | string) => {
@@ -59,12 +62,16 @@ export const getExerciseTypesByExerciseId = async (exerciseId: number) => {
   } catch (error) {}
 };
 
-
-export const getTodaysRecords = async (sessionId: number) => {
+export const getTodaysRecordsBySession = async (
+  sessionId: number,
+): Promise<Record<number, ExerciseSetRecord>> => {
   try {
-    const response = await api.get<ExerciseSetRecord[]>(
-      `/api/SetRecord/GetTodaysRecords/${sessionId}`,
-    );
-    return response.data;
+    const response = await api.get<{
+      recordsBySetId: Record<number, ExerciseSetRecord>;
+    }>(`/api/SetRecord/GetTodaysRecords/${sessionId}`);
+    return response.data.recordsBySetId || {};
+  } catch (error) {
+    console.log(error);
   }
-}
+  return {};
+};
