@@ -16,37 +16,44 @@ interface ExerciseSetRecordControllerProps {
 export default function ExerciseSetRecordController({
   exerciseSet,
 }: ExerciseSetRecordControllerProps) {
-  const { control, handleSubmit } = useFormContext<ExerciseSetRecord>();
-  const exerciseSetRecordSchema = z.object({
-    repsCompleted: z.number().min(0).max(99),
-    weight: z
-      .number()
-      .min(0, { message: "Weight cannot be less than 0" })
-      .max(999, { message: "Weight must be less than 999" }),
-    exerciseId: z.number({ message: "Please select an exercise" }),
-    exerciseTypeId: z.number(),
-    exerciseSetId: z.number().nullable(),
-  });
+  const { control, handleSubmit, reset, formState } =
+    useFormContext<ExerciseSetRecord>();
+  const { errors } = formState;
   const { todaySessionRecords } = useWorkoutProgrammeContext();
   const [todaySetRecord, setTodaySetRecord] = useState<ExerciseSetRecord>();
   const onSubmit: SubmitHandler<ExerciseSetRecord> = async (data) => {
     try {
-      const res = await api.post<ExerciseSetRecord>(
-        "api/SetRecord/AddSetRecord",
-        data,
-      );
+      if (todaySetRecord?.id) {
+        const res = await api.post<ExerciseSetRecord>(
+          "api/SetRecord/UpdateSetRecord",
+          data,
+        );
+      } else {
+        const res = await api.post<ExerciseSetRecord>(
+          "api/SetRecord/AddSetRecord",
+          data,
+        );
+      }
     } catch (e) {
       console.log(e);
     }
   };
   useEffect(() => {
-    console.log("todaySessionRecords:", todaySessionRecords);
-    console.log("exerciseSet.id:", exerciseSet.id);
     if (exerciseSet.id !== undefined && exerciseSet.id !== null) {
       setTodaySetRecord(todaySessionRecords[exerciseSet.id]);
     }
-  }, [todaySessionRecords, exerciseSet.id]);
+  }, [exerciseSet.id, todaySessionRecords]);
 
+  useEffect(() => {
+    reset({
+      id: todaySetRecord?.id ?? null,
+      repsCompleted: todaySetRecord?.repsCompleted ?? 0,
+      weight: todaySetRecord?.weight ?? 0,
+      exerciseSetId: exerciseSet.id ?? undefined,
+      exerciseId: Number(exerciseSet.exerciseId!),
+      exerciseTypeId: Number(exerciseSet.exerciseTypeId!),
+    });
+  }, [todaySetRecord]);
   return (
     <div>
       <form onSubmit={handleSubmit((formData) => onSubmit(formData))}>
@@ -79,6 +86,7 @@ export default function ExerciseSetRecordController({
       </div>
       <div>
         <p> {todaySetRecord?.weight ?? "0 kg"}</p>
+        <p> {`id ${todaySetRecord?.id}`}</p>
         <p> {exerciseSet.id}</p>
       </div>
     </div>

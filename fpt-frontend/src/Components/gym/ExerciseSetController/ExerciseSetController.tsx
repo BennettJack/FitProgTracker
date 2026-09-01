@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import styles from "../ExerciseSetBlocController/ExerciseSetBlocController.module.css";
 import ExerciseSetRecordController from "../ExerciseSetRecordController/ExerciseSetRecordController";
 import {
-  createExerciseSetRecord,
   ExerciseSet,
   ExerciseSetRecord,
   ExerciseSetRecordSchema,
@@ -126,11 +125,14 @@ export default function ExerciseSetController({
   };
   const methods = useForm<ExerciseSetRecord>({
     resolver: zodResolver(ExerciseSetRecordSchema),
-    defaultValues: createExerciseSetRecord({
+    defaultValues: {
+      id: null,
       exerciseId: Number(exerciseSet.exerciseId),
       exerciseTypeId: Number(exerciseSet.exerciseTypeId),
-      exerciseSetId: String(exerciseSet.id) ?? exerciseSet.tempId,
-    }),
+      exerciseSetId: exerciseSet.id ?? undefined,
+      repsCompleted: 0,
+      weight: 0,
+    },
   });
   return (
     <>

@@ -206,6 +206,7 @@ export function WorkoutProgrammeProvider({
         .getTodaysRecordsBySession(selectedSession.session.id)
         .then((res) => {
           setTodaySessionRecords(res);
+          console.log(res);
         });
     }
   }, [selectedSession]);
