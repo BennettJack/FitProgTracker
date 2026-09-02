@@ -28,4 +28,13 @@ public class SetRecordController : Controller
         var res = await _exerciseSetRecordService.GetTodayRecordAsync(sessionId);
         return Ok(res);
     }
+
+    [HttpPost("GetMostRecentRecords")]
+    public async Task<IActionResult> GetMostRecentRecords([FromBody] List<int> exerciseIds)
+    {
+        if (exerciseIds.Count == 0)
+            return BadRequest();
+        var res = await _exerciseSetRecordService.GetMostRecentRecordsAsync(exerciseIds);
+        return Ok(res);
+    }
 }

@@ -5,20 +5,6 @@ import {
 } from "../../../schemas/workoutProgrammeSchema";
 import { SelectOption } from "../../../Components/CustomElements/MultiSelect/Select";
 
-export const fetchTodayRecords = async (sessionId: number | string) => {
-  try {
-    const response = await api.get(`api/SetRecord/GetTodayRecords/`, {
-      params: {
-        sessionId: sessionId,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Failed to fetch today's records", error);
-    return {};
-  }
-};
-
 export const getExerciseTypeOptions = async () => {
   try {
     const response = await api.get<SelectOption[]>(
@@ -67,11 +53,21 @@ export const getTodaysRecordsBySession = async (
 ): Promise<Record<number, ExerciseSetRecord>> => {
   try {
     const response = await api.get<{
-      recordsBySetId: Record<number, ExerciseSetRecord>;
+      setRecords: Record<number, ExerciseSetRecord>;
     }>(`/api/SetRecord/GetTodaysRecords/${sessionId}`);
-    return response.data.recordsBySetId || {};
+    return response.data.setRecords || {};
   } catch (error) {
     console.log(error);
   }
+  return {};
+};
+
+export const getMostRecentRecords = async (exerciseIds: number[]) => {
+  try {
+    const response = await api.post<{
+      setRecords: Record<number, ExerciseSetRecord>;
+    }>(`/api/SetRecord/GetMostRecentRecords/`, exerciseIds);
+    return response.data.setRecords || {};
+  } catch (error) {}
   return {};
 };

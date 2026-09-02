@@ -56,6 +56,7 @@ type WorkoutProgrammeContextValue = {
 
   //records
   todaySessionRecords: Record<number, ExerciseSetRecord>;
+  mostRecentRecords: Record<number, ExerciseSetRecord>;
 
   reset: () => void;
 };
@@ -99,6 +100,9 @@ export function WorkoutProgrammeProvider({
   >([]);
   const [exerciseOptions, setExerciseOptions] = useState<SelectOption[]>([]);
   const [todaySessionRecords, setTodaySessionRecords] = useState<
+    Record<number, ExerciseSetRecord>
+  >({});
+  const [mostRecentRecords, setMostRecentRecords] = useState<
     Record<number, ExerciseSetRecord>
   >({});
 
@@ -166,7 +170,7 @@ export function WorkoutProgrammeProvider({
     async (data) => {
       setSaving(true);
       try {
-        const response = await api.put<WorkoutProgramme>(
+        const response = await api.post<WorkoutProgramme>(
           `/api/WorkoutProgramme/updateWorkoutProgramme/${data.id}`,
           data,
         );
@@ -201,13 +205,23 @@ export function WorkoutProgrammeProvider({
 
   useEffect(() => {
     if (selectedSession?.session.id && mode === "view") {
-      console.log("fetching records");
       apiCalls
         .getTodaysRecordsBySession(selectedSession.session.id)
         .then((res) => {
           setTodaySessionRecords(res);
-          console.log(res);
         });
+
+      const exerciseIds = [
+        ...new Set(
+          selectedSession.session.setBlocs
+            .flatMap((setBloc) => setBloc.sets)
+            .map((set) => Number(set.exerciseId)),
+        ),
+      ];
+
+      apiCalls.getMostRecentRecords(exerciseIds).then((res) => {
+        setMostRecentRecords(res);
+      });
     }
   }, [selectedSession]);
 
@@ -224,6 +238,7 @@ export function WorkoutProgrammeProvider({
       selectedSession,
 
       todaySessionRecords: todaySessionRecords,
+      mostRecentRecords: mostRecentRecords,
 
       loading,
       saving,

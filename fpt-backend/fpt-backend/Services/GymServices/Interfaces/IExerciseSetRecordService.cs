@@ -8,5 +8,7 @@ namespace fpt_backend.Services.GymServices.Interfaces;
 public interface IExerciseSetRecordService : IBaseService<ExerciseSetRecord>
 {
     public Task<ExerciseSetRecord> AddAsync(ExerciseSetRecordCreateRequest request);
-    public Task<TodayRecordsReturnDto> GetTodayRecordAsync(int sessionId);
+    public Task<RecordsReturnDto> GetTodayRecordAsync(int sessionId);
+
+    public Task<RecordsReturnDto> GetMostRecentRecordsAsync(List<int> exerciseIds);
 }

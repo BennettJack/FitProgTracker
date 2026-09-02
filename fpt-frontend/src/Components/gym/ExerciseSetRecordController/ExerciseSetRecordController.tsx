@@ -19,7 +19,8 @@ export default function ExerciseSetRecordController({
   const { control, handleSubmit, reset, formState } =
     useFormContext<ExerciseSetRecord>();
   const { errors } = formState;
-  const { todaySessionRecords } = useWorkoutProgrammeContext();
+  const { todaySessionRecords, mostRecentRecords } =
+    useWorkoutProgrammeContext();
   const [todaySetRecord, setTodaySetRecord] = useState<ExerciseSetRecord>();
   const onSubmit: SubmitHandler<ExerciseSetRecord> = async (data) => {
     try {
@@ -54,6 +55,10 @@ export default function ExerciseSetRecordController({
       exerciseTypeId: Number(exerciseSet.exerciseTypeId!),
     });
   }, [todaySetRecord]);
+
+  useEffect(() => {
+    console.log("this was called by record", mostRecentRecords);
+  }, [mostRecentRecords]);
   return (
     <div>
       <form onSubmit={handleSubmit((formData) => onSubmit(formData))}>
@@ -80,14 +85,18 @@ export default function ExerciseSetRecordController({
         <input type="submit" value="Save" />
       </form>
       <div>
-        {exerciseSet.id && (
-          <p>Record for this set: {todaySetRecord?.repsCompleted}</p>
-        )}
-      </div>
-      <div>
-        <p> {todaySetRecord?.weight ?? "0 kg"}</p>
-        <p> {`id ${todaySetRecord?.id}`}</p>
-        <p> {exerciseSet.id}</p>
+        <p>
+          {" "}
+          Most recent weight:{" "}
+          {mostRecentRecords[Number(exerciseSet.exerciseId!)]?.weight ??
+            "No record"}
+        </p>
+        <p>
+          {" "}
+          Most recent rep:{" "}
+          {mostRecentRecords[Number(exerciseSet.exerciseId!)]?.repsCompleted ??
+            "No record"}
+        </p>
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ public class ExerciseSetRecordService : BaseService<ExerciseSetRecord>, IExercis
         return res.Entity;
     }
 
-    public async Task<TodayRecordsReturnDto> GetTodayRecordAsync(int sessionId)
+    public async Task<RecordsReturnDto> GetTodayRecordAsync(int sessionId)
     {
         var today = DateTime.Today;
         var tomorrow = today.AddDays(1);
@@ -52,7 +52,7 @@ public class ExerciseSetRecordService : BaseService<ExerciseSetRecord>, IExercis
         var bySetId = await Context
             .ExerciseSetRecord.Where(r =>
                 r.Set != null
-                && r.Set.SetBlocId == sessionId
+                && r.Set.SetBloc.SessionId == sessionId
                 && r.Created >= today
                 && r.Created < tomorrow
             )
@@ -64,6 +64,27 @@ public class ExerciseSetRecordService : BaseService<ExerciseSetRecord>, IExercis
             })
             .ToDictionaryAsync(x => x.SetId, x => x.Record);
 
-        return new TodayRecordsReturnDto { RecordsBySetId = bySetId };
+        return new RecordsReturnDto { SetRecords = bySetId };
+    }
+
+    public async Task<RecordsReturnDto> GetMostRecentRecordsAsync(List<int> exerciseIds)
+    {
+        var today = DateTime.Today;
+        var zeroDate = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0);
+
+        var records = await Context
+            .ExerciseSetRecord.Where(r =>
+                exerciseIds.Contains(r.ExerciseId)
+                && r.CreatedBy == CurrentUser.UserId
+                && r.Created < zeroDate
+            )
+            .GroupBy(r => r.ExerciseId)
+            .Select(g => g.OrderByDescending(r => r.Created).First())
+            .ToListAsync();
+
+        return new RecordsReturnDto
+        {
+            SetRecords = records.ToDictionary(r => r.ExerciseId, r => r),
+        };
     }
 }
