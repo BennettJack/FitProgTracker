@@ -7,6 +7,7 @@ using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories;
 using fpt_backend.Helper_classes;
 using fpt_backend.Services.GymServices.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace fpt_backend.Services.GymServices;
@@ -86,5 +87,19 @@ public class ExerciseSetRecordService : BaseService<ExerciseSetRecord>, IExercis
         {
             SetRecords = records.ToDictionary(r => r.ExerciseId, r => r),
         };
+    }
+
+    public async Task<ExerciseSetRecord?> UpdateAsync(ExerciseSetRecordCreateRequest req)
+    {
+        var record = await Context.ExerciseSetRecord.FindAsync(req.Id);
+        if (record == null)
+            return null;
+
+        record.Weight = req.Weight;
+        record.RepsCompleted = req.RepsCompleted;
+        record.PerceivedEffort = req.PerceivedEffort;
+
+        await Context.SaveChangesAsync();
+        return record;
     }
 }

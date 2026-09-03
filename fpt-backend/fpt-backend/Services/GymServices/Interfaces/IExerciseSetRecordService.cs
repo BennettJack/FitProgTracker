@@ -2,6 +2,7 @@
 using fpt_backend.Data.DTO.GymDTOs.ReturnDtos;
 using fpt_backend.Data.Models.GymModels;
 using fpt_backend.DbRepositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace fpt_backend.Services.GymServices.Interfaces;
 
@@ -11,4 +12,6 @@ public interface IExerciseSetRecordService : IBaseService<ExerciseSetRecord>
     public Task<RecordsReturnDto> GetTodayRecordAsync(int sessionId);
 
     public Task<RecordsReturnDto> GetMostRecentRecordsAsync(List<int> exerciseIds);
+
+    public Task<ExerciseSetRecord?> UpdateAsync(ExerciseSetRecordCreateRequest request);
 }

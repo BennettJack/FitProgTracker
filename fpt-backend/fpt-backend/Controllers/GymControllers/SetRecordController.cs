@@ -37,4 +37,15 @@ public class SetRecordController : Controller
         var res = await _exerciseSetRecordService.GetMostRecentRecordsAsync(exerciseIds);
         return Ok(res);
     }
+
+    [HttpPost("UpdateSetRecord")]
+    public async Task<IActionResult> UpdateSetRecord(
+        [FromBody] ExerciseSetRecordCreateRequest request
+    )
+    {
+        var res = await _exerciseSetRecordService.UpdateAsync(request);
+        if (res == null)
+            return NotFound();
+        return Ok(res);
+    }
 }
